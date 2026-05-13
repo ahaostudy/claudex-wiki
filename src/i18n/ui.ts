@@ -156,7 +156,7 @@ export const ui = {
 
     // Hero
     "hero.subtitle.body":
-      "远程驾驶你笔记本上的 {claude} CLI。掏出手机，活就接着干——审一段 diff、批一次权限、排上下一个 prompt。",
+      "远程控制你笔记本上的 {claude} CLI。打开手机就能继续——查看 diff、批准权限、安排下一个 prompt。",
     "hero.cta.install": "安装",
     "hero.cta.docs": "阅读文档",
     "hero.cta.github": "GitHub",
@@ -206,8 +206,8 @@ export const ui = {
       "每个会话都落在独立 worktree 的独立分支上。同一个仓库可以同时跑五个 claude，互不踩脚。创建时自动 rebase，归档时自动清理。",
 
     // Endmatter
-    "endmatter.title.lead": "一行命令，你就",
-    "endmatter.title.italic": "上路了。",
+    "endmatter.title.lead": "一行命令，",
+    "endmatter.title.italic": "全部装好。",
     "endmatter.intro":
       "脚本会一步步带你做完管理员设置，打印 TOTP 二维码与十枚恢复码，再询问是否注册用户级守护进程。全程不静默；sudo 由你显式开启。",
     "endmatter.tab.unix": "macOS · Linux",
@@ -218,10 +218,10 @@ export const ui = {
     "endmatter.copy.fallback": "请按 ⌘C",
     "endmatter.after.label": "脚本跑完之后",
     "endmatter.after.body":
-      "打开 {url}，用 TOTP 登录，你就上路了。",
+      "打开 {url}，用 TOTP 登录即可使用。",
     "endmatter.phone.label": "为你的手机",
     "endmatter.phone.body":
-      "用 Cloudflare Tunnel、frpc 或 Tailscale 在前面套一层。claudex 始终绑在 localhost——是否对外暴露由你决定。",
+      "用 Cloudflare Tunnel、frpc 或 Tailscale 在前面做一层反向代理。claudex 始终只绑 localhost——是否对外暴露由你决定。",
     "endmatter.broken.label": "如果出问题",
     "endmatter.broken.body.html":
       '<a href="{docs}" class="ed-link text-ink">故障排查</a> 页面覆盖了启动循环、重启卡死、HTTP / HTTPS 之间的常见坑。',
