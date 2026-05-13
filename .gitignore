@@ -3,6 +3,10 @@ dist/
 # generated types
 .astro/
 
+# claudex worktrees spawned inside this repo (per-session isolation,
+# never tracked — see claudex CLAUDE.md "Worktree-per-session is the default")
+.claude/
+
 # dependencies
 node_modules/
 

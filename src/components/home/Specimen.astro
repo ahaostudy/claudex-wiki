@@ -1,0 +1,259 @@
+---
+/**
+ * Specimen — product as the centerpiece.
+ *
+ * Mobile-first product, mobile-first showcase: an iPhone front-and-center
+ * with a chat + inline permission card, and a desktop mockup behind it as
+ * a quiet supporting actor. Editorial annotations on the left margin point
+ * to specific UI behaviors (the permission card, the live chip, the queue).
+ */
+---
+
+<section
+  id="specimen"
+  class="relative overflow-hidden border-b border-ink/15 bg-canvas"
+  aria-label="Product specimen"
+>
+  <div class="absolute inset-0 bg-grid opacity-30 pointer-events-none"></div>
+
+  <div class="relative max-w-[1440px] mx-auto px-6 lg:px-10 pt-20 pb-24 lg:pt-28 lg:pb-32">
+    <!-- Section header / editorial slug -->
+    <div class="grid grid-cols-12 gap-6 items-end mb-14 lg:mb-20">
+      <div class="col-span-12 lg:col-span-6">
+        <div class="flex items-center gap-3">
+          <span class="section-no">§ 01</span>
+          <span class="h-px flex-1 bg-ink/30 max-w-[140px]"></span>
+          <span class="label text-ink-muted">The product</span>
+        </div>
+        <h2 class="display mt-6 text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.95] tracking-[-0.03em] max-w-[16ch]">
+          The cockpit fits<br />
+          in your <span class="display-italic text-klein">pocket.</span>
+        </h2>
+      </div>
+      <div class="col-span-12 lg:col-span-5 lg:col-start-8">
+        <div class="border-t border-ink/30 pt-3">
+          <p class="text-[14.5px] leading-[1.65] text-ink-muted max-w-[42ch]">
+            Every screen is drawn for a 390-pixel viewport first.
+            Bottom sheets, safe-area aware, iOS-keyboard-tuned. The desktop
+            opens the same session into a three-column layout — but the
+            phone is the home turf.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage --------------------------------------------------------- -->
+    <div class="relative">
+      <!-- Editorial cross-hairs / register marks at the corners -->
+      <span class="hidden lg:block absolute -top-2 -left-2 w-3 h-3 border-t border-l border-klein"></span>
+      <span class="hidden lg:block absolute -top-2 -right-2 w-3 h-3 border-t border-r border-klein"></span>
+      <span class="hidden lg:block absolute -bottom-2 -left-2 w-3 h-3 border-b border-l border-klein"></span>
+      <span class="hidden lg:block absolute -bottom-2 -right-2 w-3 h-3 border-b border-r border-klein"></span>
+
+      <div class="grid grid-cols-12 gap-x-8 gap-y-12 items-center">
+        <!-- LEFT: editorial annotations ------------------------------- -->
+        <div class="col-span-12 lg:col-span-3 order-2 lg:order-1 space-y-7">
+          <div>
+            <div class="label text-klein">Fig. 01</div>
+            <div class="mt-2 text-[13.5px] leading-[1.6] text-ink-soft">
+              <strong class="text-ink font-medium">Permission card.</strong>
+              Not a modal dump — a dedicated card with blast-radius
+              summary, inline diff stat, and one tap to allow.
+            </div>
+          </div>
+          <div>
+            <div class="label text-klein">Fig. 02</div>
+            <div class="mt-2 text-[13.5px] leading-[1.6] text-ink-soft">
+              <strong class="text-ink font-medium">Live chip.</strong>
+              The session is alive on your laptop — the chip turns when
+              claude is thinking, paused, or done.
+            </div>
+          </div>
+          <div>
+            <div class="label text-klein">Fig. 03</div>
+            <div class="mt-2 text-[13.5px] leading-[1.6] text-ink-soft">
+              <strong class="text-ink font-medium">Queue a follow-up.</strong>
+              Type, send, swipe away. Three more prompts can stack
+              behind the active turn.
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTER: phone hero device --------------------------------- -->
+        <div class="col-span-12 lg:col-span-6 order-1 lg:order-2 relative">
+          <!-- Backplate — abstract paper card peeking behind the phone -->
+          <div
+            class="absolute -inset-x-4 lg:inset-x-10 inset-y-8 lg:inset-y-12 -rotate-1 bg-paper border border-ink/10 shadow-card pointer-events-none"
+            aria-hidden="true"
+          ></div>
+
+          <div class="relative flex justify-center">
+            <div class="iphone fx-rise delay-3" style="transform: rotate(-2deg);">
+              <div class="iphone-inner">
+                <div class="iphone-island"></div>
+                <div class="iphone-status">
+                  <span class="mono">9:41</span>
+                  <span class="flex items-center gap-1">
+                    <span class="h-2 w-3.5 bg-ink rounded-sm"></span>
+                    <span class="mono text-[10px]">5G</span>
+                    <span class="h-2 w-4 border border-ink rounded-sm flex items-center justify-end pr-[1px]">
+                      <span class="h-1 w-3 bg-ink rounded-[1px]"></span>
+                    </span>
+                  </span>
+                </div>
+                <div class="iphone-home"></div>
+
+                <div class="iphone-content flex flex-col bg-canvas">
+                  <!-- Header -->
+                  <div class="px-4 pt-3 pb-2 border-b border-ink/10 bg-canvas/95 backdrop-blur flex items-center gap-2">
+                    <button aria-label="back" class="w-7 h-7 inline-flex items-center justify-center">
+                      <svg viewBox="0 0 24 24" class="w-4 h-4 text-ink-soft" fill="none" stroke="currentColor" stroke-width="1.6">
+                        <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+                      </svg>
+                    </button>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-[12.5px] font-medium leading-tight truncate">refactor the auth middleware</div>
+                      <div class="mono text-[10px] text-ink-muted truncate">claude/auth · 47 turns</div>
+                    </div>
+                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 mono text-[9.5px] uppercase tracking-wider text-klein-ink border border-klein/40 bg-klein/10">
+                      <span class="h-1 w-1 rounded-full bg-klein"></span>live
+                    </span>
+                  </div>
+
+                  <!-- Transcript -->
+                  <div class="flex-1 overflow-hidden px-3 py-3 space-y-3 text-[12.5px]">
+                    <div class="border-l-2 border-ink/20 pl-3">
+                      <div class="label-sm text-ink-muted mb-1">You · 9:42</div>
+                      <div class="text-ink-soft leading-relaxed">
+                        rip out the old session token storage and replace
+                        it with the JWT helper in <span class="mono">lib/auth</span>.
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="label-sm text-ink-muted mb-1">Claude · plan</div>
+                      <ol class="space-y-1 list-none text-ink-soft leading-relaxed mono text-[11.5px]">
+                        <li>1 ─ read middleware.ts</li>
+                        <li>2 ─ grep setSessionToken</li>
+                        <li>3 ─ swap to signJwt</li>
+                        <li>4 ─ pnpm test auth</li>
+                      </ol>
+                    </div>
+
+                    <!-- Permission card -->
+                    <div class="relative border border-klein bg-klein/[0.08] px-3 py-2.5 corner-anchor">
+                      <div class="flex items-center gap-2 mb-1.5">
+                        <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-klein" fill="none" stroke="currentColor" stroke-width="2">
+                          <circle cx="8" cy="14" r="4"></circle>
+                          <path d="M11 13l9-9M16 8l3 3" stroke-linecap="round"></path>
+                        </svg>
+                        <div class="label text-klein-ink">Needs your approval</div>
+                      </div>
+                      <div class="text-[12.5px] font-medium text-ink leading-snug">
+                        Edit <span class="mono">server/src/auth/middleware.ts</span>
+                      </div>
+                      <div class="mt-1 mono text-[11px] text-ink-muted">
+                        <span class="text-success">+34</span>
+                        <span class="text-danger ml-1">−18</span>
+                        <span class="ml-1.5">· 1 file · scoped to repo</span>
+                      </div>
+                      <div class="mt-2 grid grid-cols-2 gap-1.5">
+                        <button class="h-8 bg-ink text-canvas mono text-[11px] uppercase tracking-wider">Allow</button>
+                        <button class="h-8 border border-ink/30 mono text-[11px] uppercase tracking-wider text-ink-soft">Review</button>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 px-1 pt-1">
+                      <span class="h-1.5 w-1.5 rounded-full bg-klein thinking-dot"></span>
+                      <span class="h-1.5 w-1.5 rounded-full bg-klein thinking-dot"></span>
+                      <span class="h-1.5 w-1.5 rounded-full bg-klein thinking-dot"></span>
+                      <span class="label-sm text-ink-muted ml-1">claude is thinking</span>
+                    </div>
+                  </div>
+
+                  <!-- Composer -->
+                  <div class="border-t border-ink/10 p-2 flex items-center gap-2">
+                    <div class="flex-1 h-9 border border-ink/15 bg-paper px-3 flex items-center text-[12px] text-ink-faint">
+                      Reply or queue a follow-up…
+                    </div>
+                    <button aria-label="send" class="w-9 h-9 bg-ink text-canvas inline-flex items-center justify-center">
+                      <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12l14-7-5 14-3-6-6-1z" stroke-linejoin="round"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: minimal column with metadata + tiny desktop preview -->
+        <div class="col-span-12 lg:col-span-3 order-3 space-y-6">
+          <div>
+            <div class="label text-ink-muted">Spec sheet</div>
+            <dl class="mt-3 space-y-2 text-[13px] mono">
+              <div class="flex justify-between gap-4 border-b border-ink/15 pb-1.5">
+                <dt class="text-ink-muted">Viewport</dt>
+                <dd class="text-ink">390 × 844</dd>
+              </div>
+              <div class="flex justify-between gap-4 border-b border-ink/15 pb-1.5">
+                <dt class="text-ink-muted">Stream</dt>
+                <dd class="text-ink">WebSocket</dd>
+              </div>
+              <div class="flex justify-between gap-4 border-b border-ink/15 pb-1.5">
+                <dt class="text-ink-muted">Storage</dt>
+                <dd class="text-ink">SQLite (FTS5)</dd>
+              </div>
+              <div class="flex justify-between gap-4 border-b border-ink/15 pb-1.5">
+                <dt class="text-ink-muted">Daemon</dt>
+                <dd class="text-ink">launchd / pm2</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div>
+            <div class="label text-ink-muted">Also fits desks</div>
+            <!-- Tiny desktop preview as supporting evidence (not the centerpiece) -->
+            <div class="mt-3 desktop fx-fade delay-5">
+              <div class="desktop-chrome">
+                <span class="dot" style="background:#ff5f57"></span>
+                <span class="dot" style="background:#febc2e"></span>
+                <span class="dot" style="background:#28c840"></span>
+                <span class="ml-3 mono text-[9.5px] text-canvas/70 truncate">claudex.local — 127.0.0.1:5179</span>
+              </div>
+              <div class="desktop-inner h-[180px] grid grid-cols-[60px_1fr_60px] text-[8.5px]">
+                <aside class="border-r border-ink/10 bg-paper/60 p-1.5 space-y-1">
+                  <div class="h-1.5 w-full bg-ink/15"></div>
+                  <div class="h-1.5 w-3/4 bg-ink/10"></div>
+                  <div class="h-1.5 w-2/3 bg-ink/10"></div>
+                  <div class="h-1.5 w-full bg-klein/40 mt-2"></div>
+                  <div class="h-1.5 w-3/4 bg-ink/10"></div>
+                  <div class="h-1.5 w-2/3 bg-ink/10"></div>
+                </aside>
+                <main class="p-1.5 space-y-1.5">
+                  <div class="h-2 w-2/3 bg-ink/20"></div>
+                  <div class="h-1 w-full bg-ink/10"></div>
+                  <div class="h-1 w-5/6 bg-ink/10"></div>
+                  <div class="h-1 w-3/4 bg-ink/10"></div>
+                  <div class="border border-klein/40 bg-klein/[0.08] p-1 space-y-0.5">
+                    <div class="h-1 w-1/2 bg-klein/40"></div>
+                    <div class="h-1 w-3/4 bg-ink/15"></div>
+                    <div class="h-1 w-2/3 bg-ink/15"></div>
+                  </div>
+                </main>
+                <aside class="border-l border-ink/10 bg-paper/60 p-1.5 space-y-1">
+                  <div class="h-1.5 w-full bg-ink/10"></div>
+                  <div class="h-1.5 w-2/3 bg-ink/10"></div>
+                  <div class="h-1.5 w-full bg-ink/10 mt-1.5"></div>
+                  <div class="h-1.5 w-3/4 bg-ink/10"></div>
+                </aside>
+              </div>
+            </div>
+            <div class="mt-2 label-sm text-ink-muted">Three-column cockpit, same data, wider</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

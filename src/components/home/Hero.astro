@@ -1,74 +1,112 @@
 ---
+/**
+ * Hero — editorial cover spread.
+ *
+ * Premise: this isn't a "feature page" hero, it's a magazine cover. One
+ * giant serif headline, a single italicized accent in klein orange, an
+ * editorial folio in the corners, and just enough subtitle to land the
+ * pitch. Two CTAs in mono caps. No badges, no cards, no chips.
+ */
 ---
 
-<section id="top" class="relative overflow-hidden border-b border-line">
-  <div class="absolute inset-0 bg-grid opacity-60 pointer-events-none"></div>
+<section
+  id="top"
+  class="relative overflow-hidden border-b border-ink/15 bg-canvas"
+  aria-label="claudex hero"
+>
+  <!-- Subtle grid + noise atmosphere -->
+  <div class="absolute inset-0 bg-grid opacity-50 pointer-events-none"></div>
   <div class="absolute inset-0 bg-noise pointer-events-none"></div>
-  <div class="absolute -top-40 -right-32 w-[460px] h-[460px] rounded-full bg-klein/10 blur-3xl pointer-events-none"></div>
 
-  <div class="relative max-w-[1280px] mx-auto px-5 lg:px-10 pt-16 pb-20 lg:pt-24 lg:pb-28">
-    <div class="flex items-center gap-3 mb-6 flex-wrap">
-      <span class="pill"><span class="dot"></span>v0 · self-hosted</span>
-      <span class="mono text-[12px] text-ink-muted">your machine · your keys · your diffs</span>
+  <!-- Hairline accent — the only "ornament", a klein vertical that hints at column -->
+  <div
+    class="hidden lg:block absolute left-[max(2.5rem,calc((100vw-1440px)/2+2.5rem))] top-0 bottom-0 w-px bg-klein/40 fx-line delay-0"
+    aria-hidden="true"
+  ></div>
+
+  <div class="relative max-w-[1440px] mx-auto px-6 lg:px-10">
+    <!-- Cover folio: top corner marks ------------------------------------ -->
+    <div class="pt-10 lg:pt-14 grid grid-cols-2 items-start gap-4">
+      <div class="flex flex-col gap-1 fx-fade delay-1">
+        <span class="label text-ink">Vol. 1 · Issue 0</span>
+        <span class="label-sm text-ink-muted">remote.claude / cockpit edition</span>
+      </div>
+      <div class="flex flex-col items-end text-right gap-1 fx-fade delay-1">
+        <span class="label text-ink-muted">MIT · self-hosted</span>
+        <span class="label-sm text-ink-muted">node 20 · pnpm 9</span>
+      </div>
     </div>
 
-    <h1 class="display text-[2.6rem] md:text-[4rem] lg:text-[5rem] leading-[1.0] max-w-[20ch] tracking-tight">
-      A remote control for the <em class="not-italic text-klein">claude</em> running on your own machine.
-    </h1>
+    <!-- Cover headline ---------------------------------------------------- -->
+    <div class="pt-16 pb-12 lg:pt-24 lg:pb-20">
+      <h1 class="display leading-[0.86] tracking-[-0.045em] text-ink overflow-hidden">
+        <span class="block fx-rise delay-2 text-[18vw] sm:text-[15vw] lg:text-[clamp(7rem,12vw,12rem)]">
+          remote
+        </span>
+        <span
+          class="block display-italic fx-rise delay-3 text-[18vw] sm:text-[15vw] lg:text-[clamp(7rem,12vw,12rem)] text-klein"
+        >
+          claude<span class="text-ink not-italic">.</span>
+        </span>
+      </h1>
 
-    <p class="mt-7 max-w-[68ch] text-ink-muted text-[1.0625rem] md:text-[1.125rem] leading-[1.65]">
-      claudex runs a small service on the machine that already has the Claude Code CLI installed, and exposes a
-      polished browser interface — designed mobile-first — that mirrors the Desktop <em>Code</em> tab. Review diffs from
-      the train, approve permissions from the kitchen, queue prompts from bed.
-    </p>
+      <!-- subtitle row, asymmetric -->
+      <div class="mt-12 grid grid-cols-12 gap-x-6 gap-y-8 items-end">
+        <div class="col-span-12 lg:col-span-6 lg:col-start-1 fx-fade delay-4">
+          <p class="prose-serif text-[1.15rem] md:text-[1.4rem] leading-[1.45] tracking-[-0.005em] text-ink-soft max-w-[44ch]">
+            Your <em class="display-italic text-klein">claude</em> is doing real work on your laptop.
+            Open your phone, keep driving — review a diff, approve a permission, queue the next prompt.
+          </p>
+        </div>
 
-    <div class="mt-10 flex flex-wrap items-center gap-3">
-      <a
-        href="/docs/installation"
-        class="inline-flex items-center gap-2 h-11 px-5 rounded-lg bg-ink text-canvas hover:bg-ink-soft text-[14px] font-medium transition-colors"
-      >
-        Install claudex
-        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-      </a>
-      <a
-        href="/docs"
-        class="inline-flex items-center gap-2 h-11 px-5 rounded-lg border border-line-strong bg-canvas hover:bg-paper text-[14px] font-medium text-ink-soft transition-colors"
-      >
-        Read the docs
-      </a>
-      <a
-        href="https://github.com/ahaostudy/claudex"
-        target="_blank"
-        rel="noopener"
-        class="inline-flex items-center gap-2 h-11 px-4 rounded-lg text-[14px] text-ink-muted hover:text-klein-ink"
-      >
-        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor">
-          <path
-            d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.36-3.87-1.36-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.76 2.69 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.27-5.24-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.18a10.94 10.94 0 015.74 0c2.2-1.49 3.16-1.18 3.16-1.18.62 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.36-5.25 5.65.41.36.78 1.06.78 2.13v3.16c0 .31.21.67.79.56 4.57-1.52 7.85-5.83 7.85-10.91C23.5 5.65 18.35.5 12 .5z"
-          />
-        </svg>
-        <span>Star on GitHub</span>
-      </a>
+        <div class="col-span-12 lg:col-span-4 lg:col-start-9 fx-fade delay-4">
+          <div class="border-t border-ink/30 pt-3 space-y-1.5">
+            <div class="label text-ink">Fig. A — what it is</div>
+            <p class="text-[12.5px] mono text-ink-muted leading-relaxed">
+              A self-hosted browser for the<br/>
+              <span class="text-ink">claude</span> CLI on your machine.<br/>
+              Your keys. Your diffs. Your network.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTAs / cover marks -->
+      <div class="mt-14 lg:mt-20 flex flex-wrap items-center gap-x-3 gap-y-4 fx-fade delay-5">
+        <a href="/docs/installation" class="btn-ink">
+          Install
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="/docs" class="btn-ghost">Read the docs</a>
+        <span class="hidden md:inline-block w-px h-5 bg-ink/20 mx-2"></span>
+        <a
+          href="https://github.com/ahaostudy/claudex"
+          target="_blank"
+          rel="noopener"
+          class="btn-ghost"
+        >
+          GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </div>
     </div>
 
-    <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl">
-      <div class="rounded-lg border border-line bg-canvas/70 px-3 py-2.5">
-        <div class="caps text-ink-muted">Runs on</div>
-        <div class="text-[13px] mt-1 mono">macOS · Linux · Windows</div>
+    <!-- Bottom cover-strip — minimal facts, two columns -->
+    <div class="border-t border-ink/15 py-5 grid grid-cols-2 md:grid-cols-4 gap-4 fx-fade delay-6">
+      <div>
+        <div class="label-sm text-ink-muted">Bind</div>
+        <div class="mono text-[13px] text-ink mt-1">127.0.0.1 only</div>
       </div>
-      <div class="rounded-lg border border-line bg-canvas/70 px-3 py-2.5">
-        <div class="caps text-ink-muted">Bind</div>
-        <div class="text-[13px] mt-1 mono">127.0.0.1 only</div>
+      <div>
+        <div class="label-sm text-ink-muted">Auth</div>
+        <div class="mono text-[13px] text-ink mt-1">password · TOTP</div>
       </div>
-      <div class="rounded-lg border border-line bg-canvas/70 px-3 py-2.5">
-        <div class="caps text-ink-muted">Auth</div>
-        <div class="text-[13px] mt-1 mono">password + TOTP</div>
+      <div>
+        <div class="label-sm text-ink-muted">Inherits</div>
+        <div class="mono text-[13px] text-ink mt-1">~/.claude/ config</div>
       </div>
-      <div class="rounded-lg border border-line bg-canvas/70 px-3 py-2.5">
-        <div class="caps text-ink-muted">License</div>
-        <div class="text-[13px] mt-1 mono">MIT</div>
+      <div>
+        <div class="label-sm text-ink-muted">Designed for</div>
+        <div class="mono text-[13px] text-ink mt-1">390 px first</div>
       </div>
     </div>
   </div>

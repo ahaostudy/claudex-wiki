@@ -1,0 +1,223 @@
+---
+/**
+ * Endmatter — install + closing.
+ *
+ * One big editorial line of code, copy button, two short OS notes,
+ * and a closing call to action. No three-column "step 1 / step 2 /
+ * step 3" — that was AI-template padding. The real install is a
+ * one-liner; the page should read that way.
+ */
+---
+
+<section
+  id="install"
+  class="relative bg-canvas border-b border-ink/15 overflow-hidden"
+  aria-label="Install claudex"
+>
+  <div class="absolute inset-0 bg-noise pointer-events-none"></div>
+
+  <div class="relative max-w-[1440px] mx-auto px-6 lg:px-10 pt-24 pb-24 lg:pt-32 lg:pb-32">
+    <!-- Section masthead -->
+    <div class="grid grid-cols-12 gap-6 items-end mb-12 lg:mb-16">
+      <div class="col-span-12 lg:col-span-6">
+        <div class="flex items-center gap-3">
+          <span class="section-no">§ 03</span>
+          <span class="h-px flex-1 bg-ink/30 max-w-[140px]"></span>
+          <span class="label text-ink-muted">Install</span>
+        </div>
+        <h2 class="display mt-6 text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.95] tracking-[-0.03em] max-w-[18ch]">
+          One line, then you're <span class="display-italic text-klein">in.</span>
+        </h2>
+      </div>
+      <div class="col-span-12 lg:col-span-5 lg:col-start-8">
+        <div class="border-t border-ink/30 pt-3">
+          <p class="text-[14.5px] leading-[1.65] text-ink-muted max-w-[42ch]">
+            Walks you through admin setup, prints a TOTP QR and ten
+            recovery codes, then offers to register a user-scoped daemon.
+            Nothing silent. Sudo opt-in.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs (mac/linux vs windows) ----------------------------------- -->
+    <div class="install-tabs">
+      <div class="flex items-baseline gap-1 mb-3">
+        <button
+          type="button"
+          class="install-tab active"
+          data-tab="unix"
+          aria-pressed="true"
+        >
+          <span class="label">macOS · Linux</span>
+        </button>
+        <button
+          type="button"
+          class="install-tab"
+          data-tab="win"
+          aria-pressed="false"
+        >
+          <span class="label">Windows</span>
+        </button>
+        <span class="ml-auto label text-ink-muted hidden md:inline-block">
+          Prereq → node 20 · pnpm 9 · claude CLI
+        </span>
+      </div>
+
+      <!-- Unix command ------------------------------------------------ -->
+      <div class="install-pane" data-pane="unix">
+        <div class="relative bg-ink text-canvas">
+          <div class="flex items-center justify-between border-b border-canvas/10 px-4 lg:px-6 py-2.5">
+            <span class="label-sm text-canvas/60">$ ~ — bash</span>
+            <button
+              type="button"
+              class="copy-btn label-sm text-canvas/70 hover:text-canvas"
+              data-clipboard='curl -fsSL https://raw.githubusercontent.com/ahaostudy/claudex/main/install.sh | bash'
+            >
+              <span class="copy-label">Copy</span>
+            </button>
+          </div>
+          <div class="px-4 lg:px-6 py-6 lg:py-7 overflow-x-auto">
+            <pre class="m-0 mono text-[clamp(0.9rem,1.4vw,1.1rem)] leading-[1.6] whitespace-pre"><span class="text-klein">$</span> curl -fsSL https://raw.githubusercontent.com/ahaostudy/claudex/main/install.sh | bash</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Windows command --------------------------------------------- -->
+      <div class="install-pane hidden" data-pane="win">
+        <div class="relative bg-ink text-canvas">
+          <div class="flex items-center justify-between border-b border-canvas/10 px-4 lg:px-6 py-2.5">
+            <span class="label-sm text-canvas/60">PS&gt; — powershell</span>
+            <button
+              type="button"
+              class="copy-btn label-sm text-canvas/70 hover:text-canvas"
+              data-clipboard='irm https://raw.githubusercontent.com/ahaostudy/claudex/main/install.ps1 | iex'
+            >
+              <span class="copy-label">Copy</span>
+            </button>
+          </div>
+          <div class="px-4 lg:px-6 py-6 lg:py-7 overflow-x-auto">
+            <pre class="m-0 mono text-[clamp(0.9rem,1.4vw,1.1rem)] leading-[1.6] whitespace-pre"><span class="text-klein">PS&gt;</span> irm https://raw.githubusercontent.com/ahaostudy/claudex/main/install.ps1 | iex</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ribbon: tiny editorial follow-up ------------------------------ -->
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 border-t border-ink/15 pt-8">
+      <div>
+        <div class="label text-ink-muted">After it runs</div>
+        <p class="mt-2 text-[14px] leading-[1.65] text-ink-soft max-w-[36ch]">
+          Open <span class="mono text-ink">http://127.0.0.1:5179</span>.
+          Sign in with your TOTP. You're driving.
+        </p>
+      </div>
+      <div>
+        <div class="label text-ink-muted">For your phone</div>
+        <p class="mt-2 text-[14px] leading-[1.65] text-ink-soft max-w-[36ch]">
+          Front it with Cloudflare Tunnel, frpc, or Tailscale. claudex
+          stays bound to localhost — public exposure is your call.
+        </p>
+      </div>
+      <div>
+        <div class="label text-ink-muted">If anything breaks</div>
+        <p class="mt-2 text-[14px] leading-[1.65] text-ink-soft max-w-[36ch]">
+          The <a href="/docs/troubleshooting" class="ed-link text-ink">Troubleshooting</a>
+          page covers boot loops, restart hangs, and HTTP-vs-HTTPS gotchas.
+        </p>
+      </div>
+    </div>
+
+    <!-- Closing CTA --------------------------------------------------- -->
+    <div class="mt-16 lg:mt-24 flex flex-wrap items-center gap-x-3 gap-y-4">
+      <a href="/docs/installation" class="btn-ink">Full install guide <span aria-hidden="true">→</span></a>
+      <a href="/docs/first-run" class="btn-ghost">First-run walkthrough</a>
+      <span class="hidden md:inline-block w-px h-5 bg-ink/20 mx-2"></span>
+      <a
+        href="https://github.com/ahaostudy/claudex"
+        target="_blank"
+        rel="noopener"
+        class="btn-ghost"
+      >
+        Star on GitHub <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .install-tab {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+    color: rgb(var(--c-ink) / 0.5);
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .install-tab:hover {
+    color: rgb(var(--c-ink));
+  }
+  .install-tab.active {
+    color: rgb(var(--c-ink));
+    border-bottom-color: rgb(var(--c-klein));
+  }
+</style>
+
+<script is:inline>
+  // Tabs
+  const tabs = document.querySelectorAll(".install-tab");
+  const panes = document.querySelectorAll(".install-pane");
+  tabs.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const target = btn.getAttribute("data-tab");
+      tabs.forEach((t) => {
+        const active = t === btn;
+        t.classList.toggle("active", active);
+        t.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+      panes.forEach((p) => {
+        p.classList.toggle("hidden", p.getAttribute("data-pane") !== target);
+      });
+    });
+  });
+
+  // Copy buttons (HTTP-safe — falls back to textarea + execCommand)
+  document.querySelectorAll(".copy-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const text = btn.getAttribute("data-clipboard") || "";
+      const label = btn.querySelector(".copy-label");
+      const setLabel = (s) => {
+        if (label) label.textContent = s;
+      };
+      const showCopied = () => {
+        setLabel("Copied");
+        setTimeout(() => setLabel("Copy"), 1400);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(text);
+          showCopied();
+          return;
+        } catch (_) {
+          /* fall through */
+        }
+      }
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "absolute";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        showCopied();
+      } catch (_) {
+        setLabel("Press ⌘C");
+      }
+      document.body.removeChild(ta);
+    });
+  });
+</script>

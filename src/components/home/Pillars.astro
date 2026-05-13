@@ -1,0 +1,102 @@
+---
+/**
+ * Pillars — what makes claudex different, in 4 lines.
+ *
+ * Editorial numbered list, not a card grid. Each row is a full-width
+ * 12-column composition: oversized mono number on the left, serif
+ * pillar title in the middle, mono kicker + serif body on the right.
+ * Hairline rules separate rows. The whole thing reads top-to-bottom
+ * like a magazine table of contents.
+ */
+
+const pillars = [
+  {
+    no: "01",
+    title: "Phone-first by design.",
+    kicker: "Bottom sheets · safe-area · thumb reach",
+    body: "Every screen is sized for a 390-pixel viewport, not retrofitted from a desktop layout. The desktop opens the same session into a wider three-column cockpit — but the phone is the home turf.",
+  },
+  {
+    no: "02",
+    title: "Inherits everything.",
+    kicker: "We spawn the CLI, we don't replace it",
+    body: "Your config, MCP servers, plugins, skills, OAuth token — all yours, untouched. claudex drives the real claude CLI as a subprocess. We never call the Anthropic API ourselves.",
+  },
+  {
+    no: "03",
+    title: "Auth from day one.",
+    kicker: "Username · password · TOTP · ten codes",
+    body: "There is no dev-mode backdoor. JWT in an httpOnly cookie. Ten single-use recovery codes printed once at init. The server refuses to bind anything other than 127.0.0.1.",
+  },
+  {
+    no: "04",
+    title: "Real git worktrees.",
+    kicker: "Branches · isolation · auto-rebase",
+    body: "Each session lands on its own branch in an isolated worktree. Run five claudes on the same repo without stepping on yourself. Auto-rebase on create, auto-prune on archive.",
+  },
+];
+---
+
+<section
+  id="pillars"
+  class="relative bg-paper/40 border-b border-ink/15"
+  aria-label="What makes claudex different"
+>
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-10 pt-24 pb-16 lg:pt-32 lg:pb-24">
+    <!-- Section masthead -->
+    <div class="grid grid-cols-12 gap-6 items-end mb-16 lg:mb-24">
+      <div class="col-span-12 lg:col-span-6">
+        <div class="flex items-center gap-3">
+          <span class="section-no">§ 02</span>
+          <span class="h-px flex-1 bg-ink/30 max-w-[140px]"></span>
+          <span class="label text-ink-muted">Why claudex</span>
+        </div>
+        <h2 class="display mt-6 text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.95] tracking-[-0.03em] max-w-[18ch]">
+          Four things, said <span class="display-italic text-klein">precisely.</span>
+        </h2>
+      </div>
+      <div class="col-span-12 lg:col-span-5 lg:col-start-8">
+        <div class="border-t border-ink/30 pt-3">
+          <p class="text-[14.5px] leading-[1.65] text-ink-muted max-w-[42ch]">
+            We could list twelve features. We've listed four. The rest is
+            in the <a href="/docs" class="ed-link text-ink">documentation</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editorial list -->
+    <ol class="border-t border-ink list-none p-0">
+      {
+        pillars.map((p, i) => (
+          <li class={"group relative grid grid-cols-12 gap-x-6 gap-y-3 lg:gap-y-0 py-8 lg:py-12 border-b " + (i === pillars.length - 1 ? "border-ink" : "border-ink/15")}>
+            <!-- Hovering klein bar on the left edge -->
+            <span class="absolute left-0 top-0 bottom-0 w-px bg-klein scale-y-0 origin-top group-hover:scale-y-100 transition-transform duration-500 ease-out" aria-hidden="true"></span>
+
+            <!-- Number -->
+            <div class="col-span-12 lg:col-span-2">
+              <span class="block mono text-[clamp(2.4rem,4vw,3.4rem)] leading-none text-ink/30 group-hover:text-klein transition-colors duration-500">
+                {p.no}
+              </span>
+            </div>
+
+            <!-- Title + kicker -->
+            <div class="col-span-12 lg:col-span-5 flex flex-col gap-2.5">
+              <h3 class="display text-[clamp(1.6rem,2.6vw,2.4rem)] leading-[1.05] tracking-[-0.02em] text-ink">
+                {p.title}
+              </h3>
+              <div class="label text-ink-muted">{p.kicker}</div>
+            </div>
+
+            <!-- Body -->
+            <div class="col-span-12 lg:col-span-5 lg:col-start-8 flex items-start">
+              <p class="prose-serif text-[15px] leading-[1.65] text-ink-soft max-w-[44ch]">
+                {p.body}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

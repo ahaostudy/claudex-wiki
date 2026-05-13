@@ -3,25 +3,21 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
 import Navbar from "~/components/Navbar.astro";
 import Footer from "~/components/Footer.astro";
 import Hero from "~/components/home/Hero.astro";
-import Capabilities from "~/components/home/Capabilities.astro";
-import MockupShowcase from "~/components/home/MockupShowcase.astro";
-import Architecture from "~/components/home/Architecture.astro";
-import Install from "~/components/home/Install.astro";
-import Faq from "~/components/home/Faq.astro";
+import Specimen from "~/components/home/Specimen.astro";
+import Pillars from "~/components/home/Pillars.astro";
+import Endmatter from "~/components/home/Endmatter.astro";
 ---
 
 <BaseLayout
   title="claudex — Remote control for Claude Code"
-  description="A self-hosted browser cockpit for the claude CLI on your own machine. Designed mobile-first."
+  description="A self-hosted browser cockpit for the claude CLI on your own machine. Phone-first, your keys, your diffs."
 >
   <Navbar variant="marketing" />
   <main>
     <Hero />
-    <Capabilities />
-    <MockupShowcase />
-    <Architecture />
-    <Install />
-    <Faq />
+    <Specimen />
+    <Pillars />
+    <Endmatter />
   </main>
   <Footer />
 </BaseLayout>
