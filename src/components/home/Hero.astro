@@ -29,14 +29,14 @@ const subtitleParts = t("hero.subtitle.body").split("{claude}");
   <div class="absolute inset-0 bg-noise pointer-events-none"></div>
 
   <div class="relative max-w-[1440px] mx-auto px-6 lg:px-10">
-    <div class="pt-16 pb-12 lg:pt-24 lg:pb-20">
+    <div class="pt-20 pb-16 lg:pt-28 lg:pb-24 flex flex-col items-center text-center">
       <!-- Big brand mark -->
-      <div class="fx-fade delay-1 mb-8 lg:mb-12">
-        <Logo class="w-24 h-24 sm:w-28 sm:h-28 lg:w-36 lg:h-36" />
+      <div class="fx-fade delay-1 mb-10 lg:mb-14">
+        <Logo class="w-32 h-32 sm:w-40 sm:h-40 lg:w-56 lg:h-56" />
       </div>
 
       <!-- Wordmark -->
-      <h1 class="display leading-[0.86] tracking-[-0.045em] text-ink overflow-hidden">
+      <h1 class="display leading-[0.86] tracking-[-0.045em] text-ink overflow-hidden w-full">
         <span
           class="block fx-rise delay-2 text-[22vw] sm:text-[20vw] lg:text-[clamp(8rem,15vw,15rem)]"
         >
@@ -45,14 +45,14 @@ const subtitleParts = t("hero.subtitle.body").split("{claude}");
       </h1>
 
       <!-- subtitle -->
-      <div class="mt-10 fx-fade delay-4">
+      <div class="mt-10 fx-fade delay-4 w-full flex justify-center">
         <p class="prose-serif text-[1.15rem] md:text-[1.4rem] leading-[1.45] tracking-[-0.005em] text-ink-soft max-w-[44ch]">
           {subtitleParts[0]}<span class="mono text-ink">claude</span>{subtitleParts[1] ?? ""}
         </p>
       </div>
 
       <!-- CTAs -->
-      <div class="mt-10 lg:mt-14 flex flex-wrap items-center gap-x-3 gap-y-4 fx-fade delay-5">
+      <div class="mt-10 lg:mt-14 flex flex-wrap items-center justify-center gap-x-3 gap-y-4 fx-fade delay-5">
         <a href="#install" class="btn-ink">
           {t("hero.cta.install")}
           <span aria-hidden="true">↓</span>
