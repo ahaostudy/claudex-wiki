@@ -1,0 +1,122 @@
+---
+import DocsLayout from "~/layouts/DocsLayout.astro";
+---
+
+<DocsLayout
+  title="故障排查"
+  description="启动问题、重启卡死、HTTP 相关坑位，以及该先看哪里。"
+  section="进阶"
+>
+  <h2>"服务起不来"</h2>
+
+  <h3>端口 5179 已被占用</h3>
+<pre><code>lsof -ti :5179 -sTCP:LISTEN</code></pre>
+  <p>
+    如果是残留的 claudex（或其他进程）占着端口，把它 kill 掉。内置的
+    <code>scripts/restart.mjs</code> 会等端口释放后再重新拉起，所以一次干净的 kill 就够了。
+  </p>
+
+  <h3>"refusing to bind to 0.0.0.0"</h3>
+  <p>
+    这是设计如此。claudex 只绑定到 <code>127.0.0.1</code> / <code>::1</code> / <code>localhost</code>。要从其他设备访问，请参见
+    <a href="/zh/docs/remote-access">远程访问</a>。没有任何 flag 可以覆盖这一点 —— 公网暴露是你 tunnel 的责任。
+  </p>
+
+  <h3>"db is locked" / 迁移失败</h3>
+  <p>
+    SQLite 默认使用 WAL 模式。如果有残留进程持有 WAL，全新启动也可能磕绊。停掉所有 claudex
+    进程后再试一次：
+  </p>
+<pre><code>pgrep -af claudex
+# kill anything that shows up, then
+pnpm serve</code></pre>
+
+  <h2>"桌面端能登录，手机端不行"</h2>
+
+  <h3>混合内容（Mixed content）</h3>
+  <p>
+    如果页面是通过 HTTPS 加载的，但 WebSocket URL 是 <code>ws://</code>，浏览器会拦截连接。
+    在 claudex 前面挂一个能终结 TLS 的 tunnel，让页面和 WS 走同一个 scheme。
+  </p>
+
+  <h3>Cookie 被拦截</h3>
+  <p>
+    认证 cookie 是 <code>SameSite=Lax</code>，HTTPS 下会带 <code>Secure</code>。iOS 上某些版本的 Safari
+    在 host 是 IP 字面量时不会保留 cookie —— 改用域名（Tailscale 的 <code>*.ts.net</code>、自己的域名，
+    或者局域网内的 <code>.local</code> mDNS 名）就能让 cookie 留下来。
+  </p>
+
+  <h3>Cloudflare 后面 WebSocket 被禁用</h3>
+  <p>
+    一些非 Pro 套餐的 Cloudflare zone 默认禁用 WebSocket。打开 zone 设置 → Network →
+    <em>WebSockets</em> 把它打开。否则连接会降级到轮询，聊天会无声地卡住。
+  </p>
+
+  <h2>"重启提示成功，但服务不见了"</h2>
+  <p>
+    内置的重启工具（<code>scripts/restart.mjs</code>）会 spawn 一个 detached worker，轮询端口直到释放，
+    然后 re-exec 服务进程。如果 worker 在新服务起来之前就挂了，端口就会一直空着，整个重启变成静默 no-op。
+  </p>
+
+  <ol>
+    <li>查看 <code>~/.claudex/server-stdout.log</code> 里 worker 的最后几行。</li>
+    <li>查看 <code>~/.claudex/logs/server.log</code> 里失败的启动日志。</li>
+    <li>手动重启： <code>pnpm serve</code>。</li>
+  </ol>
+
+  <h2>"WebSocket 每隔几分钟就断一次"</h2>
+  <p>
+    Cloudflare Tunnel 和某些共享的 frps 配置会把长连接 idle out。claudex 默认每 25s 发一次 ping。
+    如果你前置侧的 idle 上限更短，把 tunnel 那边调大；或者临时方案 —— 让标签页保持前台，
+    浏览器会自动重连。
+  </p>
+
+  <h2>"权限提示从来不会到我的手机上"</h2>
+  <p>
+    推送通知需要安全上下文（secure context）。在纯 HTTP 下会静默降级为只在 tab 内提醒 ——
+    打开 app 才能看到。如果你想要真正的 OS 级推送，需要：
+  </p>
+  <ol>
+    <li>浏览器侧走 HTTPS（任何能终结 TLS 的 tunnel 都可以）。</li>
+    <li>页面以 PWA 方式添加到主屏（iOS 上长按 → 添加到主屏幕）。</li>
+    <li>在浏览器设置里允许该页面发送通知。</li>
+  </ol>
+
+  <h2>"昨天还好好的，今天就什么都不行了"</h2>
+
+  <p>跑一下诊断快照 —— 它不会启动服务，也不会拿写锁：</p>
+<pre><code>pnpm claudex:status</code></pre>
+  <p>
+    输出涵盖运行/停止状态、DB 大小、迁移数量、会话总数、队列计数、推送设备数，以及
+    （尽力而为的）frpc PID。这是区分"服务挂了我没察觉" / "DB 卡住了" / "tunnel 出问题"
+    的最快方式。
+  </p>
+
+  <h2>重置凭据</h2>
+  <p>
+    如果你忘了密码但 TOTP 还能用，只重置密码：
+  </p>
+<pre><code>pnpm reset-credentials --username=you --password='new-pw'</code></pre>
+  <p>
+    TOTP secret 不会被动到，所以你的 authenticator 条目继续可用。
+  </p>
+
+  <p>
+    如果密码和 TOTP 都丢了，唯一的退路就是删库重新初始化：
+  </p>
+<pre><code>rm ~/.claudex/db.sqlite
+pnpm run init</code></pre>
+
+  <div class="callout danger">
+    <strong>这会清空一切</strong>
+    会话、队列、routines、推送设备、transcripts —— 全部消失。如果其中任何一项重要，
+    先备份 <code>~/.claudex/</code>。
+  </div>
+
+  <h2>还是搞不定？</h2>
+  <p>
+    去 <a href="https://github.com/ahaostudy/claudex/issues" target="_blank" rel="noopener">github.com/ahaostudy/claudex</a>
+    开 issue，附上 <code>pnpm claudex:status</code> 的输出和
+    <code>~/.claudex/logs/server.log</code> 的最后 100 行。敏感信息记得脱敏 —— claudex 不会替你清洗日志。
+  </p>
+</DocsLayout>

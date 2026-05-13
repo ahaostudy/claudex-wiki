@@ -4,32 +4,39 @@ import Navbar from "~/components/Navbar.astro";
 import Footer from "~/components/Footer.astro";
 import DocsSidebar from "~/components/docs/DocsSidebar.astro";
 import { getNeighbors } from "~/data/docs-nav";
+import { getLocaleFromUrl, localizePath, type Locale } from "~/i18n/config";
+import { useTranslations } from "~/i18n/ui";
 
 interface Props {
   title: string;
   description?: string;
   /** The section label shown in the breadcrumb (e.g. "Getting started"). */
   section?: string;
+  lang?: Locale;
 }
 
 const { title, description, section } = Astro.props;
-const path = Astro.url.pathname.replace(/\/$/, "") || "/";
-const { prev, next } = getNeighbors(path);
+const lang = Astro.props.lang ?? getLocaleFromUrl(Astro.url);
+const t = useTranslations(lang);
 
-const pageTitle = `${title} · claudex docs`;
-const pageDescription = description ?? `${title} — claudex documentation`;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const { prev, next } = getNeighbors(path, lang);
+
+const pageTitle = `${title} · ${t("page.docs.title.suffix")}`;
+const pageDescription = description ?? `${title} — ${t("page.docs.description.suffix")}`;
+const docsHref = localizePath("/docs", lang);
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription}>
-  <Navbar variant="docs" />
+<BaseLayout title={pageTitle} description={pageDescription} lang={lang}>
+  <Navbar variant="docs" lang={lang} />
 
   <div class="max-w-[1280px] mx-auto px-5 lg:px-8 grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-8 lg:gap-10 py-10">
-    <DocsSidebar current={path} />
+    <DocsSidebar current={path} lang={lang} />
 
     <article class="min-w-0">
       <!-- Breadcrumb -->
       <nav class="flex items-center gap-2 text-[12px] text-ink-muted mb-6">
-        <a href="/docs" class="hover:text-ink">Docs</a>
+        <a href={docsHref} class="hover:text-ink">{t("docs.breadcrumb.root")}</a>
         {
           section ? (
             <>
@@ -59,7 +66,7 @@ const pageDescription = description ?? `${title} — claudex documentation`;
               href={prev.href}
               class="rounded-xl border border-line bg-canvas hover:bg-paper transition-colors p-4 group"
             >
-              <div class="caps text-ink-muted mb-1.5">← previous</div>
+              <div class="caps text-ink-muted mb-1.5">← {t("docs.prev")}</div>
               <div class="text-[14.5px] font-medium text-ink group-hover:text-klein-ink">{prev.title}</div>
             </a>
           ) : (
@@ -72,7 +79,7 @@ const pageDescription = description ?? `${title} — claudex documentation`;
               href={next.href}
               class="rounded-xl border border-line bg-canvas hover:bg-paper transition-colors p-4 group sm:text-right"
             >
-              <div class="caps text-ink-muted mb-1.5">next →</div>
+              <div class="caps text-ink-muted mb-1.5">{t("docs.next")} →</div>
               <div class="text-[14.5px] font-medium text-ink group-hover:text-klein-ink">{next.title}</div>
             </a>
           ) : null
@@ -81,7 +88,7 @@ const pageDescription = description ?? `${title} — claudex documentation`;
     </article>
   </div>
 
-  <Footer />
+  <Footer lang={lang} />
 </BaseLayout>
 
 <style>

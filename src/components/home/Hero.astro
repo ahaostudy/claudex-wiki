@@ -7,6 +7,28 @@
  * editorial folio in the corners, and just enough subtitle to land the
  * pitch. Two CTAs in mono caps. No badges, no cards, no chips.
  */
+import { getLocaleFromUrl, localizePath, type Locale } from "~/i18n/config";
+import { useTranslations } from "~/i18n/ui";
+
+interface Props {
+  lang?: Locale;
+}
+
+const lang = Astro.props.lang ?? getLocaleFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Build the subtitle body with a styled `claude` mono token in the
+// middle. We split on the {claude} placeholder so the translation file
+// owns the surrounding prose.
+const subtitleParts = t("hero.subtitle.body").split("{claude}");
+
+// Each Fig.A line may contain a {claude} placeholder; render the token
+// as a styled span where it appears, and as plain text otherwise.
+const figALines = [
+  t("hero.figA.line1").split("{claude}"),
+  t("hero.figA.line2").split("{claude}"),
+  t("hero.figA.line3").split("{claude}"),
+];
 ---
 
 <section
@@ -22,12 +44,12 @@
     <!-- Cover folio: top corner marks ------------------------------------ -->
     <div class="pt-10 lg:pt-14 grid grid-cols-2 items-start gap-4">
       <div class="flex flex-col gap-1 fx-fade delay-1">
-        <span class="label text-ink">Vol. 1 · Issue 0</span>
-        <span class="label-sm text-ink-muted">remote.claude / cockpit edition</span>
+        <span class="label text-ink">{t("hero.folio.left.top")}</span>
+        <span class="label-sm text-ink-muted">{t("hero.folio.left.bottom")}</span>
       </div>
       <div class="flex flex-col items-end text-right gap-1 fx-fade delay-1">
-        <span class="label text-ink-muted">MIT · self-hosted</span>
-        <span class="label-sm text-ink-muted">node 20 · pnpm 9</span>
+        <span class="label text-ink-muted">{t("hero.folio.right.top")}</span>
+        <span class="label-sm text-ink-muted">{t("hero.folio.right.bottom")}</span>
       </div>
     </div>
 
@@ -45,18 +67,28 @@
       <div class="mt-10 grid grid-cols-12 gap-x-6 gap-y-8 items-end">
         <div class="col-span-12 lg:col-span-6 lg:col-start-1 fx-fade delay-4">
           <p class="prose-serif text-[1.15rem] md:text-[1.4rem] leading-[1.45] tracking-[-0.005em] text-ink-soft max-w-[44ch]">
-            <em class="display-italic text-klein">Remote control</em> for the <span class="mono text-ink">claude</span> CLI on your laptop.
-            Open your phone, keep driving — review a diff, approve a permission, queue the next prompt.
+            <em class="display-italic text-klein">{t("hero.subtitle.lead")}</em>
+            {subtitleParts[0]}<span class="mono text-ink">claude</span>{subtitleParts[1] ?? ""}
           </p>
         </div>
 
         <div class="col-span-12 lg:col-span-4 lg:col-start-9 fx-fade delay-4">
           <div class="border-t border-ink/30 pt-3 space-y-1.5">
-            <div class="label text-ink">Fig. A — what it is</div>
+            <div class="label text-ink">{t("hero.figA.label")}</div>
             <p class="text-[12.5px] mono text-ink-muted leading-relaxed">
-              A self-hosted browser for the<br/>
-              <span class="text-ink">claude</span> CLI on your machine.<br/>
-              Your keys. Your diffs. Your network.
+              {
+                figALines.map((parts, i) => (
+                  <>
+                    {parts.map((seg, j) => (
+                      <>
+                        {seg}
+                        {j < parts.length - 1 ? <span class="text-ink">claude</span> : null}
+                      </>
+                    ))}
+                    {i < figALines.length - 1 ? <br /> : null}
+                  </>
+                ))
+              }
             </p>
           </div>
         </div>
@@ -64,11 +96,11 @@
 
       <!-- CTAs / cover marks -->
       <div class="mt-14 lg:mt-20 flex flex-wrap items-center gap-x-3 gap-y-4 fx-fade delay-5">
-        <a href="/docs/installation" class="btn-ink">
-          Install
+        <a href={localizePath("/docs/installation", lang)} class="btn-ink">
+          {t("hero.cta.install")}
           <span aria-hidden="true">→</span>
         </a>
-        <a href="/docs" class="btn-ghost">Read the docs</a>
+        <a href={localizePath("/docs", lang)} class="btn-ghost">{t("hero.cta.docs")}</a>
         <span class="hidden md:inline-block w-px h-5 bg-ink/20 mx-2"></span>
         <a
           href="https://github.com/ahaostudy/claudex"
@@ -76,7 +108,7 @@
           rel="noopener"
           class="btn-ghost"
         >
-          GitHub <span aria-hidden="true">↗</span>
+          {t("hero.cta.github")} <span aria-hidden="true">↗</span>
         </a>
       </div>
     </div>
@@ -84,20 +116,20 @@
     <!-- Bottom cover-strip — minimal facts, two columns -->
     <div class="border-t border-ink/15 py-5 grid grid-cols-2 md:grid-cols-4 gap-4 fx-fade delay-6">
       <div>
-        <div class="label-sm text-ink-muted">Bind</div>
-        <div class="mono text-[13px] text-ink mt-1">127.0.0.1 only</div>
+        <div class="label-sm text-ink-muted">{t("hero.strip.bind.label")}</div>
+        <div class="mono text-[13px] text-ink mt-1">{t("hero.strip.bind.value")}</div>
       </div>
       <div>
-        <div class="label-sm text-ink-muted">Auth</div>
-        <div class="mono text-[13px] text-ink mt-1">password · TOTP</div>
+        <div class="label-sm text-ink-muted">{t("hero.strip.auth.label")}</div>
+        <div class="mono text-[13px] text-ink mt-1">{t("hero.strip.auth.value")}</div>
       </div>
       <div>
-        <div class="label-sm text-ink-muted">Inherits</div>
-        <div class="mono text-[13px] text-ink mt-1">~/.claude/ config</div>
+        <div class="label-sm text-ink-muted">{t("hero.strip.inherits.label")}</div>
+        <div class="mono text-[13px] text-ink mt-1">{t("hero.strip.inherits.value")}</div>
       </div>
       <div>
-        <div class="label-sm text-ink-muted">Designed for</div>
-        <div class="mono text-[13px] text-ink mt-1">390 px first</div>
+        <div class="label-sm text-ink-muted">{t("hero.strip.designed.label")}</div>
+        <div class="mono text-[13px] text-ink mt-1">{t("hero.strip.designed.value")}</div>
       </div>
     </div>
   </div>

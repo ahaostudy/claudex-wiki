@@ -1,0 +1,131 @@
+---
+import DocsLayout from "~/layouts/DocsLayout.astro";
+---
+
+<DocsLayout
+  title="安装"
+  description="选择你的平台，运行安装脚本，保存好恢复码。"
+  section="上手"
+>
+  <h2>前置条件</h2>
+  <ul>
+    <li><strong>Node 20+</strong> 和 <strong>pnpm 9+</strong>。</li>
+    <li>已安装并登录的 <strong><code>claude</code> CLI</strong>。</li>
+    <li>PATH 上已有 <strong>git</strong>，或者你愿意让安装脚本提示你安装它。</li>
+  </ul>
+
+  <p>
+    安装脚本会逐项检查前置条件。任何缺失的项目都会以提示形式呈现 —— 不会静默执行，也不会自动处理。<code>sudo</code>
+    需要你主动同意。
+  </p>
+
+  <h2>一行命令</h2>
+
+  <h3>macOS / Linux</h3>
+<pre><code>curl -fsSL https://raw.githubusercontent.com/ahaostudy/claudex/main/install.sh | bash</code></pre>
+
+  <h3>Windows (PowerShell)</h3>
+<pre><code>irm https://raw.githubusercontent.com/ahaostudy/claudex/main/install.ps1 | iex</code></pre>
+
+  <p>安装脚本会：</p>
+  <ol>
+    <li>检查 <code>git</code> / Node 20 / pnpm 9 / <code>claude</code> CLI，并提示安装任何缺失项。</li>
+    <li>把仓库克隆到 <code>~/claudex</code>（可通过 <code>--dir PATH</code> 覆盖）。</li>
+    <li>构建 web bundle。</li>
+    <li>引导你完成首位管理员的初始化（用户名 + 密码 → TOTP 二维码 → 10 个恢复码）。</li>
+    <li>询问是否将 claudex 注册为<strong>用户级守护进程</strong>：macOS 上是 launchd，Linux 上是 systemd <code>--user</code>，Windows 上是 pm2。</li>
+  </ol>
+
+  <h3>参数</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Flag / env var</th>
+        <th>效果</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>--dir PATH</code> · <code>CLAUDEX_HOME</code></td>
+        <td>克隆 claudex 的目录。默认 <code>~/claudex</code>。</td>
+      </tr>
+      <tr>
+        <td><code>--branch NAME</code></td>
+        <td>选择非 <code>main</code> 的分支（例如 <code>--branch=next</code>）。</td>
+      </tr>
+      <tr>
+        <td><code>--yes</code> · <code>CLAUDEX_ASSUME_YES=1</code></td>
+        <td>对每个提示都使用默认值。适合无人值守的安装。</td>
+      </tr>
+      <tr>
+        <td><code>--skip-init</code></td>
+        <td>跳过首位管理员的引导流程 —— 之后你需要手动完成。</td>
+      </tr>
+      <tr>
+        <td><code>--skip-build</code></td>
+        <td>不构建 web bundle。准备好后再运行 <code>pnpm --filter @claudex/web build</code>。</td>
+      </tr>
+      <tr>
+        <td><code>--skip-daemon</code> · <code>CLAUDEX_SKIP_DAEMON=1</code></td>
+        <td>不注册守护进程。你需要手动启动服务器。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>手动安装</h2>
+<pre><code>git clone https://github.com/ahaostudy/claudex.git
+cd claudex
+pnpm install
+pnpm run init --username=you --password='set-a-strong-one'</code></pre>
+
+  <p>
+    首次运行 init 会打印你的 TOTP 密钥（二维码 + 手动字符串）以及 <strong>10 个恢复码 —— 仅显示一次，不会再次出现</strong>。请保存好它们。用任意 TOTP 应用扫描二维码（1Password、Authy、Aegis、Google Authenticator）。
+  </p>
+
+  <div class="callout warn">
+    <strong>请保存恢复码</strong>
+    恢复码只以 bcrypt 哈希形式写入磁盘。明文恢复码仅在 <code>pnpm run init</code> 时打印一次，之后就永远消失。如果你同时丢失了 TOTP 设备和恢复码，就只能清空 <code>~/.claudex/db.sqlite</code> 重新初始化。
+  </div>
+
+  <h2>运行</h2>
+
+  <h3>前台（开发）</h3>
+<pre><code>pnpm serve        # build + start server on 127.0.0.1:5179</code></pre>
+
+  <p>
+    在同一台机器的任意浏览器中打开 <code>http://127.0.0.1:5179</code>。如需通过手机访问，参见 <a href="/zh/docs/remote-access">远程访问</a>。
+  </p>
+
+  <h3>后台（守护进程）</h3>
+
+  <p>如果在安装时跳过了守护进程提示，现在可以注册：</p>
+
+  <div class="not-prose grid grid-cols-1 md:grid-cols-3 gap-3 my-6">
+    <div class="rounded-xl border border-line bg-canvas overflow-hidden">
+      <div class="px-4 py-2.5 border-b border-line caps text-ink-muted">macOS</div>
+      <pre class="m-0 !rounded-none !bg-ink !text-canvas px-4 py-3 mono text-[12px] overflow-x-auto"><code>launchctl bootstrap \
+  gui/$(id -u) \
+  ~/Library/LaunchAgents/\
+com.claudex.server.plist</code></pre>
+    </div>
+    <div class="rounded-xl border border-line bg-canvas overflow-hidden">
+      <div class="px-4 py-2.5 border-b border-line caps text-ink-muted">Linux</div>
+      <pre class="m-0 !rounded-none !bg-ink !text-canvas px-4 py-3 mono text-[12px] overflow-x-auto"><code>systemctl --user \
+  enable --now \
+  claudex.service</code></pre>
+    </div>
+    <div class="rounded-xl border border-line bg-canvas overflow-hidden">
+      <div class="px-4 py-2.5 border-b border-line caps text-ink-muted">Windows</div>
+      <pre class="m-0 !rounded-none !bg-ink !text-canvas px-4 py-3 mono text-[12px] overflow-x-auto"><code>pm2 start ecosystem.config.cjs
+pm2 save
+pm2-startup install</code></pre>
+    </div>
+  </div>
+
+  <h2>下一步</h2>
+  <ul>
+    <li><a href="/zh/docs/first-run">首次运行</a> —— 第一次打开 UI 时该做什么。</li>
+    <li><a href="/zh/docs/remote-access">远程访问</a> —— 给 claudex 套上一个隧道。</li>
+    <li><a href="/zh/docs/troubleshooting">故障排查</a> —— 常见的启动问题。</li>
+  </ul>
+</DocsLayout>

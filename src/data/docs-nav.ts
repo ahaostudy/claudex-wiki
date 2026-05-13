@@ -1,7 +1,12 @@
+import type { Locale } from "~/i18n/config";
+import { localizePath } from "~/i18n/config";
+import { useTranslations, type UIKey } from "~/i18n/ui";
+
 export type DocLink = {
+  /** Locale-prefixed href ready to drop into an <a>. */
   href: string;
   title: string;
-  /** Optional one-line summary shown on the docs index page */
+  /** Optional one-line summary shown on the docs index page. */
   summary?: string;
 };
 
@@ -10,65 +15,70 @@ export type DocSection = {
   links: DocLink[];
 };
 
+type DocSlug =
+  | "introduction"
+  | "installation"
+  | "first-run"
+  | "remote-access"
+  | "troubleshooting";
+
+type SectionDef = {
+  /** Translation key for the section label. */
+  labelKey: UIKey;
+  slugs: DocSlug[];
+};
+
 /**
  * Sidebar order is intentional: a first-time user reads top-to-bottom.
  * Add new pages here to make them appear in the sidebar and the index.
  */
-export const docsNav: DocSection[] = [
+const sections: SectionDef[] = [
   {
-    label: "Getting started",
-    links: [
-      {
-        href: "/docs/introduction",
-        title: "Introduction",
-        summary: "What claudex is, what it isn't, and when you'd want it.",
-      },
-      {
-        href: "/docs/installation",
-        title: "Installation",
-        summary: "One-line installer for macOS / Linux / Windows, plus the manual path.",
-      },
-      {
-        href: "/docs/first-run",
-        title: "First run",
-        summary: "Admin setup, TOTP enrollment, recovery codes, and your first session.",
-      },
-    ],
+    labelKey: "docs.section.getting-started",
+    slugs: ["introduction", "installation", "first-run"],
   },
   {
-    label: "Going further",
-    links: [
-      {
-        href: "/docs/remote-access",
-        title: "Remote access",
-        summary: "Front claudex with Cloudflare Tunnel, frpc, Tailscale, or a Caddy reverse proxy.",
-      },
-      {
-        href: "/docs/troubleshooting",
-        title: "Troubleshooting",
-        summary: "Common boot issues, rebuild loops, restart hangs, and HTTP-vs-HTTPS gotchas.",
-      },
-    ],
+    labelKey: "docs.section.going-further",
+    slugs: ["remote-access", "troubleshooting"],
   },
 ];
 
-export function flattenDocs(): DocLink[] {
-  return docsNav.flatMap((section) => section.links);
+export function getDocsNav(locale: Locale): DocSection[] {
+  const t = useTranslations(locale);
+  return sections.map((section) => ({
+    label: t(section.labelKey),
+    links: section.slugs.map((slug) => ({
+      href: localizePath(`/docs/${slug}`, locale),
+      title: t(`docs.${slug}.title` as UIKey),
+      summary: t(`docs.${slug}.summary` as UIKey),
+    })),
+  }));
 }
 
-export function findDocByHref(href: string): { section: DocSection; link: DocLink; index: number } | null {
-  const flat = flattenDocs();
+export function flattenDocs(locale: Locale): DocLink[] {
+  return getDocsNav(locale).flatMap((section) => section.links);
+}
+
+export function findDocByHref(
+  href: string,
+  locale: Locale,
+): { section: DocSection; link: DocLink; index: number } | null {
+  const nav = getDocsNav(locale);
+  const flat = nav.flatMap((s) => s.links);
   const i = flat.findIndex((l) => l.href === href);
   if (i < 0) return null;
-  for (const section of docsNav) {
+  for (const section of nav) {
     const link = section.links.find((l) => l.href === href);
     if (link) return { section, link, index: i };
   }
   return null;
 }
 
-export function getNeighbors(href: string): { prev: DocLink | null; next: DocLink | null } {
-  const flat = flattenDocs();
+export function getNeighbors(
+  href: string,
+  locale: Locale,
+): { prev: DocLink | null; next: DocLink | null } {
+  const flat = flattenDocs(locale);
   const i = flat.findIndex((l) => l.href === href);
   if (i < 0) return { prev: null, next: null };
   return {

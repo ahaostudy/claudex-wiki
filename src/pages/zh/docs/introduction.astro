@@ -1,0 +1,100 @@
+---
+import DocsLayout from "~/layouts/DocsLayout.astro";
+---
+
+<DocsLayout
+  title="简介"
+  description="claudex 是什么，不是什么，以及你什么时候会想要它。"
+  section="上手"
+>
+  <p>
+    <strong>claudex 是运行在你自己机器上的 <code>claude</code> CLI 的远程遥控器。</strong>它跑着一个小巧的自托管服务，对外暴露一个精致的浏览器界面 —— 以移动端为先设计 —— 并通过
+    <a href="https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk" target="_blank" rel="noopener">Agent SDK</a> 把真正的
+    <code>claude</code> CLI 作为子进程驱动起来。
+  </p>
+
+  <p>
+    这意味着你为 CLI 配置过的一切 —— <code>~/.claude/</code> 配置、MCP 服务器、插件、skills、你的 <code>CLAUDE.md</code> 文件、你的 OAuth token 或 API key —— 都会被自动继承。claudex 从不直接触碰 Anthropic 的 API。它只是驱动者，从来不是 agent 本身。
+  </p>
+
+  <h2>claudex 是什么</h2>
+  <ul>
+    <li>一个自托管的浏览器驾驶舱，承载一个长期运行的 Claude Code 会话。</li>
+    <li>移动端优先设计：390 px 视口是主场，桌面端是自适应的延展。</li>
+    <li>从第一天起就有鉴权 —— 用户名 + 密码 + TOTP，配一次性的恢复码。</li>
+    <li>有状态：SQLite 落在 <code>~/.claudex/</code> 下，服务器重启不会丢失你的对话记录。</li>
+    <li>诚实：不假装流式、不伪造进度条、不埋 telemetry、不做 analytics。</li>
+  </ul>
+
+  <h2>claudex 不是什么</h2>
+  <ul>
+    <li><strong>不是托管服务。</strong>你在自己的笔记本、NAS 或 VPS 上运行它。我们不替你跑。</li>
+    <li><strong>不是对 Claude Code 的重新实现。</strong>我们 spawn CLI 进程；不去碰 Anthropic SDK。</li>
+    <li><strong>默认不对公网开放。</strong>服务器拒绝绑定 <code>127.0.0.1</code> 之外的任何地址。</li>
+    <li><strong>不带 telemetry。</strong>claudex 自身零出站流量。</li>
+  </ul>
+
+  <h2>你什么时候会想要它</h2>
+  <p>
+    几个常见场景：
+  </p>
+
+  <div class="not-prose grid grid-cols-1 md:grid-cols-3 gap-3 my-6">
+    <div class="rounded-xl border border-line bg-canvas p-4">
+      <div class="caps text-ink-muted mb-1">scenario</div>
+      <div class="text-[14px] font-medium mb-1">排队等咖啡时顺手批一个权限。</div>
+      <div class="text-[13px] text-ink-muted leading-relaxed">
+        一个长重构在某一步要求写盘。手机在手，一点就放行。
+      </div>
+    </div>
+    <div class="rounded-xl border border-line bg-canvas p-4">
+      <div class="caps text-ink-muted mb-1">scenario</div>
+      <div class="text-[14px] font-medium mb-1">在地铁上把下一批 prompt 排好队。</div>
+      <div class="text-[13px] text-ink-muted leading-relaxed">
+        把接下来的三条 prompt 批量发给 claude，然后就可以关掉标签页。
+      </div>
+    </div>
+    <div class="rounded-xl border border-line bg-canvas p-4">
+      <div class="caps text-ink-muted mb-1">scenario</div>
+      <div class="text-[14px] font-medium mb-1">深夜审一份 diff。</div>
+      <div class="text-[13px] text-ink-muted leading-relaxed">
+        逐文件 diff 在手机和桌面上呈现一致，两端都能写行内评论。
+      </div>
+    </div>
+  </div>
+
+  <h2>各部分如何拼起来</h2>
+
+  <div class="not-prose my-6">
+    <div class="rounded-xl border border-line bg-paper/40 p-5 relative overflow-hidden">
+      <div class="absolute inset-0 bg-grid opacity-40 pointer-events-none"></div>
+      <pre class="relative !bg-transparent !text-ink-soft !p-0 !shadow-none !rounded-none mono text-[12px] leading-[1.65] whitespace-pre overflow-x-auto">
+┌────────────────┐    HTTPS via your tunnel    ┌──────────────────────────────────────────┐
+│ phone · laptop │ ────────────────────────▶   │ claudex server (127.0.0.1:5179)          │
+│   browser UI   │ ◀────────────────────────   │ Fastify · SQLite · WebSocket             │
+└────────────────┘     JWT + TOTP gate         │                                          │
+                                               │   spawns as subprocess ▼                 │
+                                               │  ┌────────────────────────────────────┐  │
+                                               │  │   claude CLI                       │  │
+                                               │  │   @anthropic-ai/claude-agent-sdk   │  │
+                                               │  │   · ~/.claude/ config              │  │
+                                               │  │   · MCP servers, skills, plugins   │  │
+                                               │  │   · your API creds / OAuth token   │  │
+                                               │  └──────────────┬─────────────────────┘  │
+                                               └─────────────────┼────────────────────────┘
+                                                                 ▼
+                                                       api.anthropic.com</pre>
+    </div>
+  </div>
+
+  <p>
+    在你的隧道之外，<em>唯一</em>的出站连接，就是你装 claudex 之前 <code>claude</code> CLI 本来就会发起的那一条。
+  </p>
+
+  <h2>下一步去哪儿</h2>
+  <ul>
+    <li><a href="/zh/docs/installation">安装</a> —— 选择你的平台并跑安装脚本。</li>
+    <li><a href="/zh/docs/first-run">首次运行</a> —— 管理员设置、TOTP、恢复码。</li>
+    <li><a href="/zh/docs/remote-access">远程访问</a> —— 用隧道把 claudex 暴露出去。</li>
+  </ul>
+</DocsLayout>

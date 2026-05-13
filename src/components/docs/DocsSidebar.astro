@@ -1,11 +1,15 @@
 ---
-import { docsNav } from "~/data/docs-nav";
+import { getDocsNav } from "~/data/docs-nav";
+import { getLocaleFromUrl, type Locale } from "~/i18n/config";
 
 interface Props {
   current?: string;
+  lang?: Locale;
 }
 
 const { current = "" } = Astro.props;
+const lang = Astro.props.lang ?? getLocaleFromUrl(Astro.url);
+const docsNav = getDocsNav(lang);
 ---
 
 <aside class="docs-sidebar">

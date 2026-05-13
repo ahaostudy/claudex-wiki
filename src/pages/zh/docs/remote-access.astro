@@ -1,0 +1,128 @@
+---
+import DocsLayout from "~/layouts/DocsLayout.astro";
+---
+
+<DocsLayout
+  title="远程访问"
+  description="用 Cloudflare Tunnel、frpc、Tailscale 或 Caddy 反向代理给 claudex 加一层入口 —— 永远不要绑定 0.0.0.0。"
+  section="进阶"
+>
+  <p>
+    claudex 是关键时刻的产品：它操控着一个对你的文件系统、git 仓库以及 Anthropic 凭据有完全访问权限的进程。
+    将其暴露到公网刻意被设计为<em>你</em>的责任，而不是服务器的责任。服务器本身拒绝绑定除
+    <code>127.0.0.1</code> / <code>::1</code> /
+    <code>localhost</code> 之外的任何地址 —— 没有任何 flag 可以覆盖这一行为。
+  </p>
+
+  <p>要从手机访问 claudex，请在前面架一条隧道。挑一种符合你威胁模型的方式即可。</p>
+
+  <h2>对比</h2>
+
+  <div class="not-prose my-6">
+    <table class="w-full border-collapse text-[13.5px]">
+      <thead>
+        <tr class="bg-paper border border-line">
+          <th class="text-left px-3 py-2 border border-line font-medium">隧道</th>
+          <th class="text-left px-3 py-2 border border-line font-medium">身份</th>
+          <th class="text-left px-3 py-2 border border-line font-medium">公共 DNS？</th>
+          <th class="text-left px-3 py-2 border border-line font-medium">成本</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="bg-canvas">
+          <td class="px-3 py-2 border border-line"><strong>Tailscale Funnel</strong></td>
+          <td class="px-3 py-2 border border-line">Tailscale 账号</td>
+          <td class="px-3 py-2 border border-line">是 —— <code>*.ts.net</code></td>
+          <td class="px-3 py-2 border border-line">个人使用免费</td>
+        </tr>
+        <tr class="bg-canvas">
+          <td class="px-3 py-2 border border-line"><strong>Cloudflare Tunnel</strong></td>
+          <td class="px-3 py-2 border border-line">Cloudflare 账号</td>
+          <td class="px-3 py-2 border border-line">是 —— 你自己的域名</td>
+          <td class="px-3 py-2 border border-line">免费</td>
+        </tr>
+        <tr class="bg-canvas">
+          <td class="px-3 py-2 border border-line"><strong>frpc</strong></td>
+          <td class="px-3 py-2 border border-line">自托管 frps</td>
+          <td class="px-3 py-2 border border-line">是 —— 你自己的 VPS / 域名</td>
+          <td class="px-3 py-2 border border-line">VPS 费用</td>
+        </tr>
+        <tr class="bg-canvas">
+          <td class="px-3 py-2 border border-line"><strong>Caddy 反向代理</strong></td>
+          <td class="px-3 py-2 border border-line">静态（仅限 LAN / VPN）</td>
+          <td class="px-3 py-2 border border-line">否 —— LAN / Tailscale</td>
+          <td class="px-3 py-2 border border-line">免费</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Tailscale Funnel</h2>
+  <p>
+    最快得到一个手机可访问、带 TLS 的 URL 的方式，除了你的 tailnet 的 MagicDNS 绑定之外，
+    不会向公网暴露任何东西。
+  </p>
+<pre><code>tailscale funnel --bg http://127.0.0.1:5179</code></pre>
+  <p>
+    在手机上打开输出的 <code>https://&lt;machine&gt;.&lt;tailnet&gt;.ts.net</code> URL。
+    Tailscale 负责处理 TLS；claudex 仍然绑定在 localhost。
+  </p>
+
+  <h2>Cloudflare Tunnel</h2>
+<pre><code>cloudflared tunnel --url http://127.0.0.1:5179</code></pre>
+  <p>
+    用于快速测试时，这条命令会输出一个临时的 <code>trycloudflare.com</code> URL —— 一次性使用没问题，
+    但每次重启都会变。要得到稳定的 URL，需要创建一个命名隧道，并把它绑定到你拥有的域名下的某个主机名。
+    入口的 TLS 由 Cloudflare 处理；claudex 仍然监听 <code>127.0.0.1</code>。
+  </p>
+
+  <div class="callout warn">
+    <strong>HTTP，而非 HTTPS</strong>
+    如果你的隧道终结了 TLS 但以纯 HTTP 转发到 claudex，浏览器加载页面在技术上仍然是通过 HTTPS 完成的。
+    某些设置（不带 TLS 的 frpc、纯 LAN）会以<em>纯 HTTP</em>提供 claudex，这会让站点处于安全上下文白名单之外。
+    内置功能（安装页上的复制按钮、Web 推送、<code>navigator.clipboard</code> API）都会优雅降级 ——
+    但你自己写的自定义 MCP 服务器前端可能不会。
+  </div>
+
+  <h2>frpc</h2>
+
+  <p>如果你已经在 VPS 上跑着 frps，把下面这段加进 <code>frpc.toml</code>：</p>
+
+<pre><code>[[proxies]]
+name = "claudex"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 5179
+remotePort = 53179</code></pre>
+
+  <p>
+    然后在 VPS 上把 nginx / Caddy 架在 <code>:53179</code> 前面，用来终结 TLS 并转发到隧道。
+  </p>
+
+  <h2>仅 LAN 域名上的 Caddy</h2>
+  <p>
+    如果你只需要在家庭网络或 tailnet 内的设备上访问，可以在跑 claudex 的同一台机器上跑 Caddy，
+    用自签证书或针对内部主机名的 Let's Encrypt 证书即可。
+  </p>
+
+<pre><code>{`claudex.local {
+  reverse_proxy 127.0.0.1:5179
+}`}</code></pre>
+
+  <h2>认证依然生效</h2>
+  <p>
+    无论你怎么给 claudex 加前置入口，密码 + TOTP + 恢复码的流程依然生效。claudex 不信任隧道 ——
+    它会签发自己的 JWT（用 <code>~/.claudex/jwt-secret</code> 中的密钥签名），并在每次请求和每次 WebSocket
+    握手时校验该密钥。
+  </p>
+
+  <p>
+    如果想再加一层，大多数隧道都支持前置认证（Cloudflare Access、Tailscale ACL）。需要的话，
+    可以把它们和 claudex 内置的认证叠在一起。服务器哪种方式都不介意。
+  </p>
+
+  <h2>下一步</h2>
+  <ul>
+    <li><a href="/zh/docs/troubleshooting">故障排查</a> —— 常见的隧道和 HTTPS 坑。</li>
+  </ul>
+</DocsLayout>

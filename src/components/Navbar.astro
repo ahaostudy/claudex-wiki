@@ -1,37 +1,56 @@
 ---
 import Logo from "~/components/Logo.astro";
+import {
+  getLocaleFromUrl,
+  localizePath,
+  unlocalizePath,
+  locales,
+  localeShortLabels,
+  defaultLocale,
+  type Locale,
+} from "~/i18n/config";
+import { useTranslations } from "~/i18n/ui";
 
 interface Props {
   variant?: "marketing" | "docs";
+  lang?: Locale;
 }
 
-const { variant = "marketing" } = Astro.props;
+const { lang: langProp } = Astro.props;
+const lang = langProp ?? getLocaleFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
-const inDocs = path.startsWith("/docs");
+const canonical = unlocalizePath(path) || "/";
+const inDocs = canonical.startsWith("/docs");
+const onIndex = canonical === "/" && !inDocs;
+
+const homeHref = localizePath("/", lang);
+const docsHref = localizePath("/docs", lang);
 ---
 
 <header class="sticky top-0 z-40 bg-canvas/85 backdrop-blur-md border-b border-ink/15">
   <div class="max-w-[1440px] mx-auto px-6 lg:px-10 h-12 flex items-center gap-4">
-    <a href="/" class="flex items-center gap-2.5 group" aria-label="claudex home">
+    <a href={homeHref} class="flex items-center gap-2.5 group" aria-label="claudex home">
       <Logo class="w-5 h-5" />
       <span class="mono text-[12px] tracking-tight">claudex</span>
     </a>
 
     <span class="hidden md:inline-block w-px h-4 bg-ink/15"></span>
-    <span class="hidden md:inline-block label text-ink-muted">No. 001 — 2026 Edition</span>
+    <span class="hidden md:inline-block label text-ink-muted">{t("nav.edition")}</span>
 
     <nav class="ml-auto flex items-center gap-6 md:gap-8">
       <a
-        href="/"
-        class={"label-sm ed-link " + (path === "/" && !inDocs ? "active" : "text-ink-muted")}
+        href={homeHref}
+        class={"label-sm ed-link " + (onIndex ? "active" : "text-ink-muted")}
       >
-        Index
+        {t("nav.index")}
       </a>
       <a
-        href="/docs"
+        href={docsHref}
         class={"label-sm ed-link " + (inDocs ? "active" : "text-ink-muted")}
       >
-        Docs
+        {t("nav.docs")}
       </a>
       <a
         href="https://github.com/ahaostudy/claudex"
@@ -39,8 +58,30 @@ const inDocs = path.startsWith("/docs");
         rel="noopener"
         class="label-sm ed-link text-ink-muted"
       >
-        GitHub <span aria-hidden="true">↗</span>
+        {t("nav.github")} <span aria-hidden="true">↗</span>
       </a>
+
+      <div class="lang-switch flex items-center" aria-label={t("lang.switcher.aria")}>
+        {
+          locales.map((loc, i) => {
+            const href = localizePath(canonical, loc as Locale);
+            const isActive = loc === lang;
+            return (
+              <>
+                {i > 0 ? <span class="text-ink-faint mx-1.5" aria-hidden="true">·</span> : null}
+                <a
+                  href={href}
+                  hreflang={loc === defaultLocale ? "en" : "zh-CN"}
+                  class={"label-sm transition-colors " + (isActive ? "text-ink font-medium" : "text-ink-muted hover:text-ink")}
+                  aria-current={isActive ? "true" : undefined}
+                >
+                  {localeShortLabels[loc as Locale]}
+                </a>
+              </>
+            );
+          })
+        }
+      </div>
 
       <button
         type="button"

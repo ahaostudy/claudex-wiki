@@ -1,0 +1,125 @@
+---
+import DocsLayout from "~/layouts/DocsLayout.astro";
+---
+
+<DocsLayout
+  title="首次运行"
+  description="管理员初始化、TOTP 注册、恢复码，以及你的第一个会话。"
+  section="上手"
+>
+  <p>
+    第一次打开 <code>http://127.0.0.1:5179</code> 时，claudex 是一扇上锁的门。这里没有 dev 模式后门，也没有匿名访问 ——
+    唯一的入口就是完成初始化设置。
+  </p>
+
+  <h2>第 1 步 —— 创建管理员账户</h2>
+  <p>
+    既可以交互式完成，也可以非交互式完成。两种方式都会在流程的同一节点同时打印 TOTP 密钥
+    <em>和</em> 恢复码；两种方式都会<strong>在你有机会保存它们之后</strong>，才把恢复码持久化。
+  </p>
+
+  <h3>交互式</h3>
+<pre><code>pnpm run init</code></pre>
+
+  <p>
+    系统会提示你输入用户名和密码（密码以 <code>•</code> 回显）。当 TOTP 二维码 + 恢复码被打印出来后，提示会等待你按下 Enter
+    —— 这是给你扫码并复制恢复码的窗口，<em>务必在</em>它们被持久化<em>之前</em>完成。
+  </p>
+
+  <h3>非交互式（CI / 脚本）</h3>
+<pre><code>CLAUDEX_INIT_USERNAME=you \
+CLAUDEX_INIT_PASSWORD='strong-pw' \
+pnpm run init</code></pre>
+
+  <p>
+    或者直接传 <code>--username=</code> / <code>--password=</code>。在非交互式 stdin 下，Enter 确认会被跳过，但
+    打印 → flush → 持久化 仍然按这个顺序发生。
+  </p>
+
+  <h2>第 2 步 —— 扫描 TOTP 二维码</h2>
+
+  <p>
+    打开任意 TOTP 应用：1Password、Authy、Aegis、Google Authenticator。扫描终端中打印的 ASCII 字符二维码。
+    Issuer 是 <code>claudex</code>，Account 是你的用户名。
+  </p>
+
+  <div class="not-prose my-6 rounded-xl border border-line bg-paper/40 p-5">
+    <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-5 items-start">
+      <div class="relative aspect-square w-[140px] mx-auto sm:mx-0 rounded-lg border border-line-strong bg-canvas p-2 corner-anchor">
+        <div class="grid grid-cols-[repeat(15,1fr)] grid-rows-[repeat(15,1fr)] gap-[1px] w-full h-full">
+          <!-- decorative QR-like pattern, statically generated -->
+          <div class="col-span-3 row-span-3 border-2 border-ink"></div>
+          <div class="col-span-3 row-span-3 border-2 border-ink col-start-13"></div>
+          <div class="col-span-3 row-span-3 border-2 border-ink row-start-13"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-7 row-start-2"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-9 row-start-2"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-7 row-start-4"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-8 row-start-5"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-10 row-start-6"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-12 row-start-7"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-7 row-start-8"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-9 row-start-9"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-11 row-start-10"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-6 row-start-12"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-13 row-start-12"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-9 row-start-14"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-11 row-start-13"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-13 row-start-15"></div>
+        </div>
+      </div>
+      <div>
+        <div class="caps text-ink-muted mb-1">在你的终端中打印</div>
+        <div class="text-[14px] text-ink-soft leading-relaxed">
+          二维码下方还会打印密钥字符串，便于手动录入。无论走哪条路径，注册的都是同一个 TOTP 密钥。
+        </div>
+        <div class="mt-3 mono text-[12.5px] text-klein-ink bg-klein-wash border border-klein/30 rounded-md px-3 py-1.5 inline-block">
+          JBSWY3DPEHPK3PXP…
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>第 3 步 —— 保存你的恢复码</h2>
+
+  <div class="callout danger">
+    <strong>仅显示一次，不再出现。</strong>
+    恢复码在落盘前会经过 bcrypt 哈希。明文恢复码只打印一次，之后就永远消失了。
+    如果连同 TOTP 设备一起丢失，你唯一的退路就是删除 <code>~/.claudex/db.sqlite</code> 然后重新开始。
+  </div>
+
+  <p>
+    一个稳妥的做法：把它们粘贴到密码管理器里，作为一条标题为 <em>claudex recovery</em> 的安全备注；或者打印到纸上，
+    贴在显示器背面。每个恢复码只能使用一次。
+  </p>
+
+  <h2>第 4 步 —— 登录</h2>
+
+  <p>
+    在同一台机器上打开 <code>http://127.0.0.1:5179</code>（或者，在配置好<a href="/zh/docs/remote-access">远程访问</a>之后，在你的手机上打开）。
+  </p>
+
+  <ol>
+    <li>输入用户名和密码。</li>
+    <li>输入认证器显示的 6 位 TOTP 验证码。</li>
+    <li>你会进入主页，看到一个空的会话列表。</li>
+  </ol>
+
+  <h2>第 5 步 —— 开启你的第一个会话</h2>
+
+  <p>
+    点击 <strong>+ 新建会话</strong>。挑选一个项目目录（claudex 会记住你最近用过的几个）。如果该目录是 git 仓库，
+    <strong>使用 git worktree</strong> 开关默认是开启的 —— claudex 会在隔离的 worktree 里新建一个
+    <code>claude/&lt;slug&gt;</code> 分支，确保这个会话不会影响到其他会话。
+  </p>
+
+  <p>
+    输入你的第一条提示词。Agent SDK 会启动 <code>claude</code> 子进程，WebSocket 开始流式推送结构化事件（工具调用、
+    部分助手消息、计划步骤、权限询问）。欢迎上船。
+  </p>
+
+  <h2>下一步去哪</h2>
+  <ul>
+    <li><a href="/zh/docs/remote-access">远程访问</a> —— 通过隧道在手机上操作。</li>
+    <li><a href="/zh/docs/troubleshooting">故障排查</a> —— 首次运行时常见的问题。</li>
+  </ul>
+</DocsLayout>

@@ -8,33 +8,24 @@
  * Hairline rules separate rows. The whole thing reads top-to-bottom
  * like a magazine table of contents.
  */
+import { getLocaleFromUrl, localizePath, type Locale } from "~/i18n/config";
+import { useTranslations } from "~/i18n/ui";
 
-const pillars = [
-  {
-    no: "01",
-    title: "Phone-first by design.",
-    kicker: "Bottom sheets · safe-area · thumb reach",
-    body: "Every screen is sized for a 390-pixel viewport, not retrofitted from a desktop layout. The desktop opens the same session into a wider three-column cockpit — but the phone is the home turf.",
-  },
-  {
-    no: "02",
-    title: "Inherits everything.",
-    kicker: "We spawn the CLI, we don't replace it",
-    body: "Your config, MCP servers, plugins, skills, OAuth token — all yours, untouched. claudex drives the real claude CLI as a subprocess. We never call the Anthropic API ourselves.",
-  },
-  {
-    no: "03",
-    title: "Auth from day one.",
-    kicker: "Username · password · TOTP · ten codes",
-    body: "There is no dev-mode backdoor. JWT in an httpOnly cookie. Ten single-use recovery codes printed once at init. The server refuses to bind anything other than 127.0.0.1.",
-  },
-  {
-    no: "04",
-    title: "Real git worktrees.",
-    kicker: "Branches · isolation · auto-rebase",
-    body: "Each session lands on its own branch in an isolated worktree. Run five claudes on the same repo without stepping on yourself. Auto-rebase on create, auto-prune on archive.",
-  },
-];
+interface Props {
+  lang?: Locale;
+}
+
+const lang = Astro.props.lang ?? getLocaleFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const pillars = (["01", "02", "03", "04"] as const).map((no) => ({
+  no,
+  title: t(`pillars.${no}.title`),
+  kicker: t(`pillars.${no}.kicker`),
+  body: t(`pillars.${no}.body`),
+}));
+
+const introHtml = t("pillars.intro.html", { docs: localizePath("/docs", lang) });
 ---
 
 <section
@@ -47,20 +38,17 @@ const pillars = [
     <div class="grid grid-cols-12 gap-6 items-end mb-16 lg:mb-24">
       <div class="col-span-12 lg:col-span-6">
         <div class="flex items-center gap-3">
-          <span class="section-no">§ 02</span>
+          <span class="section-no">{t("pillars.section.no")}</span>
           <span class="h-px flex-1 bg-ink/30 max-w-[140px]"></span>
-          <span class="label text-ink-muted">Why claudex</span>
+          <span class="label text-ink-muted">{t("pillars.section.kicker")}</span>
         </div>
         <h2 class="display mt-6 text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.95] tracking-[-0.03em] max-w-[18ch]">
-          Four things, said <span class="display-italic text-klein">precisely.</span>
+          {t("pillars.title.lead")} <span class="display-italic text-klein">{t("pillars.title.italic")}</span>
         </h2>
       </div>
       <div class="col-span-12 lg:col-span-5 lg:col-start-8">
         <div class="border-t border-ink/30 pt-3">
-          <p class="text-[14.5px] leading-[1.65] text-ink-muted max-w-[42ch]">
-            We could list twelve features. We've listed four. The rest is
-            in the <a href="/docs" class="ed-link text-ink">documentation</a>.
-          </p>
+          <p class="text-[14.5px] leading-[1.65] text-ink-muted max-w-[42ch]" set:html={introHtml}></p>
         </div>
       </div>
     </div>

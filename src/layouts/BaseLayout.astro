@@ -1,21 +1,27 @@
 ---
 import "~/styles/global.css";
+import { getLocaleFromUrl, htmlLang, type Locale } from "~/i18n/config";
+import { useTranslations } from "~/i18n/ui";
 
 interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  lang?: Locale;
 }
 
+const lang = Astro.props.lang ?? getLocaleFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const {
-  title = "claudex — Remote control for Claude Code",
-  description = "A self-hosted browser cockpit for the claude CLI on your own machine. Designed mobile-first.",
+  title = t("site.title"),
+  description = t("site.description"),
   noindex = false,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={htmlLang[lang]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />

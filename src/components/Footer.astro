@@ -1,5 +1,14 @@
 ---
 import Logo from "~/components/Logo.astro";
+import { getLocaleFromUrl, localizePath, type Locale } from "~/i18n/config";
+import { useTranslations } from "~/i18n/ui";
+
+interface Props {
+  lang?: Locale;
+}
+
+const lang = Astro.props.lang ?? getLocaleFromUrl(Astro.url);
+const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
 
@@ -9,14 +18,14 @@ const year = new Date().getFullYear();
       <Logo class="w-6 h-6" />
       <div class="flex flex-col">
         <span class="mono text-[12px] text-ink">claudex</span>
-        <span class="label-sm text-ink-muted">Vol. 1 · Issue 0 · {year}</span>
+        <span class="label-sm text-ink-muted">{t("footer.issue")} · {year}</span>
       </div>
     </div>
 
     <nav class="col-span-12 md:col-span-5 flex flex-wrap items-center gap-x-6 gap-y-2 md:justify-center">
-      <a href="/" class="label-sm ed-link text-ink-muted">Index</a>
-      <a href="/docs" class="label-sm ed-link text-ink-muted">Docs</a>
-      <a href="/docs/installation" class="label-sm ed-link text-ink-muted">Install</a>
+      <a href={localizePath("/", lang)} class="label-sm ed-link text-ink-muted">{t("footer.index")}</a>
+      <a href={localizePath("/docs", lang)} class="label-sm ed-link text-ink-muted">{t("footer.docs")}</a>
+      <a href={localizePath("/docs/installation", lang)} class="label-sm ed-link text-ink-muted">{t("footer.install")}</a>
       <a
         href="https://github.com/ahaostudy/claudex"
         target="_blank"
@@ -28,7 +37,7 @@ const year = new Date().getFullYear();
     </nav>
 
     <div class="col-span-12 md:col-span-3 md:text-right">
-      <span class="label-sm text-ink-muted">MIT · Not affiliated with Anthropic.</span>
+      <span class="label-sm text-ink-muted">{t("footer.legal")}</span>
     </div>
   </div>
 </footer>

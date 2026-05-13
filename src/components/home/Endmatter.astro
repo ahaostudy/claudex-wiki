@@ -7,6 +7,23 @@
  * step 3" — that was AI-template padding. The real install is a
  * one-liner; the page should read that way.
  */
+import { getLocaleFromUrl, localizePath, type Locale } from "~/i18n/config";
+import { useTranslations } from "~/i18n/ui";
+
+interface Props {
+  lang?: Locale;
+}
+
+const lang = Astro.props.lang ?? getLocaleFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const afterParts = t("endmatter.after.body").split("{url}");
+const brokenHtml = t("endmatter.broken.body.html", {
+  docs: localizePath("/docs/troubleshooting", lang),
+});
+const copyLabel = t("endmatter.copy");
+const copiedLabel = t("endmatter.copied");
+const copyFallback = t("endmatter.copy.fallback");
 ---
 
 <section
@@ -21,27 +38,30 @@
     <div class="grid grid-cols-12 gap-6 items-end mb-12 lg:mb-16">
       <div class="col-span-12 lg:col-span-6">
         <div class="flex items-center gap-3">
-          <span class="section-no">§ 03</span>
+          <span class="section-no">{t("endmatter.section.no")}</span>
           <span class="h-px flex-1 bg-ink/30 max-w-[140px]"></span>
-          <span class="label text-ink-muted">Install</span>
+          <span class="label text-ink-muted">{t("endmatter.section.kicker")}</span>
         </div>
         <h2 class="display mt-6 text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.95] tracking-[-0.03em] max-w-[18ch]">
-          One line, then you're <span class="display-italic text-klein">in.</span>
+          {t("endmatter.title.lead")} <span class="display-italic text-klein">{t("endmatter.title.italic")}</span>
         </h2>
       </div>
       <div class="col-span-12 lg:col-span-5 lg:col-start-8">
         <div class="border-t border-ink/30 pt-3">
           <p class="text-[14.5px] leading-[1.65] text-ink-muted max-w-[42ch]">
-            Walks you through admin setup, prints a TOTP QR and ten
-            recovery codes, then offers to register a user-scoped daemon.
-            Nothing silent. Sudo opt-in.
+            {t("endmatter.intro")}
           </p>
         </div>
       </div>
     </div>
 
     <!-- Tabs (mac/linux vs windows) ----------------------------------- -->
-    <div class="install-tabs">
+    <div
+      class="install-tabs"
+      data-copy-label={copyLabel}
+      data-copied-label={copiedLabel}
+      data-fallback-label={copyFallback}
+    >
       <div class="flex items-baseline gap-1 mb-3">
         <button
           type="button"
@@ -49,7 +69,7 @@
           data-tab="unix"
           aria-pressed="true"
         >
-          <span class="label">macOS · Linux</span>
+          <span class="label">{t("endmatter.tab.unix")}</span>
         </button>
         <button
           type="button"
@@ -57,10 +77,10 @@
           data-tab="win"
           aria-pressed="false"
         >
-          <span class="label">Windows</span>
+          <span class="label">{t("endmatter.tab.win")}</span>
         </button>
         <span class="ml-auto label text-ink-muted hidden md:inline-block">
-          Prereq → node 20 · pnpm 9 · claude CLI
+          {t("endmatter.prereq")}
         </span>
       </div>
 
@@ -74,7 +94,7 @@
               class="copy-btn label-sm text-canvas/70 hover:text-canvas"
               data-clipboard='curl -fsSL https://raw.githubusercontent.com/ahaostudy/claudex/main/install.sh | bash'
             >
-              <span class="copy-label">Copy</span>
+              <span class="copy-label">{copyLabel}</span>
             </button>
           </div>
           <div class="px-4 lg:px-6 py-6 lg:py-7 overflow-x-auto">
@@ -93,7 +113,7 @@
               class="copy-btn label-sm text-canvas/70 hover:text-canvas"
               data-clipboard='irm https://raw.githubusercontent.com/ahaostudy/claudex/main/install.ps1 | iex'
             >
-              <span class="copy-label">Copy</span>
+              <span class="copy-label">{copyLabel}</span>
             </button>
           </div>
           <div class="px-4 lg:px-6 py-6 lg:py-7 overflow-x-auto">
@@ -106,32 +126,27 @@
     <!-- Ribbon: tiny editorial follow-up ------------------------------ -->
     <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 border-t border-ink/15 pt-8">
       <div>
-        <div class="label text-ink-muted">After it runs</div>
+        <div class="label text-ink-muted">{t("endmatter.after.label")}</div>
         <p class="mt-2 text-[14px] leading-[1.65] text-ink-soft max-w-[36ch]">
-          Open <span class="mono text-ink">http://127.0.0.1:5179</span>.
-          Sign in with your TOTP. You're driving.
+          {afterParts[0]}<span class="mono text-ink">http://127.0.0.1:5179</span>{afterParts[1] ?? ""}
         </p>
       </div>
       <div>
-        <div class="label text-ink-muted">For your phone</div>
+        <div class="label text-ink-muted">{t("endmatter.phone.label")}</div>
         <p class="mt-2 text-[14px] leading-[1.65] text-ink-soft max-w-[36ch]">
-          Front it with Cloudflare Tunnel, frpc, or Tailscale. claudex
-          stays bound to localhost — public exposure is your call.
+          {t("endmatter.phone.body")}
         </p>
       </div>
       <div>
-        <div class="label text-ink-muted">If anything breaks</div>
-        <p class="mt-2 text-[14px] leading-[1.65] text-ink-soft max-w-[36ch]">
-          The <a href="/docs/troubleshooting" class="ed-link text-ink">Troubleshooting</a>
-          page covers boot loops, restart hangs, and HTTP-vs-HTTPS gotchas.
-        </p>
+        <div class="label text-ink-muted">{t("endmatter.broken.label")}</div>
+        <p class="mt-2 text-[14px] leading-[1.65] text-ink-soft max-w-[36ch]" set:html={brokenHtml}></p>
       </div>
     </div>
 
     <!-- Closing CTA --------------------------------------------------- -->
     <div class="mt-16 lg:mt-24 flex flex-wrap items-center gap-x-3 gap-y-4">
-      <a href="/docs/installation" class="btn-ink">Full install guide <span aria-hidden="true">→</span></a>
-      <a href="/docs/first-run" class="btn-ghost">First-run walkthrough</a>
+      <a href={localizePath("/docs/installation", lang)} class="btn-ink">{t("endmatter.cta.full")} <span aria-hidden="true">→</span></a>
+      <a href={localizePath("/docs/first-run", lang)} class="btn-ghost">{t("endmatter.cta.firstrun")}</a>
       <span class="hidden md:inline-block w-px h-5 bg-ink/20 mx-2"></span>
       <a
         href="https://github.com/ahaostudy/claudex"
@@ -139,7 +154,7 @@
         rel="noopener"
         class="btn-ghost"
       >
-        Star on GitHub <span aria-hidden="true">↗</span>
+        {t("endmatter.cta.star")} <span aria-hidden="true">↗</span>
       </a>
     </div>
   </div>
@@ -185,6 +200,10 @@
 
   // Copy buttons (HTTP-safe — falls back to textarea + execCommand)
   document.querySelectorAll(".copy-btn").forEach((btn) => {
+    const tabsRoot = btn.closest(".install-tabs");
+    const copyLabelText = (tabsRoot && tabsRoot.getAttribute("data-copy-label")) || "Copy";
+    const copiedLabelText = (tabsRoot && tabsRoot.getAttribute("data-copied-label")) || "Copied";
+    const fallbackLabelText = (tabsRoot && tabsRoot.getAttribute("data-fallback-label")) || "Press ⌘C";
     btn.addEventListener("click", async () => {
       const text = btn.getAttribute("data-clipboard") || "";
       const label = btn.querySelector(".copy-label");
@@ -192,8 +211,8 @@
         if (label) label.textContent = s;
       };
       const showCopied = () => {
-        setLabel("Copied");
-        setTimeout(() => setLabel("Copy"), 1400);
+        setLabel(copiedLabelText);
+        setTimeout(() => setLabel(copyLabelText), 1400);
       };
       if (navigator.clipboard && window.isSecureContext) {
         try {
@@ -215,7 +234,7 @@
         document.execCommand("copy");
         showCopied();
       } catch (_) {
-        setLabel("Press ⌘C");
+        setLabel(fallbackLabelText);
       }
       document.body.removeChild(ta);
     });
