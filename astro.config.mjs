@@ -3,7 +3,7 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://claudex.dev",
+  site: "https://claudex.wiki",
   trailingSlash: "ignore",
   build: {
     format: "directory",
