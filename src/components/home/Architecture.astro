@@ -1,0 +1,129 @@
+---
+---
+
+<section id="architecture" class="border-b border-line">
+  <div class="max-w-[1280px] mx-auto px-5 lg:px-10 py-20 lg:py-24">
+    <div class="flex items-baseline gap-4 mb-3 flex-wrap">
+      <span class="mono text-[12px] text-ink-faint">section · 03</span>
+      <h2 class="display text-[2rem] md:text-[2.4rem] leading-tight">Your machine. Your keys. Your diffs.</h2>
+    </div>
+    <p class="max-w-[68ch] text-[15px] text-ink-muted">
+      claudex doesn't proxy the Anthropic API. It runs on the same machine as your <span class="mono text-ink">claude</span> CLI and drives it as a subprocess. The CLI keeps using the credentials and config you've already set up — claudex never sees your prompts or your code.
+    </p>
+
+    <div class="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 items-start">
+      <!-- Diagram -->
+      <div class="relative">
+        <div class="rounded-xl border border-line bg-paper/40 p-6 lg:p-10 relative overflow-hidden">
+          <div class="absolute inset-0 bg-grid opacity-50 pointer-events-none"></div>
+          <div class="relative grid grid-cols-1 md:grid-cols-[1fr_auto_1.4fr] items-center gap-5">
+            <!-- Left: clients -->
+            <div class="space-y-3">
+              <div class="rounded-lg border border-line-strong bg-canvas p-4">
+                <div class="caps text-ink-muted mb-1.5">phone · browser</div>
+                <div class="flex items-center gap-2">
+                  <span class="w-7 h-7 rounded-md border border-line-strong bg-paper inline-flex items-center justify-center">
+                    <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-ink-soft" fill="none" stroke="currentColor" stroke-width="1.7">
+                      <rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect>
+                      <path d="M11 18.5h2" stroke-linecap="round"></path>
+                    </svg>
+                  </span>
+                  <div class="text-[13px] text-ink">claudex web UI</div>
+                </div>
+                <div class="mono text-[10.5px] text-ink-faint mt-1.5">react · typescript</div>
+              </div>
+              <div class="rounded-lg border border-line bg-canvas p-4">
+                <div class="caps text-ink-muted mb-1.5">laptop · browser</div>
+                <div class="flex items-center gap-2">
+                  <span class="w-7 h-7 rounded-md border border-line-strong bg-paper inline-flex items-center justify-center">
+                    <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-ink-soft" fill="none" stroke="currentColor" stroke-width="1.7">
+                      <rect x="3" y="5" width="18" height="12" rx="2"></rect>
+                      <path d="M9 21h6M12 17v4" stroke-linecap="round"></path>
+                    </svg>
+                  </span>
+                  <div class="text-[13px] text-ink">claudex web UI</div>
+                </div>
+                <div class="mono text-[10.5px] text-ink-faint mt-1.5">same SPA, wider layout</div>
+              </div>
+            </div>
+
+            <!-- Arrow -->
+            <div class="flex flex-col items-center gap-2">
+              <span class="caps text-ink-muted">tunnel</span>
+              <div class="hidden md:flex flex-col items-center gap-1">
+                <svg viewBox="0 0 80 16" class="w-20 h-4 text-klein" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <path d="M0 8h70" stroke-linecap="round" stroke-dasharray="4 3"></path>
+                  <path d="M65 3l8 5-8 5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <div class="mono text-[10px] text-ink-muted">JWT + TOTP</div>
+                <svg viewBox="0 0 80 16" class="w-20 h-4 text-ink-faint" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <path d="M80 8H10" stroke-linecap="round" stroke-dasharray="4 3"></path>
+                  <path d="M15 3L7 8l8 5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <div class="mono text-[10px] text-ink-muted">WebSocket</div>
+              </div>
+              <div class="md:hidden mono text-[10px] text-ink-muted">JWT + TOTP · WebSocket</div>
+            </div>
+
+            <!-- Right: server + child -->
+            <div class="space-y-3">
+              <div class="rounded-lg border border-klein bg-klein-wash/60 p-4 shadow-card">
+                <div class="flex items-center gap-2 mb-1.5">
+                  <span class="pill"><span class="dot"></span>your machine</span>
+                  <span class="mono text-[10.5px] text-ink-muted">127.0.0.1:5179</span>
+                </div>
+                <div class="text-[14px] font-medium text-ink">claudex server</div>
+                <div class="mono text-[10.5px] text-ink-muted mt-1">fastify · sqlite · websocket</div>
+
+                <div class="mt-3 pl-4 border-l border-klein/40 space-y-2.5">
+                  <div class="caps text-klein-ink">spawns as subprocess ↓</div>
+                  <div class="rounded-md border border-line bg-canvas p-3">
+                    <div class="text-[13px] font-medium text-ink">claude CLI</div>
+                    <div class="mono text-[10.5px] text-ink-muted mt-1">@anthropic-ai/claude-agent-sdk</div>
+                    <ul class="mt-2 mono text-[10.5px] text-ink-muted space-y-0.5">
+                      <li>· ~/.claude/ config</li>
+                      <li>· MCP servers, skills, plugins</li>
+                      <li>· OAuth token / API key</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2 pl-2">
+                <svg viewBox="0 0 16 16" class="w-3 h-3 text-ink-faint" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <path d="M8 2v12M3 9l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <span class="mono text-[11px] text-ink-muted">api.anthropic.com</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar facts -->
+      <div class="space-y-4 lg:max-w-[300px]">
+        <div class="rounded-lg border border-line bg-canvas p-4">
+          <div class="caps text-ink-muted mb-1.5">storage</div>
+          <div class="text-[13.5px] text-ink-soft leading-relaxed">
+            All claudex state lives in <span class="mono text-ink">~/.claudex/</span> — SQLite DB, logs, JWT secret.
+            <span class="mono text-ink">~/.claude/</span> belongs to the CLI; we never write to it.
+          </div>
+        </div>
+        <div class="rounded-lg border border-line bg-canvas p-4">
+          <div class="caps text-ink-muted mb-1.5">network</div>
+          <div class="text-[13.5px] text-ink-soft leading-relaxed">
+            Server refuses to bind anything other than <span class="mono text-ink">127.0.0.1</span>. Public exposure is your tunnel
+            of choice — frpc, Cloudflare Tunnel, Tailscale, Caddy.
+          </div>
+        </div>
+        <div class="rounded-lg border border-line bg-canvas p-4">
+          <div class="caps text-ink-muted mb-1.5">privacy</div>
+          <div class="text-[13.5px] text-ink-soft leading-relaxed">
+            No telemetry. No analytics. Zero outbound traffic from claudex itself — only the CLI talks to Anthropic, the same
+            way it always has.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

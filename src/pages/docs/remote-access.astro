@@ -1,0 +1,129 @@
+---
+import DocsLayout from "~/layouts/DocsLayout.astro";
+---
+
+<DocsLayout
+  title="Remote access"
+  description="Front claudex with Cloudflare Tunnel, frpc, Tailscale, or a Caddy reverse proxy — never bind 0.0.0.0."
+  section="Going further"
+>
+  <p>
+    claudex is the moment-of-truth product: it controls a process that has full access to your filesystem, your git
+    repos, and your Anthropic credentials. Public exposure is intentionally <em>your</em> responsibility, not the
+    server's. The server itself refuses to bind anything other than <code>127.0.0.1</code> / <code>::1</code> /
+    <code>localhost</code> — there is no flag to override that.
+  </p>
+
+  <p>To reach claudex from your phone, put a tunnel in front. Pick whichever fits your threat model.</p>
+
+  <h2>Compare</h2>
+
+  <div class="not-prose my-6">
+    <table class="w-full border-collapse text-[13.5px]">
+      <thead>
+        <tr class="bg-paper border border-line">
+          <th class="text-left px-3 py-2 border border-line font-medium">Tunnel</th>
+          <th class="text-left px-3 py-2 border border-line font-medium">Identity</th>
+          <th class="text-left px-3 py-2 border border-line font-medium">Public DNS?</th>
+          <th class="text-left px-3 py-2 border border-line font-medium">Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="bg-canvas">
+          <td class="px-3 py-2 border border-line"><strong>Tailscale Funnel</strong></td>
+          <td class="px-3 py-2 border border-line">Tailscale account</td>
+          <td class="px-3 py-2 border border-line">Yes — <code>*.ts.net</code></td>
+          <td class="px-3 py-2 border border-line">Free for personal use</td>
+        </tr>
+        <tr class="bg-canvas">
+          <td class="px-3 py-2 border border-line"><strong>Cloudflare Tunnel</strong></td>
+          <td class="px-3 py-2 border border-line">Cloudflare account</td>
+          <td class="px-3 py-2 border border-line">Yes — your own domain</td>
+          <td class="px-3 py-2 border border-line">Free</td>
+        </tr>
+        <tr class="bg-canvas">
+          <td class="px-3 py-2 border border-line"><strong>frpc</strong></td>
+          <td class="px-3 py-2 border border-line">Self-hosted frps</td>
+          <td class="px-3 py-2 border border-line">Yes — your own VPS / domain</td>
+          <td class="px-3 py-2 border border-line">VPS cost</td>
+        </tr>
+        <tr class="bg-canvas">
+          <td class="px-3 py-2 border border-line"><strong>Caddy reverse proxy</strong></td>
+          <td class="px-3 py-2 border border-line">Static (LAN / VPN only)</td>
+          <td class="px-3 py-2 border border-line">No — LAN / Tailscale</td>
+          <td class="px-3 py-2 border border-line">Free</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Tailscale Funnel</h2>
+  <p>
+    The fastest path to a phone-reachable URL with TLS that doesn't expose anything to the public internet beyond your
+    tailnet's MagicDNS pinning.
+  </p>
+<pre><code>tailscale funnel --bg http://127.0.0.1:5179</code></pre>
+  <p>
+    Open the printed <code>https://&lt;machine&gt;.&lt;tailnet&gt;.ts.net</code> URL on your phone. Tailscale handles
+    TLS; claudex stays bound to localhost.
+  </p>
+
+  <h2>Cloudflare Tunnel</h2>
+<pre><code>cloudflared tunnel --url http://127.0.0.1:5179</code></pre>
+  <p>
+    For a quick test, this prints an ephemeral <code>trycloudflare.com</code> URL — fine for a one-off, but it changes
+    on every restart. For a stable URL, create a named tunnel and bind it to a hostname on a domain you own. Cloudflare
+    handles TLS on the way in; claudex still listens on <code>127.0.0.1</code>.
+  </p>
+
+  <div class="callout warn">
+    <strong>HTTP, not HTTPS</strong>
+    If your tunnel terminates TLS but forwards plain HTTP to claudex, the page is technically loaded over HTTPS by your
+    browser. Some setups (frpc without TLS, plain LAN) deliver claudex over <em>plain HTTP</em>, which puts the site
+    outside the secure-context whitelist. Built-in features (the copy buttons on the install page, web push, the
+    <code>navigator.clipboard</code> API) all degrade gracefully — but custom MCP-server frontends you write yourself
+    might not.
+  </div>
+
+  <h2>frpc</h2>
+
+  <p>If you already run frps on a VPS, drop a section like this into <code>frpc.toml</code>:</p>
+
+<pre><code>[[proxies]]
+name = "claudex"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 5179
+remotePort = 53179</code></pre>
+
+  <p>
+    Then put nginx / Caddy in front of <code>:53179</code> on your VPS to terminate TLS and forward to the tunnel.
+  </p>
+
+  <h2>Caddy on a LAN-only domain</h2>
+  <p>
+    If you only need access from devices on your home network or your tailnet, run Caddy on the same machine as
+    claudex with a self-signed cert or a Let's Encrypt cert against an internal hostname.
+  </p>
+
+<pre><code>{`claudex.local {
+  reverse_proxy 127.0.0.1:5179
+}`}</code></pre>
+
+  <h2>Authentication still applies</h2>
+  <p>
+    No matter how you front claudex, the password + TOTP + recovery-code flow still applies. claudex doesn't trust the
+    tunnel — it issues its own JWT, signed with the secret in <code>~/.claudex/jwt-secret</code>, and verifies that
+    secret on every request and every WebSocket handshake.
+  </p>
+
+  <p>
+    For an extra layer, most tunnels support pre-authentication (Cloudflare Access, Tailscale ACLs). Stack them with
+    claudex's built-in auth if you like. The server is happy either way.
+  </p>
+
+  <h2>What's next</h2>
+  <ul>
+    <li><a href="/docs/troubleshooting">Troubleshooting</a> — common tunnel and HTTPS gotchas.</li>
+  </ul>
+</DocsLayout>

@@ -1,0 +1,104 @@
+---
+import DocsLayout from "~/layouts/DocsLayout.astro";
+---
+
+<DocsLayout
+  title="Introduction"
+  description="What claudex is, what it isn't, and when you'd want it."
+  section="Getting started"
+>
+  <p>
+    <strong>claudex is a remote control for the <code>claude</code> CLI on your own machine.</strong> It runs a small
+    self-hosted service that exposes a polished browser interface — designed mobile-first — and drives the real
+    <code>claude</code> CLI as a subprocess via the
+    <a href="https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk" target="_blank" rel="noopener">Agent SDK</a>.
+  </p>
+
+  <p>
+    That means everything you've already configured for the CLI — <code>~/.claude/</code> config, MCP servers, plugins,
+    skills, your <code>CLAUDE.md</code> files, your OAuth token or API key — is inherited automatically. claudex never
+    touches Anthropic's API directly. It is the driver, never the agent.
+  </p>
+
+  <h2>What claudex is</h2>
+  <ul>
+    <li>A self-hosted browser cockpit for a long-running Claude Code session.</li>
+    <li>Designed mobile-first: 390 px viewport is the home turf, desktop is an adaptive expansion.</li>
+    <li>Auth from day one — username + password + TOTP, with one-shot recovery codes.</li>
+    <li>Stateful: SQLite under <code>~/.claudex/</code>, so a server restart never loses your transcripts.</li>
+    <li>Honest: no fake streaming, no fabricated progress bars, no telemetry, no analytics.</li>
+  </ul>
+
+  <h2>What claudex isn't</h2>
+  <ul>
+    <li><strong>Not a hosted service.</strong> You run it on your own laptop, NAS, or VPS. We don't run it for you.</li>
+    <li><strong>Not a re-implementation of Claude Code.</strong> We spawn the CLI; we don't reach for the Anthropic SDK.</li>
+    <li><strong>Not internet-facing by default.</strong> The server refuses to bind anything other than <code>127.0.0.1</code>.</li>
+    <li><strong>Not telemetry-bearing.</strong> Zero outbound traffic from claudex itself.</li>
+  </ul>
+
+  <h2>When you'd want it</h2>
+  <p>
+    A few patterns that come up often:
+  </p>
+
+  <div class="not-prose grid grid-cols-1 md:grid-cols-3 gap-3 my-6">
+    <div class="rounded-xl border border-line bg-canvas p-4">
+      <div class="caps text-ink-muted mb-1">scenario</div>
+      <div class="text-[14px] font-medium mb-1">Approve a permission while waiting for coffee.</div>
+      <div class="text-[13px] text-ink-muted leading-relaxed">
+        A long refactor pings you for a write. Phone in hand, one tap to allow.
+      </div>
+    </div>
+    <div class="rounded-xl border border-line bg-canvas p-4">
+      <div class="caps text-ink-muted mb-1">scenario</div>
+      <div class="text-[14px] font-medium mb-1">Queue prompts from the train.</div>
+      <div class="text-[13px] text-ink-muted leading-relaxed">
+        Batch the next three prompts, send them to claude, then close the tab.
+      </div>
+    </div>
+    <div class="rounded-xl border border-line bg-canvas p-4">
+      <div class="caps text-ink-muted mb-1">scenario</div>
+      <div class="text-[14px] font-medium mb-1">Review a diff at midnight.</div>
+      <div class="text-[13px] text-ink-muted leading-relaxed">
+        File-by-file diffs render the same on phone and desktop, with inline comments either way.
+      </div>
+    </div>
+  </div>
+
+  <h2>How it fits together</h2>
+
+  <div class="not-prose my-6">
+    <div class="rounded-xl border border-line bg-paper/40 p-5 relative overflow-hidden">
+      <div class="absolute inset-0 bg-grid opacity-40 pointer-events-none"></div>
+      <pre class="relative !bg-transparent !text-ink-soft !p-0 !shadow-none !rounded-none mono text-[12px] leading-[1.65] whitespace-pre overflow-x-auto">
+┌────────────────┐    HTTPS via your tunnel    ┌──────────────────────────────────────────┐
+│ phone · laptop │ ────────────────────────▶   │ claudex server (127.0.0.1:5179)          │
+│   browser UI   │ ◀────────────────────────   │ Fastify · SQLite · WebSocket             │
+└────────────────┘     JWT + TOTP gate         │                                          │
+                                               │   spawns as subprocess ▼                 │
+                                               │  ┌────────────────────────────────────┐  │
+                                               │  │   claude CLI                       │  │
+                                               │  │   @anthropic-ai/claude-agent-sdk   │  │
+                                               │  │   · ~/.claude/ config              │  │
+                                               │  │   · MCP servers, skills, plugins   │  │
+                                               │  │   · your API creds / OAuth token   │  │
+                                               │  └──────────────┬─────────────────────┘  │
+                                               └─────────────────┼────────────────────────┘
+                                                                 ▼
+                                                       api.anthropic.com</pre>
+    </div>
+  </div>
+
+  <p>
+    The <em>only</em> outbound connection beyond your tunnel is the one the <code>claude</code> CLI already made before
+    you installed claudex.
+  </p>
+
+  <h2>Where to next</h2>
+  <ul>
+    <li><a href="/docs/installation">Installation</a> — pick your platform and run the installer.</li>
+    <li><a href="/docs/first-run">First run</a> — admin setup, TOTP, recovery codes.</li>
+    <li><a href="/docs/remote-access">Remote access</a> — front claudex with a tunnel.</li>
+  </ul>
+</DocsLayout>

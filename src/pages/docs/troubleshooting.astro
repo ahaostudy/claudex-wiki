@@ -1,0 +1,124 @@
+---
+import DocsLayout from "~/layouts/DocsLayout.astro";
+---
+
+<DocsLayout
+  title="Troubleshooting"
+  description="Boot issues, restart hangs, HTTP gotchas, and what to look at first."
+  section="Going further"
+>
+  <h2>"Server won't start"</h2>
+
+  <h3>Port 5179 already in use</h3>
+<pre><code>lsof -ti :5179 -sTCP:LISTEN</code></pre>
+  <p>
+    If a stale claudex (or anything else) holds the port, kill it. The bundled
+    <code>scripts/restart.mjs</code> waits for the port to drain before relaunching, so a clean kill is enough.
+  </p>
+
+  <h3>"refusing to bind to 0.0.0.0"</h3>
+  <p>
+    By design. claudex only binds to <code>127.0.0.1</code> / <code>::1</code> / <code>localhost</code>. To reach it
+    from another device, see <a href="/docs/remote-access">Remote access</a>. There is no flag to override this — public
+    exposure is your tunnel's responsibility.
+  </p>
+
+  <h3>"db is locked" / migration fails</h3>
+  <p>
+    SQLite uses WAL mode by default. If a stale process holds the WAL, a fresh boot can stumble. Stop all claudex
+    processes and try again:
+  </p>
+<pre><code>pgrep -af claudex
+# kill anything that shows up, then
+pnpm serve</code></pre>
+
+  <h2>"Login works on desktop but not on phone"</h2>
+
+  <h3>Mixed content</h3>
+  <p>
+    If the page is loaded over HTTPS but the WebSocket URL is <code>ws://</code>, the browser blocks the connection.
+    Front claudex with a tunnel that terminates TLS so both the page and the WS land on the same scheme.
+  </p>
+
+  <h3>Cookie blocked</h3>
+  <p>
+    The auth cookie is <code>SameSite=Lax</code>, <code>Secure</code> when served over HTTPS. Some Safari versions on
+    iOS won't keep the cookie if the host is an IP literal — use a hostname (Tailscale's <code>*.ts.net</code>, your own
+    domain, or a LAN <code>.local</code> mDNS name) and the cookie sticks.
+  </p>
+
+  <h3>Behind Cloudflare with WebSocket disabled</h3>
+  <p>
+    Some Cloudflare zone settings disable WebSocket by default for non-Pro plans. Open the zone settings → Network →
+    <em>WebSockets</em> and turn it on. Without it the connection drops to polling and chat silently freezes.
+  </p>
+
+  <h2>"Restart says success but the server is gone"</h2>
+  <p>
+    The bundled restart helper (<code>scripts/restart.mjs</code>) spawns a detached worker that polls for the port to
+    free up, then re-execs the server. If the worker dies before the new server boots, the port stays free and the
+    restart silently no-ops.
+  </p>
+
+  <ol>
+    <li>Check <code>~/.claudex/server-stdout.log</code> for the worker's last lines.</li>
+    <li>Check <code>~/.claudex/logs/server.log</code> for the failed boot.</li>
+    <li>Restart manually: <code>pnpm serve</code>.</li>
+  </ol>
+
+  <h2>"WebSocket disconnects every few minutes"</h2>
+  <p>
+    Cloudflare Tunnel and some shared frps setups idle out long-lived connections. claudex pings every 25s by default.
+    If your front-end idle limit is shorter, reduce it on the tunnel side or — for a quick fix — leave the tab focused.
+    The browser will auto-reconnect.
+  </p>
+
+  <h2>"Permission prompts never arrive on my phone"</h2>
+  <p>
+    Push notifications require a secure context. Over plain HTTP they silently degrade to in-tab alerts only — open
+    the app, the alert is there. If you want true OS-level pushes, you need:
+  </p>
+  <ol>
+    <li>HTTPS at the browser (any tunnel that terminates TLS).</li>
+    <li>The page added to your home screen as a PWA (long-press → Add to Home Screen on iOS).</li>
+    <li>Notifications allowed for the page in browser settings.</li>
+  </ol>
+
+  <h2>"It worked yesterday and now nothing works"</h2>
+
+  <p>Run the diagnostic snapshot — it never starts the server, never takes a write lock:</p>
+<pre><code>pnpm claudex:status</code></pre>
+  <p>
+    Output covers the running/stopped state, DB size, migration count, session totals, queue counts, push-device count,
+    and (best-effort) the frpc PID. It's the fastest way to spot "the server died and I missed it" vs "the DB is wedged"
+    vs "the tunnel is the problem."
+  </p>
+
+  <h2>Resetting credentials</h2>
+  <p>
+    If you've forgotten your password but your TOTP still works, reset just the password:
+  </p>
+<pre><code>pnpm reset-credentials --username=you --password='new-pw'</code></pre>
+  <p>
+    The TOTP secret stays untouched, so your authenticator entry keeps working.
+  </p>
+
+  <p>
+    If you've lost both your password and your TOTP, your only path back is to delete the DB and re-init:
+  </p>
+<pre><code>rm ~/.claudex/db.sqlite
+pnpm run init</code></pre>
+
+  <div class="callout danger">
+    <strong>this wipes everything</strong>
+    Sessions, queue, routines, push devices, transcripts — all gone. Back up
+    <code>~/.claudex/</code> first if any of that matters.
+  </div>
+
+  <h2>Still stuck?</h2>
+  <p>
+    Open an issue at <a href="https://github.com/ahaostudy/claudex/issues" target="_blank" rel="noopener">github.com/ahaostudy/claudex</a>
+    with the output of <code>pnpm claudex:status</code> and the last 100 lines of
+    <code>~/.claudex/logs/server.log</code>. Redact anything sensitive — claudex doesn't try to scrub logs for you.
+  </p>
+</DocsLayout>

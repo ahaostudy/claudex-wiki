@@ -1,0 +1,134 @@
+---
+import DocsLayout from "~/layouts/DocsLayout.astro";
+---
+
+<DocsLayout
+  title="Installation"
+  description="Pick your platform, run the installer, save your recovery codes."
+  section="Getting started"
+>
+  <h2>Prerequisites</h2>
+  <ul>
+    <li><strong>Node 20+</strong> and <strong>pnpm 9+</strong>.</li>
+    <li>The <strong><code>claude</code> CLI</strong>, installed and logged in.</li>
+    <li>Either <strong>git</strong> already on PATH, or willingness to let the installer offer to install it.</li>
+  </ul>
+
+  <p>
+    The installer probes for each prerequisite. Anything missing is a prompt — never silent, never automatic. <code>sudo</code>
+    is opt-in.
+  </p>
+
+  <h2>One-liner</h2>
+
+  <h3>macOS / Linux</h3>
+<pre><code>curl -fsSL https://raw.githubusercontent.com/ahaostudy/claudex/main/install.sh | bash</code></pre>
+
+  <h3>Windows (PowerShell)</h3>
+<pre><code>irm https://raw.githubusercontent.com/ahaostudy/claudex/main/install.ps1 | iex</code></pre>
+
+  <p>The installer:</p>
+  <ol>
+    <li>Checks for <code>git</code> / Node 20 / pnpm 9 / the <code>claude</code> CLI and offers to install anything missing.</li>
+    <li>Clones the repo to <code>~/claudex</code> (override with <code>--dir PATH</code>).</li>
+    <li>Builds the web bundle.</li>
+    <li>Walks you through first-admin setup (username + password → TOTP QR → 10 recovery codes).</li>
+    <li>Offers to register claudex as a <strong>user-scoped daemon</strong>: launchd on macOS, systemd <code>--user</code> on Linux, pm2 on Windows.</li>
+  </ol>
+
+  <h3>Flags</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Flag / env var</th>
+        <th>Effect</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>--dir PATH</code> · <code>CLAUDEX_HOME</code></td>
+        <td>Where to clone claudex. Default <code>~/claudex</code>.</td>
+      </tr>
+      <tr>
+        <td><code>--branch NAME</code></td>
+        <td>Pick a non-<code>main</code> branch (e.g. <code>--branch=next</code>).</td>
+      </tr>
+      <tr>
+        <td><code>--yes</code> · <code>CLAUDEX_ASSUME_YES=1</code></td>
+        <td>Accept default for every prompt. Useful for unattended installs.</td>
+      </tr>
+      <tr>
+        <td><code>--skip-init</code></td>
+        <td>Don't run the first-admin walkthrough — you'll do it manually later.</td>
+      </tr>
+      <tr>
+        <td><code>--skip-build</code></td>
+        <td>Don't build the web bundle. Run <code>pnpm --filter @claudex/web build</code> when you're ready.</td>
+      </tr>
+      <tr>
+        <td><code>--skip-daemon</code> · <code>CLAUDEX_SKIP_DAEMON=1</code></td>
+        <td>Don't register a daemon. You'll start the server manually.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Manual</h2>
+<pre><code>git clone https://github.com/ahaostudy/claudex.git
+cd claudex
+pnpm install
+pnpm run init --username=you --password='set-a-strong-one'</code></pre>
+
+  <p>
+    First-run init prints your TOTP secret (QR + manual string) and <strong>10 recovery codes — shown once, never
+    again</strong>. Save them. Scan the QR into any TOTP app (1Password, Authy, Aegis, Google Authenticator).
+  </p>
+
+  <div class="callout warn">
+    <strong>save the recovery codes</strong>
+    The recovery codes are written to disk only as bcrypt hashes. The plain codes are printed once during
+    <code>pnpm run init</code> and then they're gone forever. If you lose both your TOTP device and your codes, you'll
+    need to wipe <code>~/.claudex/db.sqlite</code> and re-init.
+  </div>
+
+  <h2>Run</h2>
+
+  <h3>Foreground (development)</h3>
+<pre><code>pnpm serve        # build + start server on 127.0.0.1:5179</code></pre>
+
+  <p>
+    Open <code>http://127.0.0.1:5179</code> in any browser on the same machine. For phone access, see <a href="/docs/remote-access">Remote access</a>.
+  </p>
+
+  <h3>Background (daemon)</h3>
+
+  <p>If you opted out of the daemon prompt during install, register it now:</p>
+
+  <div class="not-prose grid grid-cols-1 md:grid-cols-3 gap-3 my-6">
+    <div class="rounded-xl border border-line bg-canvas overflow-hidden">
+      <div class="px-4 py-2.5 border-b border-line caps text-ink-muted">macOS</div>
+      <pre class="m-0 !rounded-none !bg-ink !text-canvas px-4 py-3 mono text-[12px] overflow-x-auto"><code>launchctl bootstrap \
+  gui/$(id -u) \
+  ~/Library/LaunchAgents/\
+com.claudex.server.plist</code></pre>
+    </div>
+    <div class="rounded-xl border border-line bg-canvas overflow-hidden">
+      <div class="px-4 py-2.5 border-b border-line caps text-ink-muted">Linux</div>
+      <pre class="m-0 !rounded-none !bg-ink !text-canvas px-4 py-3 mono text-[12px] overflow-x-auto"><code>systemctl --user \
+  enable --now \
+  claudex.service</code></pre>
+    </div>
+    <div class="rounded-xl border border-line bg-canvas overflow-hidden">
+      <div class="px-4 py-2.5 border-b border-line caps text-ink-muted">Windows</div>
+      <pre class="m-0 !rounded-none !bg-ink !text-canvas px-4 py-3 mono text-[12px] overflow-x-auto"><code>pm2 start ecosystem.config.cjs
+pm2 save
+pm2-startup install</code></pre>
+    </div>
+  </div>
+
+  <h2>What's next</h2>
+  <ul>
+    <li><a href="/docs/first-run">First run</a> — what to do the first time you open the UI.</li>
+    <li><a href="/docs/remote-access">Remote access</a> — front claudex with a tunnel.</li>
+    <li><a href="/docs/troubleshooting">Troubleshooting</a> — common boot issues.</li>
+  </ul>
+</DocsLayout>

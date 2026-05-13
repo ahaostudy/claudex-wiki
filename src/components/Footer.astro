@@ -1,0 +1,53 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line bg-paper/40">
+  <div class="max-w-[1280px] mx-auto px-5 lg:px-8 py-12">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+      <div class="col-span-2">
+        <a href="/" class="inline-flex items-center gap-2">
+          <svg viewBox="0 0 32 32" class="w-5 h-5">
+            <path d="M9 22 L16 8 L23 22 Z" fill="#cc785c"></path>
+            <circle cx="16" cy="18" r="2.2" fill="#faf9f5"></circle>
+          </svg>
+          <span class="mono text-[13px]">claudex</span>
+        </a>
+        <p class="mt-3 text-[14px] text-ink-muted leading-relaxed max-w-sm">
+          A remote control for the <span class="mono text-ink">claude</span> CLI running on your own machine. Self-hosted, mobile-first, your keys, your diffs.
+        </p>
+      </div>
+
+      <div>
+        <div class="caps text-ink-muted mb-3">Product</div>
+        <ul class="space-y-2 text-[13.5px]">
+          <li><a class="text-ink-soft hover:text-klein-ink" href="/#features">Features</a></li>
+          <li><a class="text-ink-soft hover:text-klein-ink" href="/#showcase">Showcase</a></li>
+          <li><a class="text-ink-soft hover:text-klein-ink" href="/#architecture">Architecture</a></li>
+          <li><a class="text-ink-soft hover:text-klein-ink" href="/#install">Install</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="caps text-ink-muted mb-3">Resources</div>
+        <ul class="space-y-2 text-[13.5px]">
+          <li><a class="text-ink-soft hover:text-klein-ink" href="/docs">Documentation</a></li>
+          <li><a class="text-ink-soft hover:text-klein-ink" href="/docs/installation">Installation</a></li>
+          <li><a class="text-ink-soft hover:text-klein-ink" href="/docs/remote-access">Remote access</a></li>
+          <li>
+            <a class="text-ink-soft hover:text-klein-ink" href="https://github.com/ahaostudy/claudex" target="_blank" rel="noopener">
+              GitHub
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pt-6 border-t border-line">
+      <div class="text-[12px] text-ink-faint mono">© {year} claudex · MIT</div>
+      <div class="text-[12px] text-ink-faint">
+        Not affiliated with Anthropic. Built for self-hosters.
+      </div>
+    </div>
+  </div>
+</footer>

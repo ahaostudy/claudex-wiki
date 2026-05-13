@@ -1,0 +1,127 @@
+---
+import DocsLayout from "~/layouts/DocsLayout.astro";
+---
+
+<DocsLayout
+  title="First run"
+  description="Admin setup, TOTP enrollment, recovery codes, and your first session."
+  section="Getting started"
+>
+  <p>
+    The first time you open <code>http://127.0.0.1:5179</code>, claudex is a single locked door. There is no dev-mode
+    backdoor and no anonymous access — the only way in is to finish initial setup.
+  </p>
+
+  <h2>Step 1 — create the admin user</h2>
+  <p>
+    You can do this interactively or non-interactively. Both flows print the TOTP secret <em>and</em> the recovery codes
+    at the same point in the process; both flows persist the recovery codes <strong>only after</strong> you've had a chance to
+    save them.
+  </p>
+
+  <h3>Interactive</h3>
+<pre><code>pnpm run init</code></pre>
+
+  <p>
+    You'll be prompted for a username and a password (echoed as <code>•</code>). When the TOTP QR + recovery codes are
+    printed, the prompt waits for you to press Enter — that's your cue to scan the QR and copy the codes <em>before</em>
+    they're persisted.
+  </p>
+
+  <h3>Non-interactive (CI / scripts)</h3>
+<pre><code>CLAUDEX_INIT_USERNAME=you \
+CLAUDEX_INIT_PASSWORD='strong-pw' \
+pnpm run init</code></pre>
+
+  <p>
+    Or pass <code>--username=</code> / <code>--password=</code> directly. With non-interactive stdin, the Enter
+    confirmation is skipped, but print → flush → persist still happens in that order.
+  </p>
+
+  <h2>Step 2 — scan the TOTP QR</h2>
+
+  <p>
+    Open any TOTP app: 1Password, Authy, Aegis, Google Authenticator. Scan the ASCII-art QR printed in the terminal.
+    The Issuer is <code>claudex</code> and the Account is your username.
+  </p>
+
+  <div class="not-prose my-6 rounded-xl border border-line bg-paper/40 p-5">
+    <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-5 items-start">
+      <div class="relative aspect-square w-[140px] mx-auto sm:mx-0 rounded-lg border border-line-strong bg-canvas p-2 corner-anchor">
+        <div class="grid grid-cols-[repeat(15,1fr)] grid-rows-[repeat(15,1fr)] gap-[1px] w-full h-full">
+          <!-- decorative QR-like pattern, statically generated -->
+          <div class="col-span-3 row-span-3 border-2 border-ink"></div>
+          <div class="col-span-3 row-span-3 border-2 border-ink col-start-13"></div>
+          <div class="col-span-3 row-span-3 border-2 border-ink row-start-13"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-7 row-start-2"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-9 row-start-2"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-7 row-start-4"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-8 row-start-5"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-10 row-start-6"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-12 row-start-7"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-7 row-start-8"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-9 row-start-9"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-11 row-start-10"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-6 row-start-12"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-13 row-start-12"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-9 row-start-14"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-11 row-start-13"></div>
+          <div class="col-span-1 row-span-1 bg-ink col-start-13 row-start-15"></div>
+        </div>
+      </div>
+      <div>
+        <div class="caps text-ink-muted mb-1">printed in your terminal</div>
+        <div class="text-[14px] text-ink-soft leading-relaxed">
+          Below the QR, the secret string is also printed for manual entry. Either path enrols the same TOTP key.
+        </div>
+        <div class="mt-3 mono text-[12.5px] text-klein-ink bg-klein-wash border border-klein/30 rounded-md px-3 py-1.5 inline-block">
+          JBSWY3DPEHPK3PXP…
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Step 3 — save your recovery codes</h2>
+
+  <div class="callout danger">
+    <strong>shown once. never again.</strong>
+    Recovery codes are bcrypt-hashed before they hit disk. The plain codes are printed once and then are gone forever.
+    Lose them along with your TOTP device and your only path back is to delete <code>~/.claudex/db.sqlite</code> and start over.
+  </div>
+
+  <p>
+    A safe move: paste them into your password manager as a secure note titled <em>claudex recovery</em>, or print them
+    to paper and tape them to the back of your monitor. Each code is single-use.
+  </p>
+
+  <h2>Step 4 — sign in</h2>
+
+  <p>
+    Open <code>http://127.0.0.1:5179</code> on the same machine (or, after setting up <a href="/docs/remote-access">remote access</a>, on your phone).
+  </p>
+
+  <ol>
+    <li>Enter your username + password.</li>
+    <li>Enter the 6-digit TOTP code your authenticator shows.</li>
+    <li>You land on the Home screen with an empty session list.</li>
+  </ol>
+
+  <h2>Step 5 — start your first session</h2>
+
+  <p>
+    Click <strong>+ New session</strong>. Pick a project directory (claudex remembers your last few). If the directory
+    is a git repo, the <strong>Use git worktree</strong> toggle is on by default — claudex will spawn a fresh
+    <code>claude/&lt;slug&gt;</code> branch in an isolated worktree so this session can't step on others.
+  </p>
+
+  <p>
+    Type your first prompt. The Agent SDK starts the <code>claude</code> subprocess, and the WebSocket starts streaming
+    structured events (tool calls, partial assistant messages, plan steps, permission asks). Welcome aboard.
+  </p>
+
+  <h2>Where to next</h2>
+  <ul>
+    <li><a href="/docs/remote-access">Remote access</a> — drive your phone over a tunnel.</li>
+    <li><a href="/docs/troubleshooting">Troubleshooting</a> — common first-run issues.</li>
+  </ul>
+</DocsLayout>

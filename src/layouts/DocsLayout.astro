@@ -1,0 +1,105 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Navbar from "~/components/Navbar.astro";
+import Footer from "~/components/Footer.astro";
+import DocsSidebar from "~/components/docs/DocsSidebar.astro";
+import { getNeighbors } from "~/data/docs-nav";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** The section label shown in the breadcrumb (e.g. "Getting started"). */
+  section?: string;
+}
+
+const { title, description, section } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const { prev, next } = getNeighbors(path);
+
+const pageTitle = `${title} · claudex docs`;
+const pageDescription = description ?? `${title} — claudex documentation`;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Navbar variant="docs" />
+
+  <div class="max-w-[1280px] mx-auto px-5 lg:px-8 grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-8 lg:gap-10 py-10">
+    <DocsSidebar current={path} />
+
+    <article class="min-w-0">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-[12px] text-ink-muted mb-6">
+        <a href="/docs" class="hover:text-ink">Docs</a>
+        {
+          section ? (
+            <>
+              <span class="text-ink-faint">/</span>
+              <span>{section}</span>
+            </>
+          ) : null
+        }
+        <span class="text-ink-faint">/</span>
+        <span class="text-ink">{title}</span>
+      </nav>
+
+      <header class="mb-8">
+        <h1 class="display text-[2.4rem] md:text-[2.8rem] leading-[1.05] tracking-tight">{title}</h1>
+        {description ? <p class="mt-3 text-[16px] text-ink-muted leading-relaxed max-w-prose">{description}</p> : null}
+      </header>
+
+      <div class="doc-prose max-w-prose">
+        <slot />
+      </div>
+
+      <!-- Prev / Next -->
+      <nav class="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {
+          prev ? (
+            <a
+              href={prev.href}
+              class="rounded-xl border border-line bg-canvas hover:bg-paper transition-colors p-4 group"
+            >
+              <div class="caps text-ink-muted mb-1.5">← previous</div>
+              <div class="text-[14.5px] font-medium text-ink group-hover:text-klein-ink">{prev.title}</div>
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next ? (
+            <a
+              href={next.href}
+              class="rounded-xl border border-line bg-canvas hover:bg-paper transition-colors p-4 group sm:text-right"
+            >
+              <div class="caps text-ink-muted mb-1.5">next →</div>
+              <div class="text-[14.5px] font-medium text-ink group-hover:text-klein-ink">{next.title}</div>
+            </a>
+          ) : null
+        }
+      </nav>
+    </article>
+  </div>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .docs-sidebar {
+    align-self: start;
+    position: sticky;
+    top: 4.25rem;
+    max-height: calc(100vh - 5rem);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+  @media (max-width: 1023px) {
+    .docs-sidebar {
+      position: static;
+      max-height: none;
+      padding-right: 0;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e8e4d8;
+    }
+  }
+</style>

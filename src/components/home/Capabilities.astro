@@ -1,0 +1,121 @@
+---
+import FeatureIcon from "./FeatureIcon.astro";
+
+const features = [
+  {
+    title: "One agent, many surfaces",
+    body: "Chat transcript, subagent monitor, queue, routines, diff review — all live over a single WebSocket. Switch contexts without losing your place.",
+    accent: "klein",
+    icon: "layers",
+  },
+  {
+    title: "Mobile-first, desktop expansive",
+    body: "Every screen is designed for a 390px viewport first. Bottom sheets, safe-area aware, iOS-keyboard-tuned. Desktop is an adaptive expansion.",
+    accent: "indigo",
+    icon: "phone",
+  },
+  {
+    title: "Auth that doesn't suck",
+    body: "Username + password + TOTP on every fresh session. Ten single-use recovery codes printed once. httpOnly JWT, rate-limited. No dev backdoor.",
+    accent: "klein",
+    icon: "shield",
+  },
+  {
+    title: "Full-text search everything",
+    body: "SQLite FTS5 across session titles and every message body. ⌘K from anywhere jumps you to the right turn.",
+    accent: "purple",
+    icon: "search",
+  },
+  {
+    title: "Real git worktrees",
+    body: "Each session spawns on its own branch in an isolated worktree. Auto-rebase on create, auto-prune on archive. Run multiple agents on the same repo.",
+    accent: "success",
+    icon: "branch",
+  },
+  {
+    title: "Permission prompts done right",
+    body: "Not a modal dump — a dedicated card with blast-radius summary, inline diff preview, and a deep-link to the full Review screen.",
+    accent: "warn",
+    icon: "key",
+  },
+  {
+    title: "Fork any turn",
+    body: "Click any event, fork from there. Explore an alternate path without polluting the original session's context.",
+    accent: "klein",
+    icon: "fork",
+  },
+  {
+    title: "Honest streaming",
+    body: "The Agent SDK doesn't expose token-delta granularity, and we don't fake it. Three bouncing dots while claude thinks; replies land as a whole message.",
+    accent: "indigo",
+    icon: "wave",
+  },
+  {
+    title: "Routines (scheduled prompts)",
+    body: "Cron-backed automated turns with full permission and trust gating. Run the linter every morning, ship a nightly digest.",
+    accent: "purple",
+    icon: "clock",
+  },
+  {
+    title: "Queue mode",
+    body: "Batch three, five, ten prompts and let claude chew through them sequentially. Edit order, pause, cancel.",
+    accent: "klein",
+    icon: "queue",
+  },
+  {
+    title: "Built-in terminal",
+    body: "node-pty + xterm.js inside the same web UI. Real shell, real vim, real env. Mobile keybar for Esc / Ctrl / arrows.",
+    accent: "indigo",
+    icon: "terminal",
+  },
+  {
+    title: "Usage & alerts",
+    body: "Per-session token ring, global usage panel with model breakdown, live Alerts tab for needs-approval / errored / finished-while-you-were-away.",
+    accent: "warn",
+    icon: "spark",
+  },
+] as const;
+
+type Accent = (typeof features)[number]["accent"];
+
+const accentClass: Record<Accent, string> = {
+  klein: "bg-klein-wash text-klein-ink border-klein/30",
+  indigo: "bg-indigo-wash text-indigo-ink border-indigo/30",
+  purple: "bg-purple-wash text-purple border-purple/30",
+  success: "bg-success-wash text-success border-success/30",
+  warn: "bg-warn-wash text-warn border-warn/30",
+};
+---
+
+<section id="features" class="border-b border-line">
+  <div class="max-w-[1280px] mx-auto px-5 lg:px-10 py-20 lg:py-24">
+    <div class="flex items-baseline gap-4 mb-3 flex-wrap">
+      <span class="mono text-[12px] text-ink-faint">section · 01</span>
+      <h2 class="display text-[2rem] md:text-[2.4rem] leading-tight">What you actually get</h2>
+    </div>
+    <p class="max-w-[68ch] text-[15px] text-ink-muted">
+      claudex doesn't replace Claude Code. It puts a cockpit around it. Everything below is a screen that exists today
+      — no waitlist, no roadmap fog.
+    </p>
+
+    <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {
+        features.map((f, i) => {
+          const num = String(i + 1).padStart(2, "0");
+          return (
+            <article class="relative group rounded-xl border border-line bg-canvas hover:bg-paper/60 hover:border-line-strong transition-colors p-5 corner-anchor">
+              <div class="flex items-start justify-between gap-3 mb-4">
+                <span class={`inline-flex items-center justify-center w-9 h-9 rounded-md border ${accentClass[f.accent]}`}>
+                  <FeatureIcon name={f.icon} />
+                </span>
+                <span class="mono text-[10px] text-ink-faint">{num}</span>
+              </div>
+              <h3 class="display text-[1.25rem] leading-tight text-ink">{f.title}</h3>
+              <p class="mt-2 text-[14px] text-ink-muted leading-relaxed">{f.body}</p>
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
