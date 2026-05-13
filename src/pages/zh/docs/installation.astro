@@ -10,7 +10,7 @@ import DocsLayout from "~/layouts/DocsLayout.astro";
   <h2>前置条件</h2>
   <ul>
     <li><strong>Node 20+</strong> 和 <strong>pnpm 9+</strong>。</li>
-    <li>已安装并登录的 <strong><code>claude</code> CLI</strong>。</li>
+    <li>已安装并登录的 <strong>Claude Code</strong>。</li>
     <li>PATH 上已有 <strong>git</strong>，或者你愿意让安装脚本提示你安装它。</li>
   </ul>
 
@@ -29,7 +29,7 @@ import DocsLayout from "~/layouts/DocsLayout.astro";
 
   <p>安装脚本会：</p>
   <ol>
-    <li>检查 <code>git</code> / Node 20 / pnpm 9 / <code>claude</code> CLI，并提示安装任何缺失项。</li>
+    <li>检查 <code>git</code> / Node 20 / pnpm 9 / Claude Code，并提示安装任何缺失项。</li>
     <li>把仓库克隆到 <code>~/claudex</code>（可通过 <code>--dir PATH</code> 覆盖）。</li>
     <li>构建 web bundle。</li>
     <li>引导你完成首位管理员的初始化（用户名 + 密码 → TOTP 二维码 → 10 个恢复码）。</li>

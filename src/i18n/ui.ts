@@ -11,7 +11,7 @@ export const ui = {
   en: {
     "site.title": "claudex — Remote control for Claude Code",
     "site.description":
-      "A self-hosted browser cockpit for the claude CLI on your own machine. Phone-first, your keys, your diffs.",
+      "A self-hosted browser cockpit for Claude Code on your own machine. Phone-first, your keys, your diffs.",
 
     "nav.docs": "Docs",
     "nav.github": "GitHub",
@@ -25,7 +25,7 @@ export const ui = {
 
     // Hero
     "hero.subtitle.body":
-      "Remote control for the {claude} CLI on your laptop. Open your phone, keep driving — review a diff, approve a permission, queue the next prompt.",
+      "Remote control for Claude Code on your laptop. Open your phone, keep driving — review a diff, approve a permission, queue the next prompt.",
     "hero.cta.install": "Install",
     "hero.cta.docs": "Read the docs",
     "hero.cta.github": "GitHub",
@@ -62,9 +62,9 @@ export const ui = {
     "pillars.01.body":
       "Every screen is sized for a 390-pixel viewport, not retrofitted from a desktop layout. The desktop opens the same session into a wider three-column cockpit — but the phone is the home turf.",
     "pillars.02.title": "Inherits everything.",
-    "pillars.02.kicker": "We spawn the CLI, we don't replace it",
+    "pillars.02.kicker": "We spawn Claude Code, we don't replace it",
     "pillars.02.body":
-      "Your config, MCP servers, plugins, skills, OAuth token — all yours, untouched. claudex drives the real claude CLI as a subprocess. We never call the Anthropic API ourselves.",
+      "Your config, MCP servers, plugins, skills, OAuth token — all yours, untouched. claudex drives real Claude Code as a subprocess. We never call the Anthropic API ourselves.",
     "pillars.03.title": "Auth from day one.",
     "pillars.03.kicker": "Username · password · TOTP · ten codes",
     "pillars.03.body":
@@ -72,7 +72,7 @@ export const ui = {
     "pillars.04.title": "Real git worktrees.",
     "pillars.04.kicker": "Branches · isolation · auto-rebase",
     "pillars.04.body":
-      "Each session lands on its own branch in an isolated worktree. Run five claudes on the same repo without stepping on yourself. Auto-rebase on create, auto-prune on archive.",
+      "Each session lands on its own branch in an isolated worktree. Run five Claude Code sessions on the same repo without stepping on each other. Auto-rebase on create, auto-prune on archive.",
 
     // Endmatter
     "endmatter.title.lead": "One line, then you're",
@@ -81,7 +81,7 @@ export const ui = {
       "Walks you through admin setup, prints a TOTP QR and ten recovery codes, then offers to register a user-scoped daemon. Nothing silent. Sudo opt-in.",
     "endmatter.tab.unix": "macOS · Linux",
     "endmatter.tab.win": "Windows",
-    "endmatter.prereq": "Prereq → node 20 · pnpm 9 · claude CLI",
+    "endmatter.prereq": "Prereq → node 20 · pnpm 9 · Claude Code",
     "endmatter.copy": "Copy",
     "endmatter.copied": "Copied",
     "endmatter.copy.fallback": "Press ⌘C",
@@ -101,9 +101,9 @@ export const ui = {
     // Docs index page
     "docs.index.kicker": "Documentation",
     "docs.index.title.html":
-      'Everything you need to drive <em class="not-italic text-klein">claude</em> from anywhere.',
+      'Everything you need to drive Claude Code from anywhere.',
     "docs.index.intro.html":
-      'These pages assume you have a working <span class="mono text-ink">claude</span> CLI on the machine you want to run claudex on. Read top-to-bottom for a guided first-time setup, or jump straight to the topic you need.',
+      'These pages assume Claude Code is already installed on the machine you want to run claudex on. Read top-to-bottom for a guided first-time setup, or jump straight to the topic you need.',
     "docs.index.read": "read",
 
     // Docs chrome
@@ -142,7 +142,7 @@ export const ui = {
   zh: {
     "site.title": "claudex — Claude Code 的远程驾驶舱",
     "site.description":
-      "自托管在你机器上的 claude CLI 浏览器驾驶舱。手机优先，密钥归你，diff 归你。",
+      "自托管在你机器上的 Claude Code 浏览器驾驶舱。手机优先，密钥归你，diff 归你。",
 
     "nav.docs": "文档",
     "nav.github": "GitHub",
@@ -156,7 +156,7 @@ export const ui = {
 
     // Hero
     "hero.subtitle.body":
-      "远程控制你笔记本上的 {claude} CLI。打开手机就能继续——查看 diff、批准权限、安排下一个 prompt。",
+      "远程控制你笔记本上的 Claude Code。打开手机就能继续——查看 diff、批准权限、安排下一个 prompt。",
     "hero.cta.install": "安装",
     "hero.cta.docs": "阅读文档",
     "hero.cta.github": "GitHub",
@@ -193,9 +193,9 @@ export const ui = {
     "pillars.01.body":
       "每一屏都按 390 像素视口起步，而不是从桌面布局回填出来。桌面端会把同一份会话展开为更宽的三栏驾驶舱——但手机才是主场。",
     "pillars.02.title": "全盘继承。",
-    "pillars.02.kicker": "我们启动 CLI，而不是替代它",
+    "pillars.02.kicker": "我们启动 Claude Code，而不是替代它",
     "pillars.02.body":
-      "你的配置、MCP 服务器、插件、技能、OAuth token——全是你的，原样保留。claudex 把真实的 claude CLI 当作子进程来驱动，从不替你直接调用 Anthropic 的 API。",
+      "你的配置、MCP 服务器、插件、技能、OAuth token——全是你的，原样保留。claudex 把真实的 Claude Code 当作子进程来驱动，从不替你直接调用 Anthropic 的 API。",
     "pillars.03.title": "认证从第一天起。",
     "pillars.03.kicker": "用户名 · 密码 · TOTP · 十枚恢复码",
     "pillars.03.body":
@@ -203,7 +203,7 @@ export const ui = {
     "pillars.04.title": "真正的 git worktree。",
     "pillars.04.kicker": "分支 · 隔离 · 自动 rebase",
     "pillars.04.body":
-      "每个会话都落在独立 worktree 的独立分支上。同一个仓库可以同时跑五个 claude，互不踩脚。创建时自动 rebase，归档时自动清理。",
+      "每个会话都落在独立 worktree 的独立分支上。同一个仓库可以同时跑五个 Claude Code 会话，互不踩脚。创建时自动 rebase，归档时自动清理。",
 
     // Endmatter
     "endmatter.title.lead": "一行命令，",
@@ -212,7 +212,7 @@ export const ui = {
       "脚本会一步步带你做完管理员设置，打印 TOTP 二维码与十枚恢复码，再询问是否注册用户级守护进程。全程不静默；sudo 由你显式开启。",
     "endmatter.tab.unix": "macOS · Linux",
     "endmatter.tab.win": "Windows",
-    "endmatter.prereq": "前置 → node 20 · pnpm 9 · claude CLI",
+    "endmatter.prereq": "前置 → node 20 · pnpm 9 · Claude Code",
     "endmatter.copy": "复制",
     "endmatter.copied": "已复制",
     "endmatter.copy.fallback": "请按 ⌘C",
@@ -232,9 +232,9 @@ export const ui = {
     // Docs index page
     "docs.index.kicker": "文档",
     "docs.index.title.html":
-      '随时随地驾驶 <em class="not-italic text-klein">claude</em> 所需的一切。',
+      '随时随地使用 Claude Code 所需的一切。',
     "docs.index.intro.html":
-      '这些页面假设你计划运行 claudex 的那台机器上，已经装好了 <span class="mono text-ink">claude</span> CLI。从头读到尾可以走完一次首次配置；也可以直接跳到你想看的章节。',
+      '这些页面假设你计划运行 claudex 的那台机器上已经装好了 Claude Code。从头读到尾可以走完一次首次配置；也可以直接跳到你想看的章节。',
     "docs.index.read": "阅读",
 
     // Docs chrome

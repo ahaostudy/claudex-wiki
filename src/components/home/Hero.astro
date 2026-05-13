@@ -15,8 +15,6 @@ interface Props {
 
 const lang = Astro.props.lang ?? getLocaleFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-const subtitleParts = t("hero.subtitle.body").split("{claude}");
 ---
 
 <section
@@ -43,7 +41,7 @@ const subtitleParts = t("hero.subtitle.body").split("{claude}");
       <!-- subtitle -->
       <div class="mt-12 lg:mt-20 fx-fade delay-4">
         <p class="prose-serif text-[1.15rem] md:text-[1.4rem] leading-[1.5] tracking-[-0.005em] text-ink-soft max-w-[48ch]">
-          {subtitleParts[0]}<span class="mono text-ink">claude</span>{subtitleParts[1] ?? ""}
+          {t("hero.subtitle.body")}
         </p>
       </div>
 

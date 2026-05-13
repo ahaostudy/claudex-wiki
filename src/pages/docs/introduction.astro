@@ -8,14 +8,14 @@ import DocsLayout from "~/layouts/DocsLayout.astro";
   section="Getting started"
 >
   <p>
-    <strong>claudex is a remote control for the <code>claude</code> CLI on your own machine.</strong> It runs a small
-    self-hosted service that exposes a polished browser interface — designed mobile-first — and drives the real
-    <code>claude</code> CLI as a subprocess via the
+    <strong>claudex is a remote control for Claude Code on your own machine.</strong> It runs a small
+    self-hosted service that exposes a polished browser interface — designed mobile-first — and drives real
+    Claude Code as a subprocess via the
     <a href="https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk" target="_blank" rel="noopener">Agent SDK</a>.
   </p>
 
   <p>
-    That means everything you've already configured for the CLI — <code>~/.claude/</code> config, MCP servers, plugins,
+    That means everything you've already configured for Claude Code — <code>~/.claude/</code> config, MCP servers, plugins,
     skills, your <code>CLAUDE.md</code> files, your OAuth token or API key — is inherited automatically. claudex never
     touches Anthropic's API directly. It is the driver, never the agent.
   </p>
@@ -78,7 +78,7 @@ import DocsLayout from "~/layouts/DocsLayout.astro";
 └────────────────┘     JWT + TOTP gate         │                                          │
                                                │   spawns as subprocess ▼                 │
                                                │  ┌────────────────────────────────────┐  │
-                                               │  │   claude CLI                       │  │
+                                               │  │   Claude Code                      │  │
                                                │  │   @anthropic-ai/claude-agent-sdk   │  │
                                                │  │   · ~/.claude/ config              │  │
                                                │  │   · MCP servers, skills, plugins   │  │
@@ -91,7 +91,7 @@ import DocsLayout from "~/layouts/DocsLayout.astro";
   </div>
 
   <p>
-    The <em>only</em> outbound connection beyond your tunnel is the one the <code>claude</code> CLI already made before
+    The <em>only</em> outbound connection beyond your tunnel is the one Claude Code already made before
     you installed claudex.
   </p>
 
