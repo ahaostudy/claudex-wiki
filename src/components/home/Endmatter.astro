@@ -34,24 +34,17 @@ const copyFallback = t("endmatter.copy.fallback");
   <div class="absolute inset-0 bg-noise pointer-events-none"></div>
 
   <div class="relative max-w-[1440px] mx-auto px-6 lg:px-10 pt-24 pb-24 lg:pt-32 lg:pb-32">
-    <!-- Section masthead -->
+    <!-- Section header -->
     <div class="grid grid-cols-12 gap-6 items-end mb-12 lg:mb-16">
       <div class="col-span-12 lg:col-span-6">
-        <div class="flex items-center gap-3">
-          <span class="section-no">{t("endmatter.section.no")}</span>
-          <span class="h-px flex-1 bg-ink/30 max-w-[140px]"></span>
-          <span class="label text-ink-muted">{t("endmatter.section.kicker")}</span>
-        </div>
-        <h2 class="display mt-6 text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.95] tracking-[-0.03em] max-w-[18ch]">
+        <h2 class="display text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.95] tracking-[-0.03em] max-w-[18ch]">
           {t("endmatter.title.lead")} <span class="display-italic text-klein">{t("endmatter.title.italic")}</span>
         </h2>
       </div>
       <div class="col-span-12 lg:col-span-5 lg:col-start-8">
-        <div class="border-t border-ink/30 pt-3">
-          <p class="text-[14.5px] leading-[1.65] text-ink-muted max-w-[42ch]">
-            {t("endmatter.intro")}
-          </p>
-        </div>
+        <p class="text-[14.5px] leading-[1.65] text-ink-muted max-w-[42ch]">
+          {t("endmatter.intro")}
+        </p>
       </div>
     </div>
 

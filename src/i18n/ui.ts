@@ -16,68 +16,36 @@ export const ui = {
     "nav.index": "Index",
     "nav.docs": "Docs",
     "nav.github": "GitHub",
-    "nav.edition": "No. 001 — 2026 Edition",
 
     "footer.index": "Index",
     "footer.docs": "Docs",
     "footer.install": "Install",
-    "footer.issue": "Vol. 1 · Issue 0",
     "footer.legal": "MIT · Not affiliated with Anthropic.",
 
     "lang.switcher.aria": "Switch language",
 
     // Hero
-    "hero.folio.left.top": "Vol. 1 · Issue 0",
-    "hero.folio.left.bottom": "remote.claude / cockpit edition",
-    "hero.folio.right.top": "MIT · self-hosted",
-    "hero.folio.right.bottom": "node 20 · pnpm 9",
-    "hero.subtitle.lead": "Remote control",
     "hero.subtitle.body":
-      "for the {claude} CLI on your laptop. Open your phone, keep driving — review a diff, approve a permission, queue the next prompt.",
-    "hero.figA.label": "Fig. A — what it is",
-    "hero.figA.line1": "A self-hosted browser for the",
-    "hero.figA.line2": "{claude} CLI on your machine.",
-    "hero.figA.line3": "Your keys. Your diffs. Your network.",
+      "Remote control for the {claude} CLI on your laptop. Open your phone, keep driving — review a diff, approve a permission, queue the next prompt.",
     "hero.cta.install": "Install",
     "hero.cta.docs": "Read the docs",
     "hero.cta.github": "GitHub",
-    "hero.strip.bind.label": "Bind",
-    "hero.strip.bind.value": "127.0.0.1 only",
-    "hero.strip.auth.label": "Auth",
-    "hero.strip.auth.value": "password · TOTP",
-    "hero.strip.inherits.label": "Inherits",
-    "hero.strip.inherits.value": "~/.claude/ config",
-    "hero.strip.designed.label": "Designed for",
-    "hero.strip.designed.value": "390 px first",
 
     // Specimen
-    "specimen.section.no": "§ 02",
-    "specimen.section.kicker": "The product",
     "specimen.title.l1": "The cockpit fits",
     "specimen.title.l2.lead": "in your",
     "specimen.title.l2.italic": "pocket.",
     "specimen.intro":
       "Every screen is drawn for a 390-pixel viewport first. Bottom sheets, safe-area aware, iOS-keyboard-tuned. The desktop opens the same session into a wider cockpit — but the phone is the home turf.",
-    "specimen.fig01.label": "Fig. 01",
     "specimen.fig01.lede": "Tool calls collapse.",
     "specimen.fig01.body":
       "Each read, grep, or bash becomes a one-line pill — tap to expand the full output, leave it collapsed for skim mode.",
-    "specimen.fig02.label": "Fig. 02",
     "specimen.fig02.lede": "Inline diff.",
     "specimen.fig02.body":
       "The edit card opens a real diff with Accept · Reject right there. No detour to a separate review page for routine work.",
-    "specimen.fig03.label": "Fig. 03",
     "specimen.fig03.lede": "Slash · @ rail.",
     "specimen.fig03.body":
       "A sticky chip strip above the keyboard. Triggers slash commands, file pickers, attachments, /btw side chats.",
-    "specimen.spec.label": "Spec sheet",
-    "specimen.spec.viewport": "Viewport",
-    "specimen.spec.stream": "Stream",
-    "specimen.spec.storage": "Storage",
-    "specimen.spec.daemon": "Daemon",
-    "specimen.spec.bind": "Bind",
-    "specimen.fig04.label": "Fig. 04",
-    "specimen.fig04.kicker": "Also fits desks",
     "specimen.fig04.title.lead": "Same session,",
     "specimen.fig04.title.italic": "wider canvas.",
     "specimen.fig04.body":
@@ -86,8 +54,6 @@ export const ui = {
     "specimen.foot.right": "macOS · Linux · Windows",
 
     // Pillars
-    "pillars.section.no": "§ 03",
-    "pillars.section.kicker": "Why claudex",
     "pillars.title.lead": "Four things, said",
     "pillars.title.italic": "precisely.",
     "pillars.intro.html":
@@ -110,8 +76,6 @@ export const ui = {
       "Each session lands on its own branch in an isolated worktree. Run five claudes on the same repo without stepping on yourself. Auto-rebase on create, auto-prune on archive.",
 
     // Endmatter
-    "endmatter.section.no": "§ 01",
-    "endmatter.section.kicker": "Install",
     "endmatter.title.lead": "One line, then you're",
     "endmatter.title.italic": "in.",
     "endmatter.intro":
@@ -184,68 +148,36 @@ export const ui = {
     "nav.index": "首页",
     "nav.docs": "文档",
     "nav.github": "GitHub",
-    "nav.edition": "No. 001 — 2026 年刊",
 
     "footer.index": "首页",
     "footer.docs": "文档",
     "footer.install": "安装",
-    "footer.issue": "Vol. 1 · Issue 0",
     "footer.legal": "MIT · 与 Anthropic 无关联。",
 
     "lang.switcher.aria": "切换语言",
 
     // Hero
-    "hero.folio.left.top": "Vol. 1 · Issue 0",
-    "hero.folio.left.bottom": "remote.claude / 驾驶舱版",
-    "hero.folio.right.top": "MIT · 自托管",
-    "hero.folio.right.bottom": "node 20 · pnpm 9",
-    "hero.subtitle.lead": "远程驾驶",
     "hero.subtitle.body":
-      "你笔记本上的 {claude} CLI。掏出手机，活就接着干——审一段 diff、批一次权限、排上下一个 prompt。",
-    "hero.figA.label": "Fig. A — 它是什么",
-    "hero.figA.line1": "{claude} CLI 的浏览器入口，",
-    "hero.figA.line2": "自托管在你自己的机器上。",
-    "hero.figA.line3": "密钥、diff、网络，都归你。",
+      "远程驾驶你笔记本上的 {claude} CLI。掏出手机，活就接着干——审一段 diff、批一次权限、排上下一个 prompt。",
     "hero.cta.install": "安装",
     "hero.cta.docs": "阅读文档",
     "hero.cta.github": "GitHub",
-    "hero.strip.bind.label": "监听",
-    "hero.strip.bind.value": "仅 127.0.0.1",
-    "hero.strip.auth.label": "认证",
-    "hero.strip.auth.value": "密码 · TOTP",
-    "hero.strip.inherits.label": "继承",
-    "hero.strip.inherits.value": "~/.claude/ 配置",
-    "hero.strip.designed.label": "面向",
-    "hero.strip.designed.value": "390 px 优先",
 
     // Specimen
-    "specimen.section.no": "§ 02",
-    "specimen.section.kicker": "产品",
     "specimen.title.l1": "驾驶舱",
     "specimen.title.l2.lead": "装进你的",
     "specimen.title.l2.italic": "口袋。",
     "specimen.intro":
       "每一屏都按 390 像素视口起步绘制。底部抽屉、安全区适配、为 iOS 键盘量身调校。桌面端把同一份会话铺开成更宽的驾驶舱——但手机才是主场。",
-    "specimen.fig01.label": "Fig. 01",
     "specimen.fig01.lede": "工具调用可折叠。",
     "specimen.fig01.body":
       "每一次 read、grep、bash 都收成一行胶囊——点开看完整输出，收起则进入速览模式。",
-    "specimen.fig02.label": "Fig. 02",
     "specimen.fig02.lede": "内联 diff。",
     "specimen.fig02.body":
       "edit 卡片直接展开真实 diff，Accept · Reject 就在跟前。日常改动无需再绕到独立的审阅页。",
-    "specimen.fig03.label": "Fig. 03",
     "specimen.fig03.lede": "Slash · @ 工具栏。",
     "specimen.fig03.body":
       "悬浮在键盘上方的一条常驻 chip 栏，唤起 slash 命令、文件选择、附件、/btw 旁路对话。",
-    "specimen.spec.label": "规格表",
-    "specimen.spec.viewport": "视口",
-    "specimen.spec.stream": "流式",
-    "specimen.spec.storage": "存储",
-    "specimen.spec.daemon": "守护",
-    "specimen.spec.bind": "监听",
-    "specimen.fig04.label": "Fig. 04",
-    "specimen.fig04.kicker": "桌面同样合身",
     "specimen.fig04.title.lead": "同一份会话，",
     "specimen.fig04.title.italic": "更宽的画布。",
     "specimen.fig04.body":
@@ -254,8 +186,6 @@ export const ui = {
     "specimen.foot.right": "macOS · Linux · Windows",
 
     // Pillars
-    "pillars.section.no": "§ 03",
-    "pillars.section.kicker": "为什么是 claudex",
     "pillars.title.lead": "四件事，说得",
     "pillars.title.italic": "精确。",
     "pillars.intro.html":
@@ -278,8 +208,6 @@ export const ui = {
       "每个会话都落在独立 worktree 的独立分支上。同一个仓库可以同时跑五个 claude，互不踩脚。创建时自动 rebase，归档时自动清理。",
 
     // Endmatter
-    "endmatter.section.no": "§ 01",
-    "endmatter.section.kicker": "安装",
     "endmatter.title.lead": "一行命令，你就",
     "endmatter.title.italic": "上路了。",
     "endmatter.intro":

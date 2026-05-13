@@ -1,12 +1,10 @@
 ---
 /**
- * Pillars — what makes claudex different, in 4 lines.
+ * Pillars — what makes claudex different, in 4 rows.
  *
- * Editorial numbered list, not a card grid. Each row is a full-width
- * 12-column composition: oversized mono number on the left, serif
- * pillar title in the middle, mono kicker + serif body on the right.
- * Hairline rules separate rows. The whole thing reads top-to-bottom
- * like a magazine table of contents.
+ * Two-column rows: serif title + label kicker on the left, serif body on
+ * the right, hairline between rows. The hover-reveal klein bar on the
+ * left edge gives just enough motion without turning into magazine chrome.
  */
 import { getLocaleFromUrl, localizePath, type Locale } from "~/i18n/config";
 import { useTranslations } from "~/i18n/ui";
@@ -19,7 +17,6 @@ const lang = Astro.props.lang ?? getLocaleFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const pillars = (["01", "02", "03", "04"] as const).map((no) => ({
-  no,
   title: t(`pillars.${no}.title`),
   kicker: t(`pillars.${no}.kicker`),
   body: t(`pillars.${no}.body`),
@@ -34,51 +31,36 @@ const introHtml = t("pillars.intro.html", { docs: localizePath("/docs", lang) })
   aria-label="What makes claudex different"
 >
   <div class="max-w-[1440px] mx-auto px-6 lg:px-10 pt-24 pb-16 lg:pt-32 lg:pb-24">
-    <!-- Section masthead -->
-    <div class="grid grid-cols-12 gap-6 items-end mb-16 lg:mb-24">
+    <!-- Section header -->
+    <div class="grid grid-cols-12 gap-6 items-end mb-16 lg:mb-20">
       <div class="col-span-12 lg:col-span-6">
-        <div class="flex items-center gap-3">
-          <span class="section-no">{t("pillars.section.no")}</span>
-          <span class="h-px flex-1 bg-ink/30 max-w-[140px]"></span>
-          <span class="label text-ink-muted">{t("pillars.section.kicker")}</span>
-        </div>
-        <h2 class="display mt-6 text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.95] tracking-[-0.03em] max-w-[18ch]">
+        <h2 class="display text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.95] tracking-[-0.03em] max-w-[18ch]">
           {t("pillars.title.lead")} <span class="display-italic text-klein">{t("pillars.title.italic")}</span>
         </h2>
       </div>
       <div class="col-span-12 lg:col-span-5 lg:col-start-8">
-        <div class="border-t border-ink/30 pt-3">
-          <p class="text-[14.5px] leading-[1.65] text-ink-muted max-w-[42ch]" set:html={introHtml}></p>
-        </div>
+        <p class="text-[14.5px] leading-[1.65] text-ink-muted max-w-[42ch]" set:html={introHtml}></p>
       </div>
     </div>
 
-    <!-- Editorial list -->
-    <ol class="border-t border-ink list-none p-0">
+    <!-- List -->
+    <ol class="border-t border-ink/15 list-none p-0">
       {
         pillars.map((p, i) => (
-          <li class={"group relative grid grid-cols-12 gap-x-6 gap-y-3 lg:gap-y-0 py-8 lg:py-12 border-b " + (i === pillars.length - 1 ? "border-ink" : "border-ink/15")}>
-            <!-- Hovering klein bar on the left edge -->
+          <li class={"group relative grid grid-cols-12 gap-x-6 gap-y-3 lg:gap-y-0 py-8 lg:py-10 border-b " + (i === pillars.length - 1 ? "border-ink/15" : "border-ink/15")}>
             <span class="absolute left-0 top-0 bottom-0 w-px bg-klein scale-y-0 origin-top group-hover:scale-y-100 transition-transform duration-500 ease-out" aria-hidden="true"></span>
-
-            <!-- Number -->
-            <div class="col-span-12 lg:col-span-2">
-              <span class="block mono text-[clamp(2.4rem,4vw,3.4rem)] leading-none text-ink/30 group-hover:text-klein transition-colors duration-500">
-                {p.no}
-              </span>
-            </div>
 
             <!-- Title + kicker -->
             <div class="col-span-12 lg:col-span-5 flex flex-col gap-2.5">
-              <h3 class="display text-[clamp(1.6rem,2.6vw,2.4rem)] leading-[1.05] tracking-[-0.02em] text-ink">
+              <h3 class="display text-[clamp(1.4rem,2.2vw,2rem)] leading-[1.1] tracking-[-0.02em] text-ink">
                 {p.title}
               </h3>
               <div class="label text-ink-muted">{p.kicker}</div>
             </div>
 
             <!-- Body -->
-            <div class="col-span-12 lg:col-span-5 lg:col-start-8 flex items-start">
-              <p class="prose-serif text-[15px] leading-[1.65] text-ink-soft max-w-[44ch]">
+            <div class="col-span-12 lg:col-span-6 lg:col-start-7 flex items-start">
+              <p class="prose-serif text-[15px] leading-[1.65] text-ink-soft max-w-[48ch]">
                 {p.body}
               </p>
             </div>

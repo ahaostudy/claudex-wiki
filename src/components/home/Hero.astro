@@ -1,11 +1,9 @@
 ---
 /**
- * Hero — editorial cover spread.
+ * Hero — clean cover.
  *
- * Premise: this isn't a "feature page" hero, it's a magazine cover. One
- * giant serif headline, a single italicized accent in klein orange, an
- * editorial folio in the corners, and just enough subtitle to land the
- * pitch. Two CTAs in mono caps. No badges, no cards, no chips.
+ * Big serif wordmark with the orange italic `x`, one tight subtitle,
+ * three CTAs. No folio, no Fig. A side card, no bottom fact strip.
  */
 import { getLocaleFromUrl, localizePath, type Locale } from "~/i18n/config";
 import { useTranslations } from "~/i18n/ui";
@@ -21,14 +19,6 @@ const t = useTranslations(lang);
 // middle. We split on the {claude} placeholder so the translation file
 // owns the surrounding prose.
 const subtitleParts = t("hero.subtitle.body").split("{claude}");
-
-// Each Fig.A line may contain a {claude} placeholder; render the token
-// as a styled span where it appears, and as plain text otherwise.
-const figALines = [
-  t("hero.figA.line1").split("{claude}"),
-  t("hero.figA.line2").split("{claude}"),
-  t("hero.figA.line3").split("{claude}"),
-];
 ---
 
 <section
@@ -41,20 +31,8 @@ const figALines = [
   <div class="absolute inset-0 bg-noise pointer-events-none"></div>
 
   <div class="relative max-w-[1440px] mx-auto px-6 lg:px-10">
-    <!-- Cover folio: top corner marks ------------------------------------ -->
-    <div class="pt-10 lg:pt-14 grid grid-cols-2 items-start gap-4">
-      <div class="flex flex-col gap-1 fx-fade delay-1">
-        <span class="label text-ink">{t("hero.folio.left.top")}</span>
-        <span class="label-sm text-ink-muted">{t("hero.folio.left.bottom")}</span>
-      </div>
-      <div class="flex flex-col items-end text-right gap-1 fx-fade delay-1">
-        <span class="label text-ink-muted">{t("hero.folio.right.top")}</span>
-        <span class="label-sm text-ink-muted">{t("hero.folio.right.bottom")}</span>
-      </div>
-    </div>
-
     <!-- Cover headline ---------------------------------------------------- -->
-    <div class="pt-16 pb-12 lg:pt-24 lg:pb-20">
+    <div class="pt-20 pb-12 lg:pt-28 lg:pb-20">
       <h1 class="display leading-[0.86] tracking-[-0.045em] text-ink overflow-hidden">
         <span
           class="block fx-rise delay-2 text-[26vw] sm:text-[22vw] lg:text-[clamp(9rem,17vw,17rem)]"
@@ -63,39 +41,15 @@ const figALines = [
         </span>
       </h1>
 
-      <!-- subtitle row, asymmetric -->
-      <div class="mt-10 grid grid-cols-12 gap-x-6 gap-y-8 items-end">
-        <div class="col-span-12 lg:col-span-6 lg:col-start-1 fx-fade delay-4">
-          <p class="prose-serif text-[1.15rem] md:text-[1.4rem] leading-[1.45] tracking-[-0.005em] text-ink-soft max-w-[44ch]">
-            <em class="display-italic text-klein">{t("hero.subtitle.lead")}</em>
-            {subtitleParts[0]}<span class="mono text-ink">claude</span>{subtitleParts[1] ?? ""}
-          </p>
-        </div>
-
-        <div class="col-span-12 lg:col-span-4 lg:col-start-9 fx-fade delay-4">
-          <div class="border-t border-ink/30 pt-3 space-y-1.5">
-            <div class="label text-ink">{t("hero.figA.label")}</div>
-            <p class="text-[12.5px] mono text-ink-muted leading-relaxed">
-              {
-                figALines.map((parts, i) => (
-                  <>
-                    {parts.map((seg, j) => (
-                      <>
-                        {seg}
-                        {j < parts.length - 1 ? <span class="text-ink">claude</span> : null}
-                      </>
-                    ))}
-                    {i < figALines.length - 1 ? <br /> : null}
-                  </>
-                ))
-              }
-            </p>
-          </div>
-        </div>
+      <!-- subtitle -->
+      <div class="mt-10 fx-fade delay-4">
+        <p class="prose-serif text-[1.15rem] md:text-[1.4rem] leading-[1.45] tracking-[-0.005em] text-ink-soft max-w-[44ch]">
+          {subtitleParts[0]}<span class="mono text-ink">claude</span>{subtitleParts[1] ?? ""}
+        </p>
       </div>
 
-      <!-- CTAs / cover marks -->
-      <div class="mt-14 lg:mt-20 flex flex-wrap items-center gap-x-3 gap-y-4 fx-fade delay-5">
+      <!-- CTAs -->
+      <div class="mt-10 lg:mt-14 flex flex-wrap items-center gap-x-3 gap-y-4 fx-fade delay-5">
         <a href="#install" class="btn-ink">
           {t("hero.cta.install")}
           <span aria-hidden="true">↓</span>
@@ -110,26 +64,6 @@ const figALines = [
         >
           {t("hero.cta.github")} <span aria-hidden="true">↗</span>
         </a>
-      </div>
-    </div>
-
-    <!-- Bottom cover-strip — minimal facts, two columns -->
-    <div class="border-t border-ink/15 py-5 grid grid-cols-2 md:grid-cols-4 gap-4 fx-fade delay-6">
-      <div>
-        <div class="label-sm text-ink-muted">{t("hero.strip.bind.label")}</div>
-        <div class="mono text-[13px] text-ink mt-1">{t("hero.strip.bind.value")}</div>
-      </div>
-      <div>
-        <div class="label-sm text-ink-muted">{t("hero.strip.auth.label")}</div>
-        <div class="mono text-[13px] text-ink mt-1">{t("hero.strip.auth.value")}</div>
-      </div>
-      <div>
-        <div class="label-sm text-ink-muted">{t("hero.strip.inherits.label")}</div>
-        <div class="mono text-[13px] text-ink mt-1">{t("hero.strip.inherits.value")}</div>
-      </div>
-      <div>
-        <div class="label-sm text-ink-muted">{t("hero.strip.designed.label")}</div>
-        <div class="mono text-[13px] text-ink mt-1">{t("hero.strip.designed.value")}</div>
       </div>
     </div>
   </div>
