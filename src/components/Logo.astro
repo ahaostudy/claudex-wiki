@@ -3,8 +3,12 @@
  * claudex brand mark — "Portal Pebble".
  *
  * Asymmetric closed loop stroked with an ink → Claude-coral gradient.
- * Canonical rendition matching the favicon/icon.svg shipped in claudex/web/public/.
- * Decorative in every call site (sibling text serves as the label) — aria-hidden.
+ * Mirrors web/public/icon.svg structurally, but the dark stop reads
+ * `currentColor` so the mark stays legible against any background:
+ *   - light theme → near-black on warm white (the canonical look)
+ *   - dark theme  → warm white on near-black (auto-inverted via currentColor)
+ *
+ * The klein-orange end-stop is fixed and does the brand work in both.
  *
  * Each instance gets a unique gradient id so multiple logos on the same
  * page don't fight over a shared `#g` reference.
@@ -16,10 +20,10 @@ const { class: className = "w-5 h-5" } = Astro.props;
 const gradId = `logo-${Math.random().toString(36).slice(2, 9)}`;
 ---
 
-<svg viewBox="0 0 1024 1024" class={className} aria-hidden="true">
+<svg viewBox="0 0 1024 1024" class={`text-ink ${className}`} aria-hidden="true">
   <defs>
     <linearGradient id={gradId} x1="0.1" y1="0.1" x2="0.9" y2="0.9">
-      <stop offset="0%" stop-color="#1A1410"></stop>
+      <stop offset="0%" stop-color="currentColor"></stop>
       <stop offset="100%" stop-color="#CC785C"></stop>
     </linearGradient>
   </defs>
