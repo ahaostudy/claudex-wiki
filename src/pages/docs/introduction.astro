@@ -1,5 +1,6 @@
 ---
 import DocsLayout from "~/layouts/DocsLayout.astro";
+import Architecture from "~/components/docs/Architecture.astro";
 ---
 
 <DocsLayout
@@ -68,27 +69,19 @@ import DocsLayout from "~/layouts/DocsLayout.astro";
 
   <h2>How it fits together</h2>
 
-  <div class="not-prose my-6">
-    <div class="rounded-xl border border-line bg-paper/40 p-5 relative overflow-hidden">
-      <div class="absolute inset-0 bg-grid opacity-40 pointer-events-none"></div>
-      <pre class="relative !bg-transparent !text-ink-soft !p-0 !shadow-none !rounded-none mono text-[12px] leading-[1.65] whitespace-pre overflow-x-auto">
-┌────────────────┐    HTTPS via your tunnel    ┌──────────────────────────────────────────┐
-│ phone · laptop │ ────────────────────────▶   │ claudex server (127.0.0.1:5179)          │
-│   browser UI   │ ◀────────────────────────   │ Fastify · SQLite · WebSocket             │
-└────────────────┘     JWT + TOTP gate         │                                          │
-                                               │   spawns as subprocess ▼                 │
-                                               │  ┌────────────────────────────────────┐  │
-                                               │  │   Claude Code                      │  │
-                                               │  │   @anthropic-ai/claude-agent-sdk   │  │
-                                               │  │   · ~/.claude/ config              │  │
-                                               │  │   · MCP servers, skills, plugins   │  │
-                                               │  │   · your API creds / OAuth token   │  │
-                                               │  └──────────────┬─────────────────────┘  │
-                                               └─────────────────┼────────────────────────┘
-                                                                 ▼
-                                                       api.anthropic.com</pre>
-    </div>
-  </div>
+  <Architecture
+    clientLabel="client"
+    clientPrimary="phone · laptop"
+    clientSub="browser UI"
+    pipe="HTTPS · JWT · TOTP"
+    serverLabel="server"
+    spawns="spawns subprocess"
+    agentList={[
+      "~/.claude/ config",
+      "MCP servers · skills · plugins",
+      "your API creds / OAuth token",
+    ]}
+  />
 
   <p>
     The <em>only</em> outbound connection beyond your tunnel is the one Claude Code already made before

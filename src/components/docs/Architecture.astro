@@ -1,0 +1,93 @@
+---
+/**
+ * Architecture diagram — replaces the ASCII version in the Introduction.
+ *
+ * A single vertical stack: client card → bidirectional pipe → server card
+ * with a nested Claude Code subprocess card → outbound arrow to
+ * api.anthropic.com. Labels are passed in so each locale can translate
+ * them; the technical literals (host:port, package name, file paths) stay
+ * as-is across locales.
+ */
+interface Props {
+  clientLabel: string;
+  clientPrimary: string;
+  clientSub: string;
+  pipe: string;
+  serverLabel: string;
+  serverPrimary?: string;
+  serverSub?: string;
+  spawns: string;
+  agentTitle?: string;
+  agentSub?: string;
+  agentList: string[];
+  outbound?: string;
+}
+
+const {
+  clientLabel,
+  clientPrimary,
+  clientSub,
+  pipe,
+  serverLabel,
+  serverPrimary = "claudex server",
+  serverSub = "127.0.0.1:5179 · Fastify · SQLite · WebSocket",
+  spawns,
+  agentTitle = "Claude Code",
+  agentSub = "@anthropic-ai/claude-agent-sdk",
+  agentList,
+  outbound = "api.anthropic.com",
+} = Astro.props;
+---
+
+<div class="not-prose my-8">
+  <div class="flex flex-col items-center">
+    <!-- Client card -->
+    <div class="w-full max-w-[420px] border border-ink/15 bg-canvas px-5 py-4 text-center shadow-card">
+      <div class="label-sm text-ink-muted mb-1.5">{clientLabel}</div>
+      <div class="text-[15px] font-medium text-ink">{clientPrimary}</div>
+      <div class="mono text-[11.5px] text-ink-muted mt-1">{clientSub}</div>
+    </div>
+
+    <!-- Bidirectional pipe -->
+    <div class="my-3 flex flex-col items-center gap-1.5">
+      <svg class="text-klein" width="14" height="42" viewBox="0 0 14 42" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+        <path d="M7 2 L7 40 M2 7 L7 2 L12 7 M2 35 L7 40 L12 35" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div class="mono text-[10.5px] text-ink-muted whitespace-nowrap">{pipe}</div>
+    </div>
+
+    <!-- Server card with nested agent -->
+    <div class="w-full max-w-[480px] border border-ink/15 bg-paper/60 shadow-card">
+      <div class="px-5 py-4 text-center border-b border-ink/10">
+        <div class="label-sm text-ink-muted mb-1.5">{serverLabel}</div>
+        <div class="text-[15px] font-medium text-ink">{serverPrimary}</div>
+        <div class="mono text-[11.5px] text-ink-muted mt-1">{serverSub}</div>
+      </div>
+
+      <div class="flex flex-col items-center py-3 gap-1.5">
+        <div class="label-sm text-ink-muted">{spawns}</div>
+        <svg class="text-klein" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M7 1 L7 13 M2 8 L7 13 L12 8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+
+      <div class="mx-4 mb-4 border border-ink/15 bg-canvas">
+        <div class="px-4 py-3 text-center border-b border-ink/10">
+          <div class="text-[14px] font-medium text-ink">{agentTitle}</div>
+          <div class="mono text-[11px] text-ink-muted mt-0.5">{agentSub}</div>
+        </div>
+        <ul class="px-4 py-3 mono text-[11.5px] text-ink-soft space-y-1 list-none m-0">
+          {agentList.map((item) => <li>· {item}</li>)}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Outbound -->
+    <div class="my-3 flex flex-col items-center gap-1.5">
+      <svg class="text-klein" width="14" height="22" viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <path d="M7 1 L7 21 M2 16 L7 21 L12 16" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div class="mono text-[11px] text-ink-muted">{outbound}</div>
+    </div>
+  </div>
+</div>

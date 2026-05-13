@@ -1,5 +1,6 @@
 ---
 import DocsLayout from "~/layouts/DocsLayout.astro";
+import Architecture from "~/components/docs/Architecture.astro";
 ---
 
 <DocsLayout
@@ -65,27 +66,19 @@ import DocsLayout from "~/layouts/DocsLayout.astro";
 
   <h2>各部分如何拼起来</h2>
 
-  <div class="not-prose my-6">
-    <div class="rounded-xl border border-line bg-paper/40 p-5 relative overflow-hidden">
-      <div class="absolute inset-0 bg-grid opacity-40 pointer-events-none"></div>
-      <pre class="relative !bg-transparent !text-ink-soft !p-0 !shadow-none !rounded-none mono text-[12px] leading-[1.65] whitespace-pre overflow-x-auto">
-┌────────────────┐    HTTPS via your tunnel    ┌──────────────────────────────────────────┐
-│ phone · laptop │ ────────────────────────▶   │ claudex server (127.0.0.1:5179)          │
-│   browser UI   │ ◀────────────────────────   │ Fastify · SQLite · WebSocket             │
-└────────────────┘     JWT + TOTP gate         │                                          │
-                                               │   spawns as subprocess ▼                 │
-                                               │  ┌────────────────────────────────────┐  │
-                                               │  │   Claude Code                      │  │
-                                               │  │   @anthropic-ai/claude-agent-sdk   │  │
-                                               │  │   · ~/.claude/ config              │  │
-                                               │  │   · MCP servers, skills, plugins   │  │
-                                               │  │   · your API creds / OAuth token   │  │
-                                               │  └──────────────┬─────────────────────┘  │
-                                               └─────────────────┼────────────────────────┘
-                                                                 ▼
-                                                       api.anthropic.com</pre>
-    </div>
-  </div>
+  <Architecture
+    clientLabel="客户端"
+    clientPrimary="手机 · 笔记本"
+    clientSub="浏览器界面"
+    pipe="HTTPS · JWT · TOTP"
+    serverLabel="服务端"
+    spawns="启动子进程"
+    agentList={[
+      "~/.claude/ 配置",
+      "MCP 服务器 · skills · 插件",
+      "API 凭证 / OAuth token",
+    ]}
+  />
 
   <p>
     在你的隧道之外，<em>唯一</em>的出站连接，就是你装 claudex 之前 Claude Code 本来就会发起的那一条。

@@ -108,6 +108,7 @@ export const ui = {
 
     // Docs chrome
     "docs.breadcrumb.root": "Docs",
+    "docs.toc": "Contents",
     "docs.prev": "previous",
     "docs.next": "next",
 
@@ -239,6 +240,7 @@ export const ui = {
 
     // Docs chrome
     "docs.breadcrumb.root": "文档",
+    "docs.toc": "目录",
     "docs.prev": "上一篇",
     "docs.next": "下一篇",
 

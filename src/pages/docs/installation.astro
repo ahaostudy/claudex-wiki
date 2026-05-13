@@ -7,19 +7,12 @@ import DocsLayout from "~/layouts/DocsLayout.astro";
   description="Pick your platform, run the installer, save your recovery codes."
   section="Getting started"
 >
-  <h2>Prerequisites</h2>
-  <ul>
-    <li><strong>Node 20+</strong> and <strong>pnpm 9+</strong>.</li>
-    <li><strong>Claude Code</strong>, installed and logged in.</li>
-    <li>Either <strong>git</strong> already on PATH, or willingness to let the installer offer to install it.</li>
-  </ul>
+  <h2>One-liner</h2>
 
   <p>
-    The installer probes for each prerequisite. Anything missing is a prompt — never silent, never automatic. <code>sudo</code>
-    is opt-in.
+    The recommended path. The installer probes for everything it needs and prompts to install anything missing —
+    never silent, never automatic. <code>sudo</code> is opt-in.
   </p>
-
-  <h2>One-liner</h2>
 
   <h3>macOS / Linux</h3>
 <pre><code>curl -fsSL https://raw.githubusercontent.com/ahaostudy/claudex/main/install.sh | bash</code></pre>
@@ -73,6 +66,16 @@ import DocsLayout from "~/layouts/DocsLayout.astro";
   </table>
 
   <h2>Manual</h2>
+
+  <p>Skip the installer and wire it up yourself.</p>
+
+  <h3>Prerequisites</h3>
+  <ul>
+    <li><strong>Node 20+</strong> and <strong>pnpm 9+</strong>.</li>
+    <li><strong>Claude Code</strong>, installed and logged in.</li>
+    <li><strong>git</strong> on PATH.</li>
+  </ul>
+
 <pre><code>git clone https://github.com/ahaostudy/claudex.git
 cd claudex
 pnpm install
