@@ -5,8 +5,9 @@ import {
   localizePath,
   unlocalizePath,
   locales,
+  localeLabels,
   localeShortLabels,
-  defaultLocale,
+  htmlLang,
   type Locale,
 } from "~/i18n/config";
 import { useTranslations } from "~/i18n/ui";
@@ -61,26 +62,60 @@ const docsHref = localizePath("/docs", lang);
         {t("nav.github")} <span aria-hidden="true">↗</span>
       </a>
 
-      <div class="lang-switch flex items-center" aria-label={t("lang.switcher.aria")}>
-        {
-          locales.map((loc, i) => {
-            const href = localizePath(canonical, loc as Locale);
-            const isActive = loc === lang;
-            return (
-              <>
-                {i > 0 ? <span class="text-ink-faint mx-1.5" aria-hidden="true">·</span> : null}
-                <a
-                  href={href}
-                  hreflang={loc === defaultLocale ? "en" : "zh-CN"}
-                  class={"label-sm transition-colors " + (isActive ? "text-ink font-medium" : "text-ink-muted hover:text-ink")}
-                  aria-current={isActive ? "true" : undefined}
-                >
-                  {localeShortLabels[loc as Locale]}
-                </a>
-              </>
-            );
-          })
-        }
+      <div class="lang-dropdown" data-lang-dropdown>
+        <button
+          type="button"
+          class="lang-trigger"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-label={t("lang.switcher.aria")}
+        >
+          <span class="label-sm">{localeShortLabels[lang]}</span>
+          <svg
+            class="lang-chev"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            aria-hidden="true"
+          >
+            <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+        <ul class="lang-menu" role="listbox" aria-label={t("lang.switcher.aria")} hidden>
+          {
+            locales.map((loc) => {
+              const href = localizePath(canonical, loc as Locale);
+              const isActive = loc === lang;
+              return (
+                <li role="presentation">
+                  <a
+                    href={href}
+                    role="option"
+                    hreflang={htmlLang[loc as Locale]}
+                    aria-selected={isActive ? "true" : "false"}
+                    class={"lang-item" + (isActive ? " active" : "")}
+                  >
+                    <span class="mono lang-short">{localeShortLabels[loc as Locale]}</span>
+                    <span class="lang-full">{localeLabels[loc as Locale]}</span>
+                    {isActive ? (
+                      <svg
+                        class="lang-check"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.2"
+                        aria-hidden="true"
+                      >
+                        <path d="M5 12l5 5 9-10" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    ) : null}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
       </div>
 
       <button
@@ -104,3 +139,134 @@ const docsHref = localizePath("/docs", lang);
     </nav>
   </div>
 </header>
+
+<style>
+  .lang-dropdown {
+    position: relative;
+  }
+  .lang-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    height: 2rem;
+    padding: 0 0.5rem 0 0.65rem;
+    border-radius: 6px;
+    border: 1px solid rgb(var(--c-line));
+    color: rgb(var(--c-ink-soft));
+    background: transparent;
+    cursor: pointer;
+    transition:
+      border-color 160ms ease,
+      background-color 160ms ease,
+      color 160ms ease;
+  }
+  .lang-trigger:hover,
+  .lang-trigger[aria-expanded="true"] {
+    border-color: rgb(var(--c-line-strong));
+    background: rgb(var(--c-paper));
+    color: rgb(var(--c-ink));
+  }
+  .lang-chev {
+    width: 0.7rem;
+    height: 0.7rem;
+    transition: transform 180ms ease;
+  }
+  .lang-trigger[aria-expanded="true"] .lang-chev {
+    transform: rotate(180deg);
+  }
+
+  .lang-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 11rem;
+    margin: 0;
+    padding: 0.3rem;
+    list-style: none;
+    background: rgb(var(--c-canvas));
+    border: 1px solid rgb(var(--c-line-strong));
+    border-radius: 8px;
+    box-shadow: 0 12px 28px -12px rgb(0 0 0 / 0.18);
+    z-index: 50;
+  }
+  .lang-menu[hidden] {
+    display: none;
+  }
+  .lang-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    height: 2rem;
+    padding: 0 0.6rem;
+    border-radius: 5px;
+    color: rgb(var(--c-ink-muted));
+    text-decoration: none;
+    transition:
+      background-color 140ms ease,
+      color 140ms ease;
+  }
+  .lang-item:hover,
+  .lang-item:focus-visible {
+    background: rgb(var(--c-paper));
+    color: rgb(var(--c-ink));
+    outline: none;
+  }
+  .lang-item.active {
+    color: rgb(var(--c-ink));
+  }
+  .lang-short {
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    color: rgb(var(--c-ink-muted));
+    min-width: 1.5rem;
+    text-transform: uppercase;
+  }
+  .lang-item.active .lang-short {
+    color: rgb(var(--c-klein));
+  }
+  .lang-full {
+    font-size: 13px;
+    line-height: 1;
+  }
+  .lang-check {
+    width: 0.85rem;
+    height: 0.85rem;
+    margin-left: auto;
+    color: rgb(var(--c-klein));
+  }
+</style>
+
+<script is:inline>
+  document.querySelectorAll("[data-lang-dropdown]").forEach((root) => {
+    const trigger = root.querySelector(".lang-trigger");
+    const menu = root.querySelector(".lang-menu");
+    if (!trigger || !menu) return;
+
+    const close = () => {
+      trigger.setAttribute("aria-expanded", "false");
+      menu.setAttribute("hidden", "");
+    };
+    const open = () => {
+      trigger.setAttribute("aria-expanded", "true");
+      menu.removeAttribute("hidden");
+    };
+
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const expanded = trigger.getAttribute("aria-expanded") === "true";
+      if (expanded) close();
+      else open();
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!root.contains(e.target)) close();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        close();
+        trigger.focus();
+      }
+    });
+  });
+</script>
