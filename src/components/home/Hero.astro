@@ -29,30 +29,26 @@ const subtitleParts = t("hero.subtitle.body").split("{claude}");
   <div class="absolute inset-0 bg-noise pointer-events-none"></div>
 
   <div class="relative max-w-[1440px] mx-auto px-6 lg:px-10">
-    <div class="pt-20 pb-16 lg:pt-28 lg:pb-24 flex flex-col items-center text-center">
-      <!-- Big brand mark -->
-      <div class="fx-fade delay-1 mb-10 lg:mb-14">
-        <Logo class="w-32 h-32 sm:w-40 sm:h-40 lg:w-56 lg:h-56" />
+    <div class="pt-24 pb-20 lg:pt-40 lg:pb-32">
+      <!-- Logo + wordmark, side by side -->
+      <div class="flex items-center gap-4 sm:gap-6 lg:gap-10 fx-rise delay-2">
+        <Logo class="w-[15vw] h-[15vw] sm:w-[13vw] sm:h-[13vw] lg:w-[clamp(7rem,11vw,11rem)] lg:h-[clamp(7rem,11vw,11rem)] shrink-0" />
+        <h1 class="display leading-[0.86] tracking-[-0.045em] text-ink overflow-hidden flex-1 min-w-0">
+          <span class="block text-[18vw] sm:text-[16vw] lg:text-[clamp(7rem,13vw,13rem)]">
+            Claude<span class="display-italic text-klein">x</span><span class="text-ink not-italic">.</span>
+          </span>
+        </h1>
       </div>
 
-      <!-- Wordmark -->
-      <h1 class="display leading-[0.86] tracking-[-0.045em] text-ink overflow-hidden w-full">
-        <span
-          class="block fx-rise delay-2 text-[22vw] sm:text-[20vw] lg:text-[clamp(8rem,15vw,15rem)]"
-        >
-          Claude<span class="display-italic text-klein">x</span><span class="text-ink not-italic">.</span>
-        </span>
-      </h1>
-
       <!-- subtitle -->
-      <div class="mt-10 fx-fade delay-4 w-full flex justify-center">
-        <p class="prose-serif text-[1.15rem] md:text-[1.4rem] leading-[1.45] tracking-[-0.005em] text-ink-soft max-w-[44ch]">
+      <div class="mt-12 lg:mt-20 fx-fade delay-4">
+        <p class="prose-serif text-[1.15rem] md:text-[1.4rem] leading-[1.5] tracking-[-0.005em] text-ink-soft max-w-[48ch]">
           {subtitleParts[0]}<span class="mono text-ink">claude</span>{subtitleParts[1] ?? ""}
         </p>
       </div>
 
       <!-- CTAs -->
-      <div class="mt-10 lg:mt-14 flex flex-wrap items-center justify-center gap-x-3 gap-y-4 fx-fade delay-5">
+      <div class="mt-10 lg:mt-14 flex flex-wrap items-center gap-x-3 gap-y-4 fx-fade delay-5">
         <a href="#install" class="btn-ink">
           {t("hero.cta.install")}
           <span aria-hidden="true">↓</span>
