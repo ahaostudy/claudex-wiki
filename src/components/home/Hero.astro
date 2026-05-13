@@ -2,9 +2,10 @@
 /**
  * Hero — clean cover.
  *
- * Big serif wordmark with the orange italic `x`, one tight subtitle,
- * three CTAs. No folio, no Fig. A side card, no bottom fact strip.
+ * A large brand mark up top, the wordmark "Claude𝑥." underneath, one
+ * tight subtitle, three CTAs.
  */
+import Logo from "~/components/Logo.astro";
 import { getLocaleFromUrl, localizePath, type Locale } from "~/i18n/config";
 import { useTranslations } from "~/i18n/ui";
 
@@ -15,9 +16,6 @@ interface Props {
 const lang = Astro.props.lang ?? getLocaleFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-// Build the subtitle body with a styled `claude` mono token in the
-// middle. We split on the {claude} placeholder so the translation file
-// owns the surrounding prose.
 const subtitleParts = t("hero.subtitle.body").split("{claude}");
 ---
 
@@ -31,11 +29,16 @@ const subtitleParts = t("hero.subtitle.body").split("{claude}");
   <div class="absolute inset-0 bg-noise pointer-events-none"></div>
 
   <div class="relative max-w-[1440px] mx-auto px-6 lg:px-10">
-    <!-- Cover headline ---------------------------------------------------- -->
-    <div class="pt-20 pb-12 lg:pt-28 lg:pb-20">
+    <div class="pt-16 pb-12 lg:pt-24 lg:pb-20">
+      <!-- Big brand mark -->
+      <div class="fx-fade delay-1 mb-8 lg:mb-12">
+        <Logo class="w-24 h-24 sm:w-28 sm:h-28 lg:w-36 lg:h-36" />
+      </div>
+
+      <!-- Wordmark -->
       <h1 class="display leading-[0.86] tracking-[-0.045em] text-ink overflow-hidden">
         <span
-          class="block fx-rise delay-2 text-[26vw] sm:text-[22vw] lg:text-[clamp(9rem,17vw,17rem)]"
+          class="block fx-rise delay-2 text-[22vw] sm:text-[20vw] lg:text-[clamp(8rem,15vw,15rem)]"
         >
           Claude<span class="display-italic text-klein">x</span><span class="text-ink not-italic">.</span>
         </span>

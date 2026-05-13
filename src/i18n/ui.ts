@@ -13,7 +13,6 @@ export const ui = {
     "site.description":
       "A self-hosted browser cockpit for the claude CLI on your own machine. Phone-first, your keys, your diffs.",
 
-    "nav.index": "Index",
     "nav.docs": "Docs",
     "nav.github": "GitHub",
 
@@ -145,7 +144,6 @@ export const ui = {
     "site.description":
       "自托管在你机器上的 claude CLI 浏览器驾驶舱。手机优先，密钥归你，diff 归你。",
 
-    "nav.index": "首页",
     "nav.docs": "文档",
     "nav.github": "GitHub",
 

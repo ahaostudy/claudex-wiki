@@ -86,6 +86,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    overflow-x: clip;
     transition:
       background-color 220ms ease,
       color 220ms ease;
@@ -95,6 +96,7 @@
     margin: 0;
     background: rgb(var(--c-canvas));
     color: rgb(var(--c-ink));
+    overflow-x: clip;
     transition:
       background-color 220ms ease,
       color 220ms ease;

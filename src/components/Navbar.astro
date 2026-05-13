@@ -24,7 +24,6 @@ const t = useTranslations(lang);
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 const canonical = unlocalizePath(path) || "/";
 const inDocs = canonical.startsWith("/docs");
-const onIndex = canonical === "/" && !inDocs;
 
 const homeHref = localizePath("/", lang);
 const docsHref = localizePath("/docs", lang);
@@ -37,13 +36,7 @@ const docsHref = localizePath("/docs", lang);
       <span class="mono text-[12px] tracking-tight">claudex</span>
     </a>
 
-    <nav class="ml-auto flex items-center gap-6 md:gap-8">
-      <a
-        href={homeHref}
-        class={"label-sm ed-link " + (onIndex ? "active" : "text-ink-muted")}
-      >
-        {t("nav.index")}
-      </a>
+    <nav class="ml-auto flex items-center gap-4 md:gap-8">
       <a
         href={docsHref}
         class={"label-sm ed-link " + (inDocs ? "active" : "text-ink-muted")}
