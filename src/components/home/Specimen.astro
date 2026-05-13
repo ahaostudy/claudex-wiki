@@ -2,11 +2,11 @@
 /**
  * Specimen — product as the centerpiece.
  *
- * Two-row composition. Row 1: iPhone front-and-center with editorial
- * annotations on the margins, drawn as the actual claudex chat (live chip,
- * plan rail, permission card, queued composer). Row 2: full-width desktop
- * band — real sidebar + sessions list with project groups, diff stats,
- * status badges. Both rows are the actual product surface, not placeholders.
+ * Two-row composition. Row 1: iPhone front-and-center, drawn as the actual
+ * claudex chat (live dot header, ink bubbles, claude tool-call pills, klein
+ * edit card). Row 2: full-width desktop band with the real sidebar +
+ * sessions list. On mobile the desktop block becomes horizontal-scroll
+ * so it never gets squeezed.
  */
 ---
 
@@ -18,7 +18,7 @@
   <div class="absolute inset-0 bg-grid opacity-30 pointer-events-none"></div>
 
   <div class="relative max-w-[1440px] mx-auto px-6 lg:px-10 pt-20 pb-24 lg:pt-28 lg:pb-32">
-    <!-- Section header / editorial slug -->
+    <!-- Section header -->
     <div class="grid grid-cols-12 gap-6 items-end mb-14 lg:mb-20">
       <div class="col-span-12 lg:col-span-6">
         <div class="flex items-center gap-3">
@@ -47,44 +47,42 @@
     <!-- ROW 1 — iPhone hero with editorial annotations       -->
     <!-- ==================================================== -->
     <div class="relative">
-      <!-- Editorial cross-hairs at the corners -->
       <span class="hidden lg:block absolute -top-2 -left-2 w-3 h-3 border-t border-l border-klein"></span>
       <span class="hidden lg:block absolute -top-2 -right-2 w-3 h-3 border-t border-r border-klein"></span>
       <span class="hidden lg:block absolute -bottom-2 -left-2 w-3 h-3 border-b border-l border-klein"></span>
       <span class="hidden lg:block absolute -bottom-2 -right-2 w-3 h-3 border-b border-r border-klein"></span>
 
       <div class="grid grid-cols-12 gap-x-8 gap-y-12 items-center">
-        <!-- LEFT: editorial annotations ------------------------------- -->
+        <!-- LEFT: editorial annotations -->
         <div class="col-span-12 lg:col-span-3 order-2 lg:order-1 space-y-7">
           <div>
             <div class="label text-klein">Fig. 01</div>
             <div class="mt-2 text-[13.5px] leading-[1.6] text-ink-soft">
-              <strong class="text-ink font-medium">Permission card.</strong>
-              Not a modal dump — an inline card with blast-radius
-              summary, diff stat, and one tap to allow.
+              <strong class="text-ink font-medium">Tool calls collapse.</strong>
+              Each read, grep, or bash becomes a one-line pill — tap to
+              expand the full output, leave it collapsed for skim mode.
             </div>
           </div>
           <div>
             <div class="label text-klein">Fig. 02</div>
             <div class="mt-2 text-[13.5px] leading-[1.6] text-ink-soft">
-              <strong class="text-ink font-medium">Live chip.</strong>
-              The session is alive on your laptop — the chip turns when
-              claude is thinking, paused, or done.
+              <strong class="text-ink font-medium">Inline diff.</strong>
+              The edit card opens a real diff with Accept · Reject right
+              there. No detour to a separate review page for routine work.
             </div>
           </div>
           <div>
             <div class="label text-klein">Fig. 03</div>
             <div class="mt-2 text-[13.5px] leading-[1.6] text-ink-soft">
-              <strong class="text-ink font-medium">Queue a follow-up.</strong>
-              Type, send, swipe away. Three more prompts can stack
-              behind the active turn.
+              <strong class="text-ink font-medium">Slash · @ rail.</strong>
+              A sticky chip strip above the keyboard. Triggers slash
+              commands, file pickers, attachments, /btw side chats.
             </div>
           </div>
         </div>
 
-        <!-- CENTER: phone hero device --------------------------------- -->
+        <!-- CENTER: phone hero device -->
         <div class="col-span-12 lg:col-span-6 order-1 lg:order-2 relative">
-          <!-- Backplate — abstract paper card peeking behind the phone -->
           <div
             class="absolute -inset-x-4 lg:inset-x-10 inset-y-8 lg:inset-y-12 -rotate-1 bg-paper border border-ink/10 shadow-card pointer-events-none"
             aria-hidden="true"
@@ -107,82 +105,160 @@
                 <div class="iphone-home"></div>
 
                 <div class="iphone-content flex flex-col bg-canvas">
-                  <!-- Header (matches real chat: back, title + branch + turns, live chip) -->
-                  <div class="px-4 pt-3 pb-2 border-b border-ink/10 bg-canvas/95 backdrop-blur flex items-center gap-2">
-                    <button aria-label="back" class="w-7 h-7 inline-flex items-center justify-center">
-                      <svg viewBox="0 0 24 24" class="w-4 h-4 text-ink-soft" fill="none" stroke="currentColor" stroke-width="1.6">
-                        <path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <!-- Top bar: back · live + title · ctx ring · ⋯ -->
+                  <div class="px-3 py-2 border-b border-ink/10 flex items-center gap-2 bg-canvas/95 backdrop-blur">
+                    <button aria-label="back" class="h-7 w-7 inline-flex items-center justify-center bg-paper border border-ink/10 rounded-md">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3.5 h-3.5 text-ink-soft">
+                        <path d="M15 6l-6 6 6 6" stroke-linecap="round"></path>
                       </svg>
                     </button>
                     <div class="flex-1 min-w-0">
-                      <div class="text-[12.5px] font-medium leading-tight truncate">Fix hydration mismatch on marketing</div>
-                      <div class="mono text-[10px] text-ink-muted truncate">spindle · claude/fix-hydration · 12 turns</div>
+                      <div class="flex items-center gap-1.5">
+                        <span class="h-1.5 w-1.5 rounded-full bg-warn" style="box-shadow:0 0 0 2.5px rgba(217,119,6,0.18)"></span>
+                        <div class="text-[12px] font-medium leading-tight truncate text-ink">Fix hydration mismatch on…</div>
+                      </div>
+                      <div class="flex items-center gap-1 text-[10px] text-ink-muted mt-0.5">
+                        <span class="mono">spindle</span>
+                        <span>·</span>
+                        <span class="mono">opus-4.7</span>
+                        <span>·</span>
+                        <span>ask</span>
+                      </div>
                     </div>
-                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 mono text-[9.5px] uppercase tracking-wider text-klein-ink border border-klein/40 bg-klein/10">
-                      <span class="h-1 w-1 rounded-full bg-klein"></span>live
-                    </span>
+                    <!-- context window ring -->
+                    <svg width="20" height="20" aria-hidden="true">
+                      <circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" class="text-ink/15" stroke-width="2.2"></circle>
+                      <circle cx="10" cy="10" r="8" fill="none" stroke="#CC785C" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="50.27" stroke-dashoffset="34.18" transform="rotate(-90 10 10)"></circle>
+                    </svg>
+                    <button aria-label="more" class="h-7 w-7 inline-flex items-center justify-center bg-paper border border-ink/10 rounded-md">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3.5 h-3.5 text-ink-soft">
+                        <circle cx="5" cy="12" r="1.4"></circle>
+                        <circle cx="12" cy="12" r="1.4"></circle>
+                        <circle cx="19" cy="12" r="1.4"></circle>
+                      </svg>
+                    </button>
                   </div>
 
-                  <!-- Transcript -->
-                  <div class="flex-1 overflow-hidden px-3 py-3 space-y-3 text-[12.5px]">
-                    <div class="border-l-2 border-ink/20 pl-3">
-                      <div class="label-sm text-ink-muted mb-1">You · 9:42</div>
-                      <div class="text-ink-soft leading-relaxed">
-                        the &lt;time&gt; element is rendering without a client-side guard. fix it.
+                  <!-- Thread -->
+                  <div class="flex-1 overflow-hidden px-3 py-3 space-y-3.5">
+                    <!-- user bubble -->
+                    <div class="flex justify-end">
+                      <div class="max-w-[88%] bg-ink text-canvas rounded-[12px] rounded-br-[4px] px-3 py-2 text-[12.5px] leading-[1.5] shadow-card">
+                        the <span class="mono bg-canvas/15 px-1 rounded-[3px]">&lt;time&gt;</span> element is throwing hydration warnings. take a look?
                       </div>
                     </div>
 
-                    <!-- Plan strip (matches real chat plan rail) -->
+                    <!-- claude turn -->
                     <div>
-                      <div class="label-sm text-ink-muted mb-1">Claude · plan</div>
-                      <ol class="space-y-1 list-none text-ink-soft leading-relaxed mono text-[11.5px]">
-                        <li>1 ─ read app/components/RelativeTime.tsx</li>
-                        <li>2 ─ wrap in useHasMounted</li>
-                        <li>3 ─ snapshot tests</li>
-                      </ol>
-                    </div>
-
-                    <!-- Permission card -->
-                    <div class="relative border border-klein bg-klein/[0.08] px-3 py-2.5 corner-anchor">
-                      <div class="flex items-center gap-2 mb-1.5">
-                        <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-klein" fill="none" stroke="currentColor" stroke-width="2">
-                          <circle cx="8" cy="14" r="4"></circle>
-                          <path d="M11 13l9-9M16 8l3 3" stroke-linecap="round"></path>
+                      <div class="flex items-center gap-1.5 mb-1.5">
+                        <svg viewBox="0 0 1024 1024" class="w-3.5 h-3.5 text-ink" aria-hidden="true">
+                          <defs>
+                            <linearGradient id="phone-claude-mark" x1="0.1" y1="0.1" x2="0.9" y2="0.9">
+                              <stop offset="0%" stop-color="currentColor"></stop>
+                              <stop offset="100%" stop-color="#CC785C"></stop>
+                            </linearGradient>
+                          </defs>
+                          <path
+                            d="M 512 200 C 300 210, 200 380, 220 560 C 240 740, 460 830, 660 770 C 840 710, 880 480, 780 320 C 700 210, 620 200, 512 200 Z"
+                            fill="none" stroke="url(#phone-claude-mark)" stroke-width="100"
+                            stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg>
-                        <div class="label text-klein-ink">Needs your approval</div>
+                        <span class="mono text-[10px] text-ink-muted">claude · opus-4.7</span>
                       </div>
-                      <div class="text-[12.5px] font-medium text-ink leading-snug">
-                        Edit <span class="mono">app/components/RelativeTime.tsx</span>
+                      <div class="text-[12.5px] leading-[1.55] text-ink">
+                        Hydration mismatches on <span class="mono text-[11px]">&lt;time&gt;</span> almost always come from locale-formatted dates. Let me check.
                       </div>
-                      <div class="mt-1 mono text-[11px] text-ink-muted">
-                        <span class="text-success">+24</span>
-                        <span class="text-danger ml-1">−6</span>
-                        <span class="ml-1.5">· 1 file · scoped to repo</span>
-                      </div>
-                      <div class="mt-2 grid grid-cols-2 gap-1.5">
-                        <button class="h-8 bg-ink text-canvas mono text-[11px] uppercase tracking-wider">Allow</button>
-                        <button class="h-8 border border-ink/30 mono text-[11px] uppercase tracking-wider text-ink-soft">Review</button>
-                      </div>
-                    </div>
 
-                    <div class="flex items-center gap-1.5 px-1 pt-1">
-                      <span class="h-1.5 w-1.5 rounded-full bg-klein thinking-dot"></span>
-                      <span class="h-1.5 w-1.5 rounded-full bg-klein thinking-dot"></span>
-                      <span class="h-1.5 w-1.5 rounded-full bg-klein thinking-dot"></span>
-                      <span class="label-sm text-ink-muted ml-1">claude is thinking</span>
+                      <!-- tool call pills -->
+                      <div class="relative pl-3 mt-2">
+                        <span class="absolute left-[2px] top-2 bottom-2 w-px bg-ink/15"></span>
+                        <div class="flex items-center gap-1.5 py-1 px-1.5 bg-paper border border-ink/10 rounded-md">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-2.5 h-2.5 text-ink-muted"><path d="M9 6l6 6-6 6"/></svg>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3 h-3 text-ink-soft"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/></svg>
+                          <span class="mono text-[10.5px] text-ink-soft">read</span>
+                          <span class="mono text-[10px] text-ink-muted truncate flex-1">app/(marketing)/page.tsx</span>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-3 h-3 text-success"><path d="M5 12l5 5 9-10"/></svg>
+                        </div>
+                      </div>
+                      <div class="relative pl-3 mt-1.5">
+                        <span class="absolute left-[2px] top-2 bottom-2 w-px bg-ink/15"></span>
+                        <div class="flex items-center gap-1.5 py-1 px-1.5 bg-paper border border-ink/10 rounded-md">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-2.5 h-2.5 text-ink-muted"><path d="M9 6l6 6-6 6"/></svg>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3 h-3 text-ink-soft"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                          <span class="mono text-[10.5px] text-ink-soft">grep</span>
+                          <span class="mono text-[10px] text-ink-muted truncate flex-1">"Intl.DateTimeFormat"</span>
+                          <span class="mono text-[10px] text-ink-muted">4</span>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-3 h-3 text-success"><path d="M5 12l5 5 9-10"/></svg>
+                        </div>
+                      </div>
+
+                      <div class="text-[12.5px] leading-[1.55] text-ink mt-2">
+                        Found it — <span class="mono text-[11px]">lib/date.ts</span> uses the user's locale, which differs server vs client. Pinning to <span class="mono text-[11px]">"en-US"</span> on the server fixes it.
+                      </div>
+
+                      <!-- klein edit card with mini diff -->
+                      <div class="relative pl-3 mt-2">
+                        <span class="absolute left-[2px] top-2 bottom-2 w-px bg-klein"></span>
+                        <div class="flex items-center gap-1.5 py-1 px-1.5 bg-klein/[0.08] border border-klein/40 rounded-md">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-2.5 h-2.5 text-klein"><path d="M9 6l6 6-6 6"/></svg>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3 h-3 text-klein-ink"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/></svg>
+                          <span class="mono text-[10.5px] text-klein-ink">edit</span>
+                          <span class="mono text-[10px] text-ink-muted truncate flex-1">lib/date.ts</span>
+                          <span class="mono text-[10px] text-success">+5</span>
+                          <span class="mono text-[10px] text-danger">−3</span>
+                        </div>
+                        <div class="mt-1 border border-ink/10 bg-canvas overflow-hidden rounded-md">
+                          <div class="bg-paper text-ink-muted mono text-[9.5px] px-2 py-0.5 border-b border-ink/10">
+                            @@ lib/date.ts
+                          </div>
+                          <div class="mono text-[10px] leading-[1.45]">
+                            <div class="flex bg-danger/10">
+                              <span class="text-center w-3 text-ink-muted">−</span>
+                              <span class="px-1 truncate">return new Intl.DateTimeFormat(locale, OPTS)…</span>
+                            </div>
+                            <div class="flex bg-success/10">
+                              <span class="text-center w-3 text-ink-muted">+</span>
+                              <span class="px-1 truncate">const safe = typeof window === "undefined" ? "en-US" : locale;</span>
+                            </div>
+                          </div>
+                          <div class="flex items-center gap-1.5 px-2 py-1.5 bg-paper border-t border-ink/10">
+                            <button class="h-6 px-2 bg-success text-canvas mono text-[10px] uppercase tracking-wider rounded-sm">Accept</button>
+                            <button class="h-6 px-2 bg-canvas border border-ink/20 mono text-[10px] uppercase tracking-wider text-ink-soft rounded-sm">Reject</button>
+                            <span class="ml-auto label-sm text-ink-muted">awaiting you…</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+
+                  <!-- chip rail -->
+                  <div class="px-2.5 pt-1.5 pb-1 flex items-center gap-1 overflow-x-auto no-scrollbar">
+                    <button class="h-6 px-2 border border-ink/15 bg-canvas mono text-[10px] flex items-center gap-1 rounded-full whitespace-nowrap">
+                      <span class="text-klein">/</span>commands
+                    </button>
+                    <button class="h-6 px-2 border border-ink/15 bg-canvas mono text-[10px] flex items-center gap-1 rounded-full whitespace-nowrap">
+                      <span class="text-klein">@</span>files
+                    </button>
+                    <button class="h-6 px-2 border border-ink/15 bg-canvas mono text-[10px] rounded-full whitespace-nowrap">attach</button>
+                    <button class="h-6 px-2 border border-ink/15 bg-canvas mono text-[10px] rounded-full whitespace-nowrap">/btw</button>
+                    <button class="h-6 px-2 border border-ink/15 bg-canvas mono text-[10px] rounded-full whitespace-nowrap">/compact</button>
                   </div>
 
                   <!-- Composer -->
-                  <div class="border-t border-ink/10 p-2 flex items-center gap-2">
-                    <div class="flex-1 h-9 border border-ink/15 bg-paper px-3 flex items-center text-[12px] text-ink-faint">
-                      Reply or queue a follow-up…
+                  <div class="px-2.5 pt-1 pb-2 border-t border-ink/10 mt-1">
+                    <div class="rounded-[10px] border border-ink/15 bg-paper p-1.5">
+                      <div class="text-[11.5px] text-ink-soft px-1.5 py-0.5 leading-[1.4]">
+                        Looks good. After this, run <span class="mono text-[10.5px]">vitest</span> and open a PR.
+                      </div>
+                      <div class="flex items-center px-1.5 mt-0.5">
+                        <span class="mono text-[9.5px] text-ink-muted">Opus 4.7 · ask</span>
+                        <button aria-label="send" class="ml-auto h-6 w-6 bg-klein text-canvas inline-flex items-center justify-center rounded-full">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="w-3 h-3">
+                            <path d="M5 12l7-7 7 7M12 5v14" stroke-linecap="round" stroke-linejoin="round"></path>
+                          </svg>
+                        </button>
+                      </div>
                     </div>
-                    <button aria-label="send" class="w-9 h-9 bg-ink text-canvas inline-flex items-center justify-center">
-                      <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12l14-7-5 14-3-6-6-1z" stroke-linejoin="round"></path>
-                      </svg>
-                    </button>
                   </div>
                 </div>
               </div>
@@ -190,7 +266,7 @@
           </div>
         </div>
 
-        <!-- RIGHT: spec sheet ----------------------------------------- -->
+        <!-- RIGHT: spec sheet -->
         <div class="col-span-12 lg:col-span-3 order-3 space-y-6">
           <div>
             <div class="label text-ink-muted">Spec sheet</div>
@@ -225,7 +301,6 @@
     <!-- ROW 2 — Desktop band                                 -->
     <!-- ==================================================== -->
     <div class="mt-20 lg:mt-28">
-      <!-- Sub-header for the desktop strip -->
       <div class="grid grid-cols-12 gap-6 items-end mb-8">
         <div class="col-span-12 lg:col-span-6">
           <div class="flex items-center gap-3">
@@ -242,278 +317,257 @@
             Sidebar with projects and saved filters. A grouped session list
             with branch, diff stats, and live status. The same data your
             phone sees, laid out for a 27-inch screen.
+            <span class="lg:hidden block mt-2 label-sm text-klein">← swipe →</span>
           </p>
         </div>
       </div>
 
-      <!-- Desktop device with REAL content ---------------------------- -->
-      <div class="desktop fx-fade delay-5">
-        <div class="desktop-chrome">
-          <span class="dot" style="background:#ff5f57"></span>
-          <span class="dot" style="background:#febc2e"></span>
-          <span class="dot" style="background:#28c840"></span>
-          <span class="ml-3 mono text-[11px] text-canvas/70 truncate">
-            claudex.local — 127.0.0.1:5179/sessions
-          </span>
-        </div>
+      <!-- Horizontal-scroll wrapper so mobile gets a full-fidelity preview
+           it can swipe through, instead of a squashed grid -->
+      <div class="-mx-6 lg:mx-0 px-6 lg:px-0 overflow-x-auto desktop-scroll">
+        <div class="desktop fx-fade delay-5 min-w-[920px]">
+          <div class="desktop-chrome">
+            <span class="dot" style="background:#ff5f57"></span>
+            <span class="dot" style="background:#febc2e"></span>
+            <span class="dot" style="background:#28c840"></span>
+            <span class="ml-3 mono text-[11px] text-canvas/70 truncate">
+              claudex.local — 127.0.0.1:5179/sessions
+            </span>
+          </div>
 
-        <div class="desktop-inner grid grid-cols-[220px_minmax(0,1fr)] min-h-[460px]">
-          <!-- ===== Sidebar ===== -->
-          <aside class="border-r border-ink/10 bg-paper/40 flex flex-col">
-            <!-- Brand row -->
-            <div class="px-4 py-3.5 flex items-center gap-2 border-b border-ink/5">
-              <svg viewBox="0 0 1024 1024" class="w-5 h-5 text-ink" aria-hidden="true">
-                <defs>
-                  <linearGradient id="d-logo" x1="0.1" y1="0.1" x2="0.9" y2="0.9">
-                    <stop offset="0%" stop-color="currentColor"></stop>
-                    <stop offset="100%" stop-color="#CC785C"></stop>
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M 512 200 C 300 210, 200 380, 220 560 C 240 740, 460 830, 660 770 C 840 710, 880 480, 780 320 C 700 210, 620 200, 512 200 Z"
-                  fill="none"
-                  stroke="url(#d-logo)"
-                  stroke-width="100"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                ></path>
-              </svg>
-              <span class="mono text-[12px] text-ink">claudex</span>
-              <span class="ml-auto inline-flex items-center gap-1 px-1.5 py-0.5 mono text-[9px] uppercase tracking-wider text-klein-ink border border-klein/30 bg-klein/10">
-                <span class="h-1 w-1 rounded-full bg-klein"></span>3 live
-              </span>
-            </div>
-
-            <!-- Primary nav -->
-            <div class="px-2.5 py-3 space-y-0.5">
-              <button class="w-full flex items-center gap-2 px-2 h-7 bg-canvas border border-ink/10 text-[12px] text-ink shadow-card">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3.5 h-3.5"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-                Sessions
-                <span class="ml-auto mono text-[10px] text-ink-muted">6</span>
-              </button>
-              <button class="w-full flex items-center gap-2 px-2 h-7 text-[12px] text-ink-soft hover:bg-canvas/60">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3.5 h-3.5"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
-                Routines
-                <span class="ml-auto mono text-[10px] text-ink-muted">3</span>
-              </button>
-              <button class="w-full flex items-center gap-2 px-2 h-7 text-[12px] text-ink-soft hover:bg-canvas/60">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3.5 h-3.5"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M6 9v6a3 3 0 0 0 3 3h6"/></svg>
-                Worktrees
-                <span class="ml-auto mono text-[10px] text-ink-muted">4</span>
-              </button>
-              <button class="w-full flex items-center gap-2 px-2 h-7 text-[12px] text-ink-soft hover:bg-canvas/60">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3.5 h-3.5"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 3h16l-2-3Z"/></svg>
-                Alerts
-                <span class="ml-auto inline-flex items-center justify-center h-3.5 w-3.5 rounded-full bg-danger text-canvas mono text-[9px]">2</span>
-              </button>
-            </div>
-
-            <div class="mx-3 my-1 h-px bg-ink/10"></div>
-
-            <!-- Projects -->
-            <div class="px-3 pt-2 label-sm text-ink-muted">Projects</div>
-            <div class="px-2.5 pt-1.5 space-y-0.5">
-              <button class="w-full flex items-center gap-2 px-2 h-6 hover:bg-canvas/60">
-                <span class="h-1.5 w-1.5 rounded-full bg-klein"></span>
-                <span class="mono text-[11.5px] text-ink-soft">spindle</span>
-                <span class="ml-auto mono text-[10px] text-ink-muted">2</span>
-              </button>
-              <button class="w-full flex items-center gap-2 px-2 h-6 hover:bg-canvas/60">
-                <span class="h-1.5 w-1.5 rounded-full bg-klein"></span>
-                <span class="mono text-[11.5px] text-ink-soft">ember-api</span>
-                <span class="ml-auto mono text-[10px] text-ink-muted">2</span>
-              </button>
-              <button class="w-full flex items-center gap-2 px-2 h-6 hover:bg-canvas/60">
-                <span class="h-1.5 w-1.5 rounded-full bg-klein/60"></span>
-                <span class="mono text-[11.5px] text-ink-soft">lumen</span>
-                <span class="ml-auto mono text-[10px] text-ink-muted">1</span>
-              </button>
-              <button class="w-full flex items-center gap-2 px-2 h-6 hover:bg-canvas/60">
-                <span class="h-1.5 w-1.5 rounded-full bg-ink/30"></span>
-                <span class="mono text-[11.5px] text-ink-soft">postmark</span>
-                <span class="ml-auto mono text-[10px] text-ink-muted">1</span>
-              </button>
-            </div>
-
-            <!-- User pill -->
-            <div class="mt-auto p-3 border-t border-ink/10 flex items-center gap-2.5">
-              <div class="h-7 w-7 rounded-full bg-ink text-canvas flex items-center justify-center text-[11px] font-medium">H</div>
-              <div class="min-w-0 flex-1">
-                <div class="text-[11.5px] font-medium truncate text-ink">Hao Wu</div>
-                <div class="text-[10px] text-ink-muted truncate">Max · 2FA on</div>
-              </div>
-            </div>
-          </aside>
-
-          <!-- ===== Main pane: Sessions list ===== -->
-          <section class="min-w-0 flex flex-col">
-            <!-- Top bar -->
-            <div class="px-5 py-3 border-b border-ink/10 flex items-center gap-3">
-              <div>
-                <div class="label-sm text-ink-muted">Sessions</div>
-                <div class="display text-[16px] leading-tight mt-0.5">All projects</div>
-              </div>
-              <div class="flex-1 max-w-[280px] mx-auto flex items-center gap-2 h-7 px-2.5 bg-paper border border-ink/15">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3 h-3 text-ink-muted"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-                <span class="text-[11px] text-ink-muted">Search sessions, files…</span>
-                <span class="ml-auto mono text-[10px] text-ink-faint">⌘K</span>
-              </div>
-              <button class="inline-flex items-center gap-1 h-7 px-2.5 bg-klein text-canvas text-[11.5px] font-medium">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="w-3 h-3"><path d="M12 5v14M5 12h14"/></svg>
-                New session
-              </button>
-            </div>
-
-            <!-- Filter chips -->
-            <div class="px-5 py-2.5 border-b border-ink/10 flex items-center gap-1.5 overflow-x-auto">
-              <span class="label-sm text-ink-muted mr-1">Filter</span>
-              <span class="inline-flex items-center gap-1 h-5 px-2 rounded-full bg-ink text-canvas text-[10px] mono">
-                All <span class="opacity-70">6</span>
-              </span>
-              <span class="inline-flex items-center gap-1 h-5 px-2 rounded-full border border-ink/20 bg-canvas text-ink-soft text-[10px]">
-                <span class="h-1 w-1 rounded-full bg-success"></span>Running
-              </span>
-              <span class="inline-flex items-center gap-1 h-5 px-2 rounded-full border border-ink/20 bg-canvas text-ink-soft text-[10px]">
-                <span class="h-1 w-1 rounded-full bg-warn"></span>Needs approval 2
-              </span>
-              <span class="inline-flex items-center h-5 px-2 rounded-full border border-ink/20 bg-canvas text-ink-soft text-[10px]">Scheduled</span>
-              <span class="inline-flex items-center h-5 px-2 rounded-full border border-ink/20 bg-canvas text-ink-soft text-[10px]">Archived</span>
-              <span class="ml-auto label-sm text-ink-muted hidden xl:inline-block">Group by project</span>
-            </div>
-
-            <!-- List body -->
-            <div class="flex-1 overflow-hidden text-[12px]">
-              <!-- spindle group -->
-              <div class="flex items-center gap-2.5 px-5 py-1.5 bg-paper/70 border-b border-ink/10">
-                <span class="display text-[13px] text-ink">spindle</span>
-                <span class="label-sm text-ink-muted">Next.js 15 · TS</span>
-                <span class="ml-auto mono text-[10px] text-ink-muted">2 sessions</span>
+          <div class="desktop-inner grid grid-cols-[220px_minmax(0,1fr)] min-h-[460px]">
+            <!-- ===== Sidebar ===== -->
+            <aside class="border-r border-ink/10 bg-paper/40 flex flex-col">
+              <div class="px-4 py-3.5 flex items-center gap-2 border-b border-ink/5">
+                <svg viewBox="0 0 1024 1024" class="w-5 h-5 text-ink" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="d-logo" x1="0.1" y1="0.1" x2="0.9" y2="0.9">
+                      <stop offset="0%" stop-color="currentColor"></stop>
+                      <stop offset="100%" stop-color="#CC785C"></stop>
+                    </linearGradient>
+                  </defs>
+                  <path d="M 512 200 C 300 210, 200 380, 220 560 C 240 740, 460 830, 660 770 C 840 710, 880 480, 780 320 C 700 210, 620 200, 512 200 Z" fill="none" stroke="url(#d-logo)" stroke-width="100" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <span class="mono text-[12px] text-ink">claudex</span>
+                <span class="ml-auto inline-flex items-center gap-1 px-1.5 py-0.5 mono text-[9px] uppercase tracking-wider text-klein-ink border border-klein/30 bg-klein/10">
+                  <span class="h-1 w-1 rounded-full bg-klein"></span>3 live
+                </span>
               </div>
 
-              <!-- row: needs approval (warn) -->
-              <div class="px-5 py-2.5 border-b border-ink/10 hover:bg-paper/40">
-                <div class="grid grid-cols-[16px_minmax(0,1fr)_140px_120px_92px] gap-3 items-center">
-                  <span class="h-1.5 w-1.5 rounded-full bg-warn" style="box-shadow:0 0 0 3px rgba(217,119,6,0.18)"></span>
-                  <div class="min-w-0">
-                    <div class="text-[12.5px] font-medium text-ink truncate">Fix hydration mismatch on marketing</div>
-                    <div class="text-[11px] text-ink-muted truncate mt-0.5">claude found the &lt;time&gt; issue, ready to patch</div>
-                  </div>
-                  <div class="mono text-[10.5px] text-ink-soft truncate flex items-center gap-1">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-2.5 h-2.5 text-ink-faint"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M6 9v6a3 3 0 0 0 3 3h6"/></svg>
-                    claude/fix-hydration
-                  </div>
-                  <div class="mono text-[10.5px] text-ink-muted">
-                    <span class="text-success">+24</span>
-                    <span class="text-danger ml-1">−6</span>
-                    <span class="ml-1">· 1f</span>
-                  </div>
-                  <div class="text-right">
-                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 mono text-[9px] uppercase tracking-wider text-warn border border-warn/40 bg-warn/15">
-                      <span class="h-1 w-1 rounded-full bg-warn"></span>needs you
-                    </span>
-                  </div>
-                </div>
+              <div class="px-2.5 py-3 space-y-0.5">
+                <button class="w-full flex items-center gap-2 px-2 h-7 bg-canvas border border-ink/10 text-[12px] text-ink shadow-card">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3.5 h-3.5"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+                  Sessions
+                  <span class="ml-auto mono text-[10px] text-ink-muted">6</span>
+                </button>
+                <button class="w-full flex items-center gap-2 px-2 h-7 text-[12px] text-ink-soft hover:bg-canvas/60">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3.5 h-3.5"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+                  Routines
+                  <span class="ml-auto mono text-[10px] text-ink-muted">3</span>
+                </button>
+                <button class="w-full flex items-center gap-2 px-2 h-7 text-[12px] text-ink-soft hover:bg-canvas/60">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3.5 h-3.5"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M6 9v6a3 3 0 0 0 3 3h6"/></svg>
+                  Worktrees
+                  <span class="ml-auto mono text-[10px] text-ink-muted">4</span>
+                </button>
+                <button class="w-full flex items-center gap-2 px-2 h-7 text-[12px] text-ink-soft hover:bg-canvas/60">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3.5 h-3.5"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 3h16l-2-3Z"/></svg>
+                  Alerts
+                  <span class="ml-auto inline-flex items-center justify-center h-3.5 w-3.5 rounded-full bg-danger text-canvas mono text-[9px]">2</span>
+                </button>
               </div>
 
-              <!-- row: running -->
-              <div class="px-5 py-2.5 border-b border-ink/10 hover:bg-paper/40">
-                <div class="grid grid-cols-[16px_minmax(0,1fr)_140px_120px_92px] gap-3 items-center">
-                  <span class="h-1.5 w-1.5 rounded-full bg-success thinking-dot" style="box-shadow:0 0 0 3px rgba(63,145,66,0.18)"></span>
-                  <div class="min-w-0">
-                    <div class="text-[12.5px] font-medium text-ink truncate">Investigate slow cold-start on /api/search</div>
-                    <div class="text-[11px] text-ink-muted truncate mt-0.5">p95 dropped 812 → 214ms after lazy import</div>
-                  </div>
-                  <div class="mono text-[10.5px] text-ink-soft truncate">claude/cold-start-debug</div>
-                  <div class="mono text-[10.5px] text-ink-muted">
-                    <span class="text-success">+22</span>
-                    <span class="text-danger ml-1">−6</span>
-                    <span class="ml-1">· 2f</span>
-                  </div>
-                  <div class="text-right">
-                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 mono text-[9px] uppercase tracking-wider text-success border border-success/40 bg-success/15">
-                      <span class="h-1 w-1 rounded-full bg-success"></span>running
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <div class="mx-3 my-1 h-px bg-ink/10"></div>
 
-              <!-- ember-api group -->
-              <div class="flex items-center gap-2.5 px-5 py-1.5 bg-paper/70 border-b border-ink/10">
-                <span class="display text-[13px] text-ink">ember-api</span>
-                <span class="label-sm text-ink-muted">Go 1.23 · HTMX</span>
-                <span class="ml-auto mono text-[10px] text-ink-muted">2 sessions</span>
-              </div>
-
-              <!-- row: running with worktree -->
-              <div class="px-5 py-2.5 border-b border-ink/10 hover:bg-paper/40">
-                <div class="grid grid-cols-[16px_minmax(0,1fr)_140px_120px_92px] gap-3 items-center">
-                  <span class="h-1.5 w-1.5 rounded-full bg-success thinking-dot" style="box-shadow:0 0 0 3px rgba(63,145,66,0.18)"></span>
-                  <div class="min-w-0">
-                    <div class="text-[12.5px] font-medium text-ink truncate">Add retry + jitter to webhook dispatcher</div>
-                    <div class="text-[11px] text-ink-muted truncate mt-0.5">running tests in ./internal/dispatcher …</div>
-                  </div>
-                  <div class="mono text-[10.5px] text-ink-soft truncate">claude/webhook-retry</div>
-                  <div class="mono text-[10.5px] text-ink-muted">
-                    <span class="text-success">+112</span>
-                    <span class="text-danger ml-1">−38</span>
-                    <span class="ml-1">· 5f</span>
-                  </div>
-                  <div class="text-right">
-                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 mono text-[9px] uppercase tracking-wider text-success border border-success/40 bg-success/15">
-                      <span class="h-1 w-1 rounded-full bg-success"></span>running
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- row: archived -->
-              <div class="px-5 py-2.5 border-b border-ink/10 hover:bg-paper/40 opacity-60">
-                <div class="grid grid-cols-[16px_minmax(0,1fr)_140px_120px_92px] gap-3 items-center">
+              <div class="px-3 pt-2 label-sm text-ink-muted">Projects</div>
+              <div class="px-2.5 pt-1.5 space-y-0.5">
+                <button class="w-full flex items-center gap-2 px-2 h-6 hover:bg-canvas/60">
+                  <span class="h-1.5 w-1.5 rounded-full bg-klein"></span>
+                  <span class="mono text-[11.5px] text-ink-soft">spindle</span>
+                  <span class="ml-auto mono text-[10px] text-ink-muted">2</span>
+                </button>
+                <button class="w-full flex items-center gap-2 px-2 h-6 hover:bg-canvas/60">
+                  <span class="h-1.5 w-1.5 rounded-full bg-klein"></span>
+                  <span class="mono text-[11.5px] text-ink-soft">ember-api</span>
+                  <span class="ml-auto mono text-[10px] text-ink-muted">2</span>
+                </button>
+                <button class="w-full flex items-center gap-2 px-2 h-6 hover:bg-canvas/60">
+                  <span class="h-1.5 w-1.5 rounded-full bg-klein/60"></span>
+                  <span class="mono text-[11.5px] text-ink-soft">lumen</span>
+                  <span class="ml-auto mono text-[10px] text-ink-muted">1</span>
+                </button>
+                <button class="w-full flex items-center gap-2 px-2 h-6 hover:bg-canvas/60">
                   <span class="h-1.5 w-1.5 rounded-full bg-ink/30"></span>
-                  <div class="min-w-0">
-                    <div class="text-[12.5px] font-medium text-ink truncate">Generate OpenAPI spec from route handlers</div>
-                    <div class="text-[11px] text-ink-muted truncate mt-0.5">merged · #1284 · CI green</div>
+                  <span class="mono text-[11.5px] text-ink-soft">postmark</span>
+                  <span class="ml-auto mono text-[10px] text-ink-muted">1</span>
+                </button>
+              </div>
+
+              <div class="mt-auto p-3 border-t border-ink/10 flex items-center gap-2.5">
+                <div class="h-7 w-7 rounded-full bg-ink text-canvas flex items-center justify-center text-[11px] font-medium">H</div>
+                <div class="min-w-0 flex-1">
+                  <div class="text-[11.5px] font-medium truncate text-ink">Hao Wu</div>
+                  <div class="text-[10px] text-ink-muted truncate">Max · 2FA on</div>
+                </div>
+              </div>
+            </aside>
+
+            <!-- ===== Main pane: Sessions list ===== -->
+            <section class="min-w-0 flex flex-col">
+              <div class="px-5 py-3 border-b border-ink/10 flex items-center gap-3">
+                <div>
+                  <div class="label-sm text-ink-muted">Sessions</div>
+                  <div class="display text-[16px] leading-tight mt-0.5">All projects</div>
+                </div>
+                <div class="flex-1 max-w-[280px] mx-auto flex items-center gap-2 h-7 px-2.5 bg-paper border border-ink/15">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-3 h-3 text-ink-muted"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                  <span class="text-[11px] text-ink-muted">Search sessions, files…</span>
+                  <span class="ml-auto mono text-[10px] text-ink-faint">⌘K</span>
+                </div>
+                <button class="inline-flex items-center gap-1 h-7 px-2.5 bg-klein text-canvas text-[11.5px] font-medium">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="w-3 h-3"><path d="M12 5v14M5 12h14"/></svg>
+                  New session
+                </button>
+              </div>
+
+              <div class="px-5 py-2.5 border-b border-ink/10 flex items-center gap-1.5 overflow-x-auto">
+                <span class="label-sm text-ink-muted mr-1">Filter</span>
+                <span class="inline-flex items-center gap-1 h-5 px-2 rounded-full bg-ink text-canvas text-[10px] mono">All <span class="opacity-70">6</span></span>
+                <span class="inline-flex items-center gap-1 h-5 px-2 rounded-full border border-ink/20 bg-canvas text-ink-soft text-[10px]">
+                  <span class="h-1 w-1 rounded-full bg-success"></span>Running
+                </span>
+                <span class="inline-flex items-center gap-1 h-5 px-2 rounded-full border border-ink/20 bg-canvas text-ink-soft text-[10px]">
+                  <span class="h-1 w-1 rounded-full bg-warn"></span>Needs approval 2
+                </span>
+                <span class="inline-flex items-center h-5 px-2 rounded-full border border-ink/20 bg-canvas text-ink-soft text-[10px]">Scheduled</span>
+                <span class="inline-flex items-center h-5 px-2 rounded-full border border-ink/20 bg-canvas text-ink-soft text-[10px]">Archived</span>
+              </div>
+
+              <div class="flex-1 overflow-hidden text-[12px]">
+                <div class="flex items-center gap-2.5 px-5 py-1.5 bg-paper/70 border-b border-ink/10">
+                  <span class="display text-[13px] text-ink">spindle</span>
+                  <span class="label-sm text-ink-muted">Next.js 15 · TS</span>
+                  <span class="ml-auto mono text-[10px] text-ink-muted">2 sessions</span>
+                </div>
+
+                <div class="px-5 py-2.5 border-b border-ink/10 hover:bg-paper/40">
+                  <div class="grid grid-cols-[16px_minmax(0,1fr)_140px_120px_92px] gap-3 items-center">
+                    <span class="h-1.5 w-1.5 rounded-full bg-warn" style="box-shadow:0 0 0 3px rgba(217,119,6,0.18)"></span>
+                    <div class="min-w-0">
+                      <div class="text-[12.5px] font-medium text-ink truncate">Fix hydration mismatch on marketing</div>
+                      <div class="text-[11px] text-ink-muted truncate mt-0.5">claude found the &lt;time&gt; issue, ready to patch</div>
+                    </div>
+                    <div class="mono text-[10.5px] text-ink-soft truncate flex items-center gap-1">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-2.5 h-2.5 text-ink-faint"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M6 9v6a3 3 0 0 0 3 3h6"/></svg>
+                      claude/fix-hydration
+                    </div>
+                    <div class="mono text-[10.5px] text-ink-muted">
+                      <span class="text-success">+24</span>
+                      <span class="text-danger ml-1">−6</span>
+                      <span class="ml-1">· 1f</span>
+                    </div>
+                    <div class="text-right">
+                      <span class="inline-flex items-center gap-1 px-1.5 py-0.5 mono text-[9px] uppercase tracking-wider text-warn border border-warn/40 bg-warn/15">
+                        <span class="h-1 w-1 rounded-full bg-warn"></span>needs you
+                      </span>
+                    </div>
                   </div>
-                  <div class="mono text-[10.5px] text-ink-soft truncate">main</div>
-                  <div class="mono text-[10.5px] text-ink-muted">
-                    <span class="text-success">+860</span>
-                    <span class="text-danger ml-1">−4</span>
-                    <span class="ml-1">· 1f</span>
+                </div>
+
+                <div class="px-5 py-2.5 border-b border-ink/10 hover:bg-paper/40">
+                  <div class="grid grid-cols-[16px_minmax(0,1fr)_140px_120px_92px] gap-3 items-center">
+                    <span class="h-1.5 w-1.5 rounded-full bg-success thinking-dot" style="box-shadow:0 0 0 3px rgba(63,145,66,0.18)"></span>
+                    <div class="min-w-0">
+                      <div class="text-[12.5px] font-medium text-ink truncate">Investigate slow cold-start on /api/search</div>
+                      <div class="text-[11px] text-ink-muted truncate mt-0.5">p95 dropped 812 → 214ms after lazy import</div>
+                    </div>
+                    <div class="mono text-[10.5px] text-ink-soft truncate">claude/cold-start-debug</div>
+                    <div class="mono text-[10.5px] text-ink-muted">
+                      <span class="text-success">+22</span>
+                      <span class="text-danger ml-1">−6</span>
+                      <span class="ml-1">· 2f</span>
+                    </div>
+                    <div class="text-right">
+                      <span class="inline-flex items-center gap-1 px-1.5 py-0.5 mono text-[9px] uppercase tracking-wider text-success border border-success/40 bg-success/15">
+                        <span class="h-1 w-1 rounded-full bg-success"></span>running
+                      </span>
+                    </div>
                   </div>
-                  <div class="text-right">
-                    <span class="inline-flex items-center px-1.5 py-0.5 mono text-[9px] uppercase tracking-wider text-ink-muted border border-ink/20 bg-paper">
-                      archived
-                    </span>
+                </div>
+
+                <div class="flex items-center gap-2.5 px-5 py-1.5 bg-paper/70 border-b border-ink/10">
+                  <span class="display text-[13px] text-ink">ember-api</span>
+                  <span class="label-sm text-ink-muted">Go 1.23 · HTMX</span>
+                  <span class="ml-auto mono text-[10px] text-ink-muted">2 sessions</span>
+                </div>
+
+                <div class="px-5 py-2.5 border-b border-ink/10 hover:bg-paper/40">
+                  <div class="grid grid-cols-[16px_minmax(0,1fr)_140px_120px_92px] gap-3 items-center">
+                    <span class="h-1.5 w-1.5 rounded-full bg-success thinking-dot" style="box-shadow:0 0 0 3px rgba(63,145,66,0.18)"></span>
+                    <div class="min-w-0">
+                      <div class="text-[12.5px] font-medium text-ink truncate">Add retry + jitter to webhook dispatcher</div>
+                      <div class="text-[11px] text-ink-muted truncate mt-0.5">running tests in ./internal/dispatcher …</div>
+                    </div>
+                    <div class="mono text-[10.5px] text-ink-soft truncate">claude/webhook-retry</div>
+                    <div class="mono text-[10.5px] text-ink-muted">
+                      <span class="text-success">+112</span>
+                      <span class="text-danger ml-1">−38</span>
+                      <span class="ml-1">· 5f</span>
+                    </div>
+                    <div class="text-right">
+                      <span class="inline-flex items-center gap-1 px-1.5 py-0.5 mono text-[9px] uppercase tracking-wider text-success border border-success/40 bg-success/15">
+                        <span class="h-1 w-1 rounded-full bg-success"></span>running
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="px-5 py-2.5 border-b border-ink/10 hover:bg-paper/40 opacity-60">
+                  <div class="grid grid-cols-[16px_minmax(0,1fr)_140px_120px_92px] gap-3 items-center">
+                    <span class="h-1.5 w-1.5 rounded-full bg-ink/30"></span>
+                    <div class="min-w-0">
+                      <div class="text-[12.5px] font-medium text-ink truncate">Generate OpenAPI spec from route handlers</div>
+                      <div class="text-[11px] text-ink-muted truncate mt-0.5">merged · #1284 · CI green</div>
+                    </div>
+                    <div class="mono text-[10.5px] text-ink-soft truncate">main</div>
+                    <div class="mono text-[10.5px] text-ink-muted">
+                      <span class="text-success">+860</span>
+                      <span class="text-danger ml-1">−4</span>
+                      <span class="ml-1">· 1f</span>
+                    </div>
+                    <div class="text-right">
+                      <span class="inline-flex items-center px-1.5 py-0.5 mono text-[9px] uppercase tracking-wider text-ink-muted border border-ink/20 bg-paper">
+                        archived
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2.5 px-5 py-1.5 bg-paper/70 border-b border-ink/10">
+                  <span class="display text-[13px] text-ink">lumen</span>
+                  <span class="label-sm text-ink-muted">Python · FastAPI</span>
+                  <span class="ml-auto mono text-[10px] text-ink-muted">1 session</span>
+                </div>
+
+                <div class="px-5 py-2.5 border-b border-ink/10 hover:bg-paper/40">
+                  <div class="grid grid-cols-[16px_minmax(0,1fr)_140px_120px_92px] gap-3 items-center">
+                    <span class="h-1.5 w-1.5 rounded-full bg-ink/40"></span>
+                    <div class="min-w-0">
+                      <div class="text-[12.5px] font-medium text-ink truncate">Audit dependency CVEs, propose upgrades</div>
+                      <div class="text-[11px] text-ink-muted truncate mt-0.5">found 4 direct + 11 transitive advisories</div>
+                    </div>
+                    <div class="mono text-[10.5px] text-ink-soft truncate">main</div>
+                    <div class="mono text-[10.5px] text-ink-faint">no changes</div>
+                    <div class="text-right">
+                      <span class="inline-flex items-center px-1.5 py-0.5 mono text-[9px] uppercase tracking-wider text-ink-muted border border-ink/20 bg-paper">
+                        idle
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <!-- lumen group -->
-              <div class="flex items-center gap-2.5 px-5 py-1.5 bg-paper/70 border-b border-ink/10">
-                <span class="display text-[13px] text-ink">lumen</span>
-                <span class="label-sm text-ink-muted">Python · FastAPI</span>
-                <span class="ml-auto mono text-[10px] text-ink-muted">1 session</span>
-              </div>
-
-              <!-- row: scheduled -->
-              <div class="px-5 py-2.5 border-b border-ink/10 hover:bg-paper/40">
-                <div class="grid grid-cols-[16px_minmax(0,1fr)_140px_120px_92px] gap-3 items-center">
-                  <span class="h-1.5 w-1.5 rounded-full bg-ink/40"></span>
-                  <div class="min-w-0">
-                    <div class="text-[12.5px] font-medium text-ink truncate">Audit dependency CVEs, propose upgrades</div>
-                    <div class="text-[11px] text-ink-muted truncate mt-0.5">found 4 direct + 11 transitive advisories</div>
-                  </div>
-                  <div class="mono text-[10.5px] text-ink-soft truncate">main</div>
-                  <div class="mono text-[10.5px] text-ink-faint">no changes</div>
-                  <div class="text-right">
-                    <span class="inline-flex items-center px-1.5 py-0.5 mono text-[9px] uppercase tracking-wider text-ink-muted border border-ink/20 bg-paper">
-                      idle
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
       </div>
 
@@ -524,3 +578,25 @@
     </div>
   </div>
 </section>
+
+<style>
+  /* Hide scrollbars on the desktop preview wrapper for a cleaner mobile feel.
+     The container is still keyboard-scrollable and overflow-x:auto. */
+  .desktop-scroll {
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+  .desktop-scroll::-webkit-scrollbar {
+    height: 4px;
+  }
+  .desktop-scroll::-webkit-scrollbar-thumb {
+    background: rgb(var(--c-ink) / 0.15);
+    border-radius: 2px;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+</style>
