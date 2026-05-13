@@ -20,7 +20,8 @@ const {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#cc785c" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf9f5" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#13110f" />
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : null}
 
@@ -33,6 +34,25 @@ const {
 
     <title>{title}</title>
 
+    {/* No-flash theme bootstrap — must run before any paint */}
+    <script is:inline>
+      (function () {
+        try {
+          var stored = null;
+          try {
+            stored = localStorage.getItem("claudex-theme");
+          } catch (_) {}
+          var prefersDark =
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var theme = stored === "light" || stored === "dark" ? stored : prefersDark ? "dark" : "light";
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (_) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -42,5 +62,61 @@ const {
   </head>
   <body class="bg-canvas text-ink">
     <slot />
+
+    {/* Theme toggle wiring — delegated click + system-preference sync */}
+    <script is:inline>
+      (function () {
+        function read() {
+          try {
+            return localStorage.getItem("claudex-theme");
+          } catch (_) {
+            return null;
+          }
+        }
+        function write(t) {
+          try {
+            localStorage.setItem("claudex-theme", t);
+          } catch (_) {}
+        }
+        function apply(t) {
+          document.documentElement.setAttribute("data-theme", t);
+          var btns = document.querySelectorAll("[data-theme-toggle]");
+          for (var i = 0; i < btns.length; i++) {
+            btns[i].setAttribute("aria-pressed", String(t === "dark"));
+            btns[i].setAttribute(
+              "aria-label",
+              t === "dark" ? "Switch to light theme" : "Switch to dark theme"
+            );
+          }
+        }
+        // Initial sync (in case toggle was rendered after bootstrap)
+        apply(document.documentElement.getAttribute("data-theme") || "light");
+
+        document.addEventListener("click", function (e) {
+          var target = e.target;
+          while (target && target !== document.body) {
+            if (target.hasAttribute && target.hasAttribute("data-theme-toggle")) {
+              var cur = document.documentElement.getAttribute("data-theme") || "light";
+              var next = cur === "dark" ? "light" : "dark";
+              apply(next);
+              write(next);
+              return;
+            }
+            target = target.parentNode;
+          }
+        });
+
+        // Track OS preference only when the user hasn't explicitly chosen
+        if (window.matchMedia) {
+          var mq = window.matchMedia("(prefers-color-scheme: dark)");
+          var listener = function (e) {
+            if (read()) return;
+            apply(e.matches ? "dark" : "light");
+          };
+          if (mq.addEventListener) mq.addEventListener("change", listener);
+          else if (mq.addListener) mq.addListener(listener);
+        }
+      })();
+    </script>
   </body>
 </html>
