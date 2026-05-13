@@ -18,12 +18,6 @@
   <div class="absolute inset-0 bg-grid opacity-50 pointer-events-none"></div>
   <div class="absolute inset-0 bg-noise pointer-events-none"></div>
 
-  <!-- Hairline accent — the only "ornament", a klein vertical that hints at column -->
-  <div
-    class="hidden lg:block absolute left-[max(2.5rem,calc((100vw-1440px)/2+2.5rem))] top-0 bottom-0 w-px bg-klein/40 fx-line delay-0"
-    aria-hidden="true"
-  ></div>
-
   <div class="relative max-w-[1440px] mx-auto px-6 lg:px-10">
     <!-- Cover folio: top corner marks ------------------------------------ -->
     <div class="pt-10 lg:pt-14 grid grid-cols-2 items-start gap-4">
@@ -40,21 +34,18 @@
     <!-- Cover headline ---------------------------------------------------- -->
     <div class="pt-16 pb-12 lg:pt-24 lg:pb-20">
       <h1 class="display leading-[0.86] tracking-[-0.045em] text-ink overflow-hidden">
-        <span class="block fx-rise delay-2 text-[18vw] sm:text-[15vw] lg:text-[clamp(7rem,12vw,12rem)]">
-          remote
-        </span>
         <span
-          class="block display-italic fx-rise delay-3 text-[18vw] sm:text-[15vw] lg:text-[clamp(7rem,12vw,12rem)] text-klein"
+          class="block fx-rise delay-2 text-[26vw] sm:text-[22vw] lg:text-[clamp(9rem,17vw,17rem)]"
         >
-          claude<span class="text-ink not-italic">.</span>
+          claud<span class="display-italic text-klein">ex</span><span class="text-ink not-italic">.</span>
         </span>
       </h1>
 
       <!-- subtitle row, asymmetric -->
-      <div class="mt-12 grid grid-cols-12 gap-x-6 gap-y-8 items-end">
+      <div class="mt-10 grid grid-cols-12 gap-x-6 gap-y-8 items-end">
         <div class="col-span-12 lg:col-span-6 lg:col-start-1 fx-fade delay-4">
           <p class="prose-serif text-[1.15rem] md:text-[1.4rem] leading-[1.45] tracking-[-0.005em] text-ink-soft max-w-[44ch]">
-            Your <em class="display-italic text-klein">claude</em> is doing real work on your laptop.
+            <em class="display-italic text-klein">Remote control</em> for the <span class="mono text-ink">claude</span> CLI on your laptop.
             Open your phone, keep driving — review a diff, approve a permission, queue the next prompt.
           </p>
         </div>

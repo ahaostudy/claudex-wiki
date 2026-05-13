@@ -317,15 +317,15 @@
             Sidebar with projects and saved filters. A grouped session list
             with branch, diff stats, and live status. The same data your
             phone sees, laid out for a 27-inch screen.
-            <span class="lg:hidden block mt-2 label-sm text-klein">← swipe →</span>
           </p>
         </div>
       </div>
 
-      <!-- Horizontal-scroll wrapper so mobile gets a full-fidelity preview
-           it can swipe through, instead of a squashed grid -->
-      <div class="-mx-6 lg:mx-0 px-6 lg:px-0 overflow-x-auto desktop-scroll">
-        <div class="desktop fx-fade delay-5 min-w-[920px]">
+      <!-- Fixed 1280×640 design canvas, container-query-scaled to fit any
+           viewport without breaking the layout -->
+      <div class="desktop-frame fx-fade delay-5">
+        <div class="desktop-stage">
+          <div class="desktop h-full flex flex-col">
           <div class="desktop-chrome">
             <span class="dot" style="background:#ff5f57"></span>
             <span class="dot" style="background:#febc2e"></span>
@@ -335,7 +335,7 @@
             </span>
           </div>
 
-          <div class="desktop-inner grid grid-cols-[220px_minmax(0,1fr)] min-h-[460px]">
+          <div class="desktop-inner grid grid-cols-[220px_minmax(0,1fr)] flex-1 min-h-0">
             <!-- ===== Sidebar ===== -->
             <aside class="border-r border-ink/10 bg-paper/40 flex flex-col">
               <div class="px-4 py-3.5 flex items-center gap-2 border-b border-ink/5">
@@ -569,6 +569,7 @@
             </section>
           </div>
         </div>
+        </div>
       </div>
 
       <div class="mt-4 flex items-center justify-between gap-4">
@@ -580,19 +581,28 @@
 </section>
 
 <style>
-  /* Hide scrollbars on the desktop preview wrapper for a cleaner mobile feel.
-     The container is still keyboard-scrollable and overflow-x:auto. */
-  .desktop-scroll {
-    scrollbar-width: thin;
-    -webkit-overflow-scrolling: touch;
+  /* Fixed-aspect, container-query-scaled desktop preview.
+     The stage renders at the natural design size (1280×640) regardless
+     of viewport — the frame's aspect-ratio reserves matching space, and
+     the stage is scaled by `100cqi / 1280` so it always exactly fills
+     the frame width-wise. On a 390px phone this becomes a perfect
+     ~390×195 miniature instead of a squashed grid. */
+  .desktop-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1280 / 640;
+    container-type: inline-size;
   }
-  .desktop-scroll::-webkit-scrollbar {
-    height: 4px;
+  .desktop-stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1280px;
+    height: 640px;
+    transform-origin: top left;
+    transform: scale(calc(100cqi / 1280));
   }
-  .desktop-scroll::-webkit-scrollbar-thumb {
-    background: rgb(var(--c-ink) / 0.15);
-    border-radius: 2px;
-  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
