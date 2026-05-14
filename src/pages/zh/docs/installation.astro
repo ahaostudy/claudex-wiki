@@ -104,10 +104,10 @@ pnpm run init --username=you --password='set-a-strong-one'</code></pre>
   <p>如果在安装时跳过了守护进程提示，现在可以注册：</p>
 
   <div class="not-prose my-6" id="daemon-tabs">
-    <div class="flex gap-1 mb-3" role="tablist">
-      <button role="tab" aria-selected="true" data-tab="mac" class="px-4 py-2 text-[13px] font-medium border border-line rounded-lg bg-ink text-canvas">macOS</button>
-      <button role="tab" aria-selected="false" data-tab="linux" class="px-4 py-2 text-[13px] font-medium border border-line rounded-lg bg-canvas text-ink-muted hover:bg-paper">Linux</button>
-      <button role="tab" aria-selected="false" data-tab="windows" class="px-4 py-2 text-[13px] font-medium border border-line rounded-lg bg-canvas text-ink-muted hover:bg-paper">Windows</button>
+    <div class="inline-flex bg-paper border border-line rounded-lg p-0.5 mb-4" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="mac" class="px-4 py-1.5 text-[12px] font-medium rounded-[6px] transition-all duration-200 bg-canvas text-ink shadow-sm">macOS</button>
+      <button role="tab" aria-selected="false" data-tab="linux" class="px-4 py-1.5 text-[12px] font-medium rounded-[6px] transition-all duration-200 text-ink-muted hover:text-ink-soft">Linux</button>
+      <button role="tab" aria-selected="false" data-tab="windows" class="px-4 py-1.5 text-[12px] font-medium rounded-[6px] transition-all duration-200 text-ink-muted hover:text-ink-soft">Windows</button>
     </div>
     <div data-panel="mac" class="rounded-xl border border-line bg-ink overflow-hidden">
       <pre class="m-0 !bg-transparent !text-canvas px-5 py-4 mono text-[13px] overflow-x-auto"><code>launchctl bootstrap \
@@ -147,8 +147,8 @@ pm2-startup install</code></pre>
         var active = b.getAttribute("data-tab") === tab;
         b.setAttribute("aria-selected", String(active));
         b.className = active
-          ? "px-4 py-2 text-[13px] font-medium border border-line rounded-lg bg-ink text-canvas"
-          : "px-4 py-2 text-[13px] font-medium border border-line rounded-lg bg-canvas text-ink-muted hover:bg-paper";
+          ? "px-4 py-1.5 text-[12px] font-medium rounded-[6px] transition-all duration-200 bg-canvas text-ink shadow-sm"
+          : "px-4 py-1.5 text-[12px] font-medium rounded-[6px] transition-all duration-200 text-ink-muted hover:text-ink-soft";
       });
       container.querySelectorAll("[data-panel]").forEach(function (p) {
         p.className = p.getAttribute("data-panel") === tab
