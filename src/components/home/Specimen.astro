@@ -278,7 +278,7 @@ const t = useTranslations(lang);
         </div>
       </div>
 
-      <!-- Fixed 1280×640 design canvas, container-query-scaled to fit any
+      <!-- Fixed 1280×800 design canvas, container-query-scaled to fit any
            viewport without breaking the layout -->
       <div class="desktop-frame fx-fade delay-5">
         <div class="desktop-stage">
@@ -539,15 +539,15 @@ const t = useTranslations(lang);
 
 <style>
   /* Fixed-aspect, container-query-scaled desktop preview.
-     The stage renders at the natural design size (1280×640) regardless
+     The stage renders at the natural design size (1280×800) regardless
      of viewport — the frame's aspect-ratio reserves matching space, and
      the stage is scaled by `100cqi / 1280` so it always exactly fills
      the frame width-wise. On a 390px phone this becomes a perfect
-     ~390×195 miniature instead of a squashed grid. */
+     ~390×244 miniature instead of a squashed grid. */
   .desktop-frame {
     position: relative;
     width: 100%;
-    aspect-ratio: 1280 / 640;
+    aspect-ratio: 1280 / 800;
     container-type: inline-size;
   }
   .desktop-stage {
@@ -555,7 +555,7 @@ const t = useTranslations(lang);
     top: 0;
     left: 0;
     width: 1280px;
-    height: 640px;
+    height: 800px;
     transform-origin: top left;
     transform: scale(calc(100cqi / 1280));
   }
