@@ -106,23 +106,25 @@ pnpm run init --username=you --password='set-a-strong-one'</code></pre>
 
   <p>If you opted out of the daemon prompt during install, register it now:</p>
 
-  <div class="not-prose grid grid-cols-1 md:grid-cols-3 gap-3 my-6">
-    <div class="rounded-xl border border-line bg-canvas overflow-hidden">
-      <div class="px-4 py-2.5 border-b border-line caps text-ink-muted">macOS</div>
-      <pre class="m-0 !rounded-none !bg-ink !text-canvas px-4 py-3 mono text-[12px] overflow-x-auto"><code>launchctl bootstrap \
+  <div class="not-prose my-6" id="daemon-tabs">
+    <div class="flex gap-1 mb-3" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="mac" class="px-4 py-2 text-[13px] font-medium border border-line rounded-lg bg-ink text-canvas">macOS</button>
+      <button role="tab" aria-selected="false" data-tab="linux" class="px-4 py-2 text-[13px] font-medium border border-line rounded-lg bg-canvas text-ink-muted hover:bg-paper">Linux</button>
+      <button role="tab" aria-selected="false" data-tab="windows" class="px-4 py-2 text-[13px] font-medium border border-line rounded-lg bg-canvas text-ink-muted hover:bg-paper">Windows</button>
+    </div>
+    <div data-panel="mac" class="rounded-xl border border-line bg-ink overflow-hidden">
+      <pre class="m-0 !bg-transparent !text-canvas px-5 py-4 mono text-[13px] overflow-x-auto"><code>launchctl bootstrap \
   gui/$(id -u) \
   ~/Library/LaunchAgents/\
 com.claudex.server.plist</code></pre>
     </div>
-    <div class="rounded-xl border border-line bg-canvas overflow-hidden">
-      <div class="px-4 py-2.5 border-b border-line caps text-ink-muted">Linux</div>
-      <pre class="m-0 !rounded-none !bg-ink !text-canvas px-4 py-3 mono text-[12px] overflow-x-auto"><code>systemctl --user \
+    <div data-panel="linux" class="hidden rounded-xl border border-line bg-ink overflow-hidden">
+      <pre class="m-0 !bg-transparent !text-canvas px-5 py-4 mono text-[13px] overflow-x-auto"><code>systemctl --user \
   enable --now \
   claudex.service</code></pre>
     </div>
-    <div class="rounded-xl border border-line bg-canvas overflow-hidden">
-      <div class="px-4 py-2.5 border-b border-line caps text-ink-muted">Windows</div>
-      <pre class="m-0 !rounded-none !bg-ink !text-canvas px-4 py-3 mono text-[12px] overflow-x-auto"><code>pm2 start ecosystem.config.cjs
+    <div data-panel="windows" class="hidden rounded-xl border border-line bg-ink overflow-hidden">
+      <pre class="m-0 !bg-transparent !text-canvas px-5 py-4 mono text-[13px] overflow-x-auto"><code>pm2 start ecosystem.config.cjs
 pm2 save
 pm2-startup install</code></pre>
     </div>
@@ -135,3 +137,27 @@ pm2-startup install</code></pre>
     <li><a href="/docs/troubleshooting">Troubleshooting</a> — common boot issues.</li>
   </ul>
 </DocsLayout>
+
+<script>
+  (function () {
+    var container = document.getElementById("daemon-tabs");
+    if (!container) return;
+    container.addEventListener("click", function (e) {
+      var btn = e.target.closest("button[data-tab]");
+      if (!btn) return;
+      var tab = btn.getAttribute("data-tab");
+      container.querySelectorAll("button[data-tab]").forEach(function (b) {
+        var active = b.getAttribute("data-tab") === tab;
+        b.setAttribute("aria-selected", String(active));
+        b.className = active
+          ? "px-4 py-2 text-[13px] font-medium border border-line rounded-lg bg-ink text-canvas"
+          : "px-4 py-2 text-[13px] font-medium border border-line rounded-lg bg-canvas text-ink-muted hover:bg-paper";
+      });
+      container.querySelectorAll("[data-panel]").forEach(function (p) {
+        p.className = p.getAttribute("data-panel") === tab
+          ? "rounded-xl border border-line bg-ink overflow-hidden"
+          : "hidden rounded-xl border border-line bg-ink overflow-hidden";
+      });
+    });
+  })();
+</script>
