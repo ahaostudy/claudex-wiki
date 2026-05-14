@@ -19,7 +19,7 @@ export const ui = {
     "footer.index": "Index",
     "footer.docs": "Docs",
     "footer.install": "Install",
-    "footer.legal": "MIT · Not affiliated with Anthropic.",
+    "footer.legal": "MIT",
 
     "lang.switcher.aria": "Switch language",
 
@@ -151,7 +151,7 @@ export const ui = {
     "footer.index": "首页",
     "footer.docs": "文档",
     "footer.install": "安装",
-    "footer.legal": "MIT · 与 Anthropic 无关联。",
+    "footer.legal": "MIT",
 
     "lang.switcher.aria": "切换语言",
 
